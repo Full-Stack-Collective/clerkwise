@@ -37,7 +37,9 @@ export default function Home() {
         <label htmlFor="address">
           Address: <input type="text" name="address" id="address" />
         </label>
-        <button type="submit">Submit</button>
+        <button className="btn btn-primary" type="submit">
+          Submit
+        </button>
       </form>
     </main>
   );
