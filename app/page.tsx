@@ -1,44 +1,15 @@
-import Image from 'next/image';
-import styles from './page.module.css';
+import { NewPatient } from '@/components/NewPatient';
 
 export default function Home() {
+
+  const createPatient =async (data:FormData) => {
+    'use server'
+    console.log(data)
+  }
+
   return (
-    <main className={styles.main}>
-      <h2>Patient Information</h2>
-      <form className={styles.form}>
-        <label htmlFor="firstname">
-          First Name: <input type="text" name="firstName" id="first Name" />
-        </label>
-
-        <label htmlFor="surname">
-          Surname: <input type="text" name="surname" id="surname" />
-        </label>
-
-        <fieldset>
-          <legend>Sex: </legend>
-          <label htmlFor="female">Female</label>
-          <input type="radio" name="sex" id="female" />
-          <label htmlFor="male">Male</label>
-          <input type="radio" name="sex" id="male" />
-        </fieldset>
-
-        <label htmlFor="dob">
-          Date of Birth: <input type="date" name="dob" id="dob" />
-        </label>
-
-        <label htmlFor="id">
-          ID: <input type="text" name="id" id="id" />
-        </label>
-
-        <label htmlFor="phone">
-          Phone: <input type="tel" name="phone" id="phone" />
-        </label>
-
-        <label htmlFor="address">
-          Address: <input type="text" name="address" id="address" />
-        </label>
-        <button type="submit">Submit</button>
-      </form>
+    <main>
+      <NewPatient />
     </main>
   );
 }
