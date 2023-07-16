@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from './page.module.css';
-import PatientHistory from '../components/PatientHistory';
+import { PatientHistory } from '../components/PatientHistory';
 
 export default function Home() {
   return (
