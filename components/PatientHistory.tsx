@@ -17,15 +17,16 @@ import {
 import { Textarea } from './ui/textarea';
 
 const formSchema = z.object({
-  pc: z.string().min(2, {
+  presentingComplaint: z.string().min(2, {
     message: 'PC must be at least 2 characters.',
   }),
-  hpc: z.string(),
-  pmh: z.string(),
-  dhx: z.string(),
-  fhx: z.string(),
-  shx: z.string(),
-  srv: z.string(),
+  historyPresentingComplaint: z.string(),
+  pastMedicalHistory: z.string(),
+  drugHistory: z.string(),
+  familyHistory: z.string(),
+  socialHistory: z.string(),
+  allergies: z.string(),
+  systemsReview: z.string(),
 });
 
 function onSubmit(values: z.infer<typeof formSchema>) {
@@ -36,13 +37,14 @@ export function PatientHistory() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pc: '',
-      hpc: '',
-      pmh: '',
-      dhx: '',
-      fhx: '',
-      shx: '',
-      srv: '',
+      presentingComplaint: '',
+      historyPresentingComplaint: '',
+      pastMedicalHistory: '',
+      drugHistory: '',
+      familyHistory: '',
+      socialHistory: '',
+      allergies: '',
+      systemsReview: '',
     },
   });
 
@@ -55,7 +57,7 @@ export function PatientHistory() {
         <h2 className="font-semibold text-lg">Patient History</h2>
         <FormField
           control={form.control}
-          name="pc"
+          name="presentingComplaint"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Presenting Complaint</FormLabel>
@@ -70,7 +72,7 @@ export function PatientHistory() {
 
         <FormField
           control={form.control}
-          name="hpc"
+          name="historyPresentingComplaint"
           render={({ field }) => (
             <FormItem>
               <FormLabel>History of Presenting Complaint</FormLabel>
@@ -85,7 +87,7 @@ export function PatientHistory() {
 
         <FormField
           control={form.control}
-          name="pmh"
+          name="pastMedicalHistory"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Past Medical/Surgical History</FormLabel>
@@ -100,7 +102,7 @@ export function PatientHistory() {
 
         <FormField
           control={form.control}
-          name="dhx"
+          name="drugHistory"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Drug History</FormLabel>
@@ -115,7 +117,7 @@ export function PatientHistory() {
 
         <FormField
           control={form.control}
-          name="fhx"
+          name="familyHistory"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Family History</FormLabel>
@@ -129,7 +131,7 @@ export function PatientHistory() {
         />
         <FormField
           control={form.control}
-          name="shx"
+          name="socialHistory"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Social History</FormLabel>
@@ -141,9 +143,25 @@ export function PatientHistory() {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
-          name="srv"
+          name="allergies"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Allergies</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Add any drug or food allergies here" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="systemsReview"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Systems Review</FormLabel>

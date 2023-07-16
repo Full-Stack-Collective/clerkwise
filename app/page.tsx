@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import { PatientHistory } from '../components/PatientHistory';
+import { ClinicalExam } from '@/components/ClinicalExam';
 
 export default function Home() {
   return (
@@ -41,7 +42,8 @@ export default function Home() {
         <button type="submit">Submit</button>
       </form> */}
 
-      <PatientHistory />
+      {/* <PatientHistory /> */}
+      <ClinicalExam />
     </main>
   );
 }
