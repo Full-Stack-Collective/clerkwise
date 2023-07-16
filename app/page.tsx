@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import styles from './page.module.css';
+import PatientHistory from './components/PatientHistory';
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <h2>Patient Information</h2>
+      {/* <h2>Patient Information</h2>
       <form className={styles.form}>
         <label htmlFor="firstname">
           First Name: <input type="text" name="firstName" id="first Name" />
@@ -38,7 +39,9 @@ export default function Home() {
           Address: <input type="text" name="address" id="address" />
         </label>
         <button type="submit">Submit</button>
-      </form>
+      </form> */}
+
+      <PatientHistory />
     </main>
   );
 }
