@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,9 +17,15 @@ import {
 import { Textarea } from './ui/textarea';
 
 const formSchema = z.object({
-  pc: z.string().min(5, {
-    message: 'PC must be at least 5 characters.',
+  pc: z.string().min(2, {
+    message: 'PC must be at least 2 characters.',
   }),
+  hpc: z.string(),
+  pmh: z.string(),
+  dhx: z.string(),
+  fhx: z.string(),
+  shx: z.string(),
+  srv: z.string(),
 });
 
 function onSubmit(values: z.infer<typeof formSchema>) {
@@ -32,12 +37,22 @@ export function PatientHistory() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       pc: '',
+      hpc: '',
+      pmh: '',
+      dhx: '',
+      fhx: '',
+      shx: '',
+      srv: '',
     },
   });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-md w-full">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 max-w-md w-full"
+      >
+        <h2 className="font-semibold text-lg">Patient History</h2>
         <FormField
           control={form.control}
           name="pc"
@@ -47,63 +62,102 @@ export function PatientHistory() {
               <FormControl>
                 <Textarea placeholder="" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="hpc"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>History of Presenting Complaint</FormLabel>
+              <FormControl>
+                <Textarea placeholder="" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="pmh"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Past Medical/Surgical History</FormLabel>
+              <FormControl>
+                <Textarea placeholder="" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="dhx"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Drug History</FormLabel>
+              <FormControl>
+                <Textarea placeholder="" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="fhx"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Family History</FormLabel>
+              <FormControl>
+                <Textarea placeholder="" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="shx"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Social History</FormLabel>
+              <FormControl>
+                <Textarea placeholder="" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="srv"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Systems Review</FormLabel>
+              <FormControl>
+                <Textarea placeholder="" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
 }
-
-// const PatientHistory = () => {
-//   return (
-//     <div>
-//       <h2>Patient History</h2>
-//       <form action="">
-
-//         <div>
-//           <label htmlFor="pc">Presenting Complaint</label>
-//           <textarea name="pc" id="pc" />
-//         </div>
-
-//         <div>
-//           <label htmlFor="hpc">History of Presenting Complaint</label>
-//           <textarea name="hpc" id="hpc" />
-//         </div>
-
-//         <div>
-//           <label htmlFor="pmh">Past Medical/Surgical History</label>
-//           <textarea name="pmh" id="pmh" />
-//         </div>
-
-//         <div>
-//           <label htmlFor="dhx">Drug History</label>
-//           <textarea name="dhx" id="dhx" />
-//         </div>
-
-//         <div>
-//           <label htmlFor="fhx">Family History</label>
-//           <textarea name="fhx" id="fhx" />
-//         </div>
-
-//         <div>
-//           <label htmlFor="shx">Social History</label>
-//           <textarea name="shx" id="shx" />
-//         </div>
-
-//         <div>
-//           <label htmlFor="sr">Systems Review</label>
-//           <textarea name="sr" id="sr" />
-//         </div>
-
-//         <button type="submit">Save</button>
-
-//       </form>
-//     </div>
-//   )
-// }
