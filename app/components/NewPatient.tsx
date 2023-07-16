@@ -33,11 +33,11 @@ export const NewPatient = () => {
           <legend className="label-text">Sex</legend>
 
           <label className="label cursor-pointer">
-            <span className="label-text">Female</span>
+            <span className="label-text px-2">Female</span>
             <input type="radio" name="sex" value="female" className="radio" />
           </label>
           <label className="label cursor-pointer">
-            <span className="label-text">Male</span>
+            <span className="label-text px-2">Male</span>
             <input type="radio" name="sex" value="male" className="radio" />
           </label>
         </fieldset>
