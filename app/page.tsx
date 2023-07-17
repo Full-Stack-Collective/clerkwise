@@ -5,10 +5,12 @@ import { ClinicalExam } from '@/components/ClinicalExam';
 import { DiagnosisAndPlan } from '@/components/DiagnosisAndPlan';
 import { Vitals } from '@/components/Vitals';
 import { RegisterPatient } from '@/components/RegisterPatient';
+import Login from '@/components/Login';
 
 export default function Home() {
   return (
     <main className={styles.main}>
+      <Login />
     <RegisterPatient />
     </main>
   );
