@@ -73,10 +73,12 @@ export function Vitals() {
             <FormItem>
               <FormLabel>Blood Pressure</FormLabel>
               <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input placeholder="" {...field} className="max-w-[80px]" />
-                  <span className="text-sm">mmHg</span>
-                </div>
+                <Input
+                  placeholder=""
+                  {...field}
+                  className="max-w-[80px]"
+                  rightLabel="mmHg"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
