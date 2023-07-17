@@ -42,7 +42,7 @@ export function DiagnosisAndPlan() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 max-w-md w-full"
       >
-        <h2 className="font-semibold text-lg">Clinical Exam</h2>
+        <h2 className="font-semibold text-lg">Diagnosis and Plan</h2>
 
         <FormField
           control={form.control}

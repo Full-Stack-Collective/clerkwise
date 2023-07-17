@@ -4,16 +4,12 @@ import { PatientHistory } from '../components/PatientHistory';
 import { ClinicalExam } from '@/components/ClinicalExam';
 import { DiagnosisAndPlan } from '@/components/DiagnosisAndPlan';
 import { Vitals } from '@/components/Vitals';
+import { RegisterPatient } from '@/components/RegisterPatient';
 
 export default function Home() {
   return (
     <main className={styles.main}>
-
-
-      <PatientHistory />
-      <ClinicalExam />
-      <Vitals />
-      <DiagnosisAndPlan />
+    <RegisterPatient />
     </main>
   );
 }
