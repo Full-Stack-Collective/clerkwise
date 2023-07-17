@@ -2,6 +2,8 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import { PatientHistory } from '../components/PatientHistory';
 import { ClinicalExam } from '@/components/ClinicalExam';
+import { DiagnosisAndPlan } from '@/components/DiagnosisAndPlan';
+import { Vitals } from '@/components/Vitals';
 
 export default function Home() {
   return (
@@ -44,6 +46,8 @@ export default function Home() {
 
       {/* <PatientHistory /> */}
       <ClinicalExam />
+      <Vitals />
+      {/* <DiagnosisAndPlan /> */}
     </main>
   );
 }

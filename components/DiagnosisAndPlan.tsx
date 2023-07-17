@@ -16,26 +16,23 @@ import {
 import { Textarea } from './ui/textarea';
 
 const formSchema = z.object({
-  onExamination: z.string(),
-  observations: z.string(),
-  vitals: z.string(),
-  fluidBalance: z.string(),
-  focusedFindings: z.string(),
+  differentialDiagnosis: z.string(),
+  diagnosis: z.string(),
+  plan: z.string(),
 });
 
 function onSubmit(values: z.infer<typeof formSchema>) {
-  console.log(values);
+  console.table(values);
 }
 
-export function ClinicalExam() {
+export function DiagnosisAndPlan() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      onExamination: '',
-      observations: '',
-      vitals: '',
-      fluidBalance: '',
-      focusedFindings: '',
+      differentialDiagnosis: '',
+      diagnosis: '',
+      plan: '',
+
     },
   });
 
@@ -49,10 +46,10 @@ export function ClinicalExam() {
 
         <FormField
           control={form.control}
-          name="onExamination"
+          name="differentialDiagnosis"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>On Examination</FormLabel>
+              <FormLabel>Differential Diagnosis</FormLabel>
               <FormControl>
                 <Textarea placeholder="" {...field} />
               </FormControl>
@@ -63,10 +60,10 @@ export function ClinicalExam() {
         />
         <FormField
           control={form.control}
-          name="observations"
+          name="diagnosis"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Observations</FormLabel>
+              <FormLabel>Diagnosis</FormLabel>
               <FormControl>
                 <Textarea placeholder="" {...field} />
               </FormControl>
@@ -79,10 +76,10 @@ export function ClinicalExam() {
 
         <FormField
           control={form.control}
-          name="vitals"
+          name="plan"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Vitals</FormLabel>
+              <FormLabel>Plan</FormLabel>
               <FormControl>
                 <Textarea placeholder="" {...field} />
               </FormControl>
@@ -91,37 +88,8 @@ export function ClinicalExam() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="fluidBalance"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Fluid Balance</FormLabel>
-              <FormControl>
-                <Textarea placeholder="" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="focusedFindings"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Focused Findings</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="For focused system examinations you have performed"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        
+  
         <Button type="submit">Submit</Button>
       </form>
     </Form>
