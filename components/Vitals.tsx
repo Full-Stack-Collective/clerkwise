@@ -16,28 +16,30 @@ import {
 import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 
-{
-  /* BP/Pulse/Respiratory rate/Oxygen saturation/Temperature. */
-}
 
 const formSchema = z.object({
-  bloodPressure: z.string(),
+  bloodPressure: z
+    .string()
+    .regex(/\d{2,3}\/\d{2,3}/gm, {
+      message: 'Please enter BP in format Systolic/Diastolic',
+    }),
   heartRate: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
     .int()
-    .min(0, { message: 'Please enter a positive number' }),
+    .min(0, { message: 'Please enter a positive number' }).optional()
+    ,
   respiratoryRate: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
     .int()
-    .min(0, { message: 'Please enter a positive number' }),
+    .min(0, { message: 'Please enter a positive number' }).optional(),
   oxygenSaturation: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
     .int()
     .min(0, { message: 'Please enter a positive number' })
-    .max(100, { message: 'Value cannot be greater than 100' }),
+    .max(100, { message: 'Value cannot be greater than 100' }).optional(),
   temperature: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
-    .min(0, { message: 'Please enter a positive number' }),
+    .min(0, { message: 'Please enter a positive number' }).optional(),
 });
 
 function onSubmit(values: z.infer<typeof formSchema>) {
@@ -49,10 +51,10 @@ export function Vitals() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       bloodPressure: '',
-      heartRate: 0,
-      respiratoryRate: 0,
-      oxygenSaturation: 0,
-      temperature: 0,
+      // heartRate: '',
+      // respiratoryRate: '',
+      // oxygenSaturation: '',
+      // temperature: '',
     },
   });
 
@@ -89,7 +91,12 @@ export function Vitals() {
               <FormLabel>Heart Rate</FormLabel>
               <FormControl>
                 <div className="flex items-center gap-2">
-                  <Input placeholder="" {...field} className="max-w-[80px]" />
+                  <Input
+                    placeholder=""
+                    {...field}
+                    className="max-w-[80px]"
+                    type="number"
+                  />
                   <span className="text-sm">beats per minute</span>
                 </div>
               </FormControl>
