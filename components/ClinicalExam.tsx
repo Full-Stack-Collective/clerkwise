@@ -18,7 +18,6 @@ import { Textarea } from './ui/textarea';
 const formSchema = z.object({
   onExamination: z.string(),
   observations: z.string(),
-  vitals: z.string(),
   fluidBalance: z.string(),
   focusedFindings: z.string(),
 });
@@ -33,7 +32,6 @@ export function ClinicalExam() {
     defaultValues: {
       onExamination: '',
       observations: '',
-      vitals: '',
       fluidBalance: '',
       focusedFindings: '',
     },
@@ -76,21 +74,6 @@ export function ClinicalExam() {
           )}
         />
 
-
-        <FormField
-          control={form.control}
-          name="vitals"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Vitals</FormLabel>
-              <FormControl>
-                <Textarea placeholder="" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="fluidBalance"
