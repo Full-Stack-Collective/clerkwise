@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,6 +17,10 @@ import {
 import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { cn } from '@/lib/utils';
+import { CalendarIcon, Calendar } from 'lucide-react';
+import { format } from 'path';
+import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -63,7 +68,7 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>First Name</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input placeholder="" {...field} className="max-w-xs" />
               </FormControl>
 
               <FormMessage />
@@ -78,7 +83,7 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>Surname</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input placeholder="" {...field} className="max-w-xs" />
               </FormControl>
 
               <FormMessage />
@@ -101,17 +106,13 @@ export function RegisterPatient() {
                     <FormControl>
                       <RadioGroupItem value="male" />
                     </FormControl>
-                    <FormLabel className="font-normal">
-                      Male
-                    </FormLabel>
+                    <FormLabel className="font-normal">Male</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="female" />
                     </FormControl>
-                    <FormLabel className="font-normal">
-                      Female
-                    </FormLabel>
+                    <FormLabel className="font-normal">Female</FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -126,7 +127,7 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>Date of Birth</FormLabel>
               <FormControl>
-                <Input type='date' {...field} />
+                <Input type="date" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -141,7 +142,7 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>ID</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} className="max-w-xs" />
               </FormControl>
 
               <FormMessage />
@@ -156,10 +157,7 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>Phone</FormLabel>
               <FormControl>
-                <Input
-                  type="tel"
-                  {...field}
-                />
+                <Input type="tel" {...field} className="max-w-xs" />
               </FormControl>
 
               <FormMessage />
@@ -174,18 +172,13 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>Emergency Contact</FormLabel>
               <FormControl>
-                <Input
-                  type="tel"
-                  {...field}
-                />
+                <Input type="tel" {...field} className='max-w-xs'/>
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-
-
 
         <Button type="submit">Submit</Button>
       </form>
