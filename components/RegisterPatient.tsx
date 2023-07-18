@@ -8,35 +8,47 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { cn } from '@/lib/utils';
-import { CalendarIcon, Calendar } from 'lucide-react';
-import { format } from 'path';
-import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
-    message: 'PC must be at least 2 characters.',
+    message: 'Name must be at least 2 characters.',
   }),
-  surname: z.string(),
-  sex: z.string(),
+  surname: z.string().min(2, {
+    message: 'Name must be at least 2 characters.',
+  }),
+  sex: z.string({ required_error: 'Sex is required' }),
   dateOfBirth: z.string(),
   id: z.string(),
-  socialHistory: z.string(),
   phone: z.string(),
   emergencyContact: z.string(),
 });
 
-function onSubmit(values: z.infer<typeof formSchema>) {
+const supabase = createClientComponentClient();
+
+async function onSubmit(values: z.infer<typeof formSchema>) {
   console.log(values);
+  const { firstName, surname, sex, dateOfBirth, id, phone, emergencyContact } =
+    values;
+  const { data, error } = await supabase
+    .from('Patients')
+    .insert({
+      first_name: firstName,
+      surname,
+      sex,
+      date_of_birth: dateOfBirth,
+      national_id: id,
+      phone,
+      emergency_contact: emergencyContact,
+    });
+  if (error) console.error(error);
 }
 
 export function RegisterPatient() {
@@ -45,10 +57,8 @@ export function RegisterPatient() {
     defaultValues: {
       firstName: '',
       surname: '',
-      sex: '',
       dateOfBirth: '',
       id: '',
-      socialHistory: '',
       phone: '',
       emergencyContact: '',
     },
@@ -172,7 +182,7 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>Emergency Contact</FormLabel>
               <FormControl>
-                <Input type="tel" {...field} className='max-w-xs'/>
+                <Input type="tel" {...field} className="max-w-xs" />
               </FormControl>
 
               <FormMessage />

@@ -6,12 +6,15 @@ import { DiagnosisAndPlan } from '@/components/DiagnosisAndPlan';
 import { Vitals } from '@/components/Vitals';
 import { RegisterPatient } from '@/components/RegisterPatient';
 import Login from '@/components/Login';
+import { cookies } from 'next/headers';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export default function Home() {
+  const supabase = createServerComponentClient({ cookies });
+
   return (
     <main className={styles.main}>
-      <Login />
-    <RegisterPatient />
+      <RegisterPatient />
     </main>
   );
 }

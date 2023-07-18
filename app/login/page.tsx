@@ -1,3 +1,5 @@
-export default async function Home(){
-const { data } = await supabase.from('patients').selec
+import Login from '@/components/Login';
+
+export default async function Home() {
+  return <Login />;
 }
