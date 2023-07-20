@@ -97,7 +97,7 @@ function FirstExam() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-md w-full"
+          className="space-y-8 max-w-md w-full px-2"
         >
 
           <Tabs defaultValue="history" className="w-[400px]">
