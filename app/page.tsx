@@ -9,8 +9,7 @@ import { RegisterPatient } from '@/components/RegisterPatient';
 export default function Home() {
   return (
     <main className={styles.main}>
-    {/* <RegisterPatient /> */}
-    <Vitals />
+      
     </main>
   );
 }
