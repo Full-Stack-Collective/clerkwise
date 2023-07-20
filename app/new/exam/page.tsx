@@ -100,7 +100,7 @@ function FirstExam() {
           className="space-y-8 max-w-md w-full px-2"
         >
 
-          <Tabs defaultValue="history" className="w-[400px]">
+          <Tabs defaultValue="history" className="w-full">
             <TabsList>
               <TabsTrigger value="history">History</TabsTrigger>
               <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
