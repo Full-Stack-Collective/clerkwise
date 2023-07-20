@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const formSchema = z.object({
   presentingComplaint: z.string().min(2, {
@@ -99,131 +100,149 @@ function FirstExam() {
           className="space-y-8 max-w-md w-full"
         >
           <h2 className="font-semibold text-lg">Patient History</h2>
-          <FormField
-            control={form.control}
-            name="presentingComplaint"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Presenting Complaint</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <Tabs defaultValue="history" className="w-[400px]">
+            <TabsList>
+              <TabsTrigger value="history">History</TabsTrigger>
+              <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
+              <TabsTrigger value="vitals">Vitals</TabsTrigger>
+              <TabsTrigger value="diagnosis">Diagnosis & Plan</TabsTrigger>
+            </TabsList>
+            <TabsContent value="history">
+              <p className='text-sm'>Document Patient History here.</p>
 
-          <FormField
-            control={form.control}
-            name="historyPresentingComplaint"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>History of Presenting Complaint</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="presentingComplaint"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Presenting Complaint</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="pastMedicalHistory"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Past Medical/Surgical History</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="historyPresentingComplaint"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>History of Presenting Complaint</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="drugHistory"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Drug History</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="pastMedicalHistory"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Past Medical/Surgical History</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="familyHistory"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Family History</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="drugHistory"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Drug History</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="socialHistory"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Social History</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="familyHistory"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Family History</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-          <FormField
-            control={form.control}
-            name="allergies"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Allergies</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Add any drug or food allergies here"
-                    {...field}
-                  />
-                </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="socialHistory"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Social History</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="systemsReview"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Systems Review</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="allergies"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Allergies</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Add any drug or food allergies here"
+                        {...field}
+                      />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          {/* Clinical Exam */}
+              <FormField
+                control={form.control}
+                name="systemsReview"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Systems Review</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-          <FormField
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+
+
+            </TabsContent>
+            <TabsContent value="clinicalExam">
+              
+              <p className='text-sm'>Note your clinical findings</p>
+
+
+
+              <FormField
             control={form.control}
             name="onExamination"
             render={({ field }) => (
@@ -283,10 +302,11 @@ function FirstExam() {
               </FormItem>
             )}
           />
+            </TabsContent>
 
-          {/* Vitals */}
-
-          <FormField
+            <TabsContent value="vitals">
+            <p className='text-sm'>Record any vitals.</p>
+            <FormField
             control={form.control}
             name="bloodPressure"
             render={({ field }) => (
@@ -387,9 +407,12 @@ function FirstExam() {
             )}
           />
 
-          {/* Diagnosis and Treatment Plan */}
+            </TabsContent>
 
-          <FormField
+            <TabsContent value="diagnosis">
+            <p className='text-sm'>Suspected problems and plan.</p>
+
+            <FormField
             control={form.control}
             name="differentialDiagnosis"
             render={({ field }) => (
@@ -432,6 +455,21 @@ function FirstExam() {
               </FormItem>
             )}
           />
+            </TabsContent>
+          </Tabs>
+
+
+          {/* Clinical Exam */}
+
+          
+
+          {/* Vitals */}
+
+          
+
+          {/* Diagnosis and Treatment Plan */}
+
+          
 
           <Button type="submit">Submit</Button>
         </form>
