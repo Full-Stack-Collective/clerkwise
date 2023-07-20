@@ -99,16 +99,15 @@ function FirstExam() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-md w-full px-2"
         >
-
           <Tabs defaultValue="history" className="w-full">
-            <TabsList >
+            <TabsList>
               <TabsTrigger value="history">History</TabsTrigger>
               <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
               <TabsTrigger value="vitals">Vitals</TabsTrigger>
               <TabsTrigger value="diagnosis">Diagnosis</TabsTrigger>
             </TabsList>
             <TabsContent value="history">
-              <p className='text-sm'>Document Patient History here.</p>
+              <p className="text-sm my-4">Document Patient History here.</p>
 
               <FormField
                 control={form.control}
@@ -231,245 +230,220 @@ function FirstExam() {
                   </FormItem>
                 )}
               />
-
-
-
             </TabsContent>
             <TabsContent value="clinicalExam">
-              
-              <p className='text-sm'>Note your clinical findings</p>
+              <p className="text-sm my-4">Note your clinical findings</p>
 
+              <FormField
+                control={form.control}
+                name="observations"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Observations</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="onExamination"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>On Examination</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
 
               <FormField
-            control={form.control}
-            name="onExamination"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>On Examination</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+                control={form.control}
+                name="focusedFindings"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Focused Findings</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="For focused system examinations you have performed"
+                        {...field}
+                      />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="observations"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Observations</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="fluidBalance"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Fluid Balance</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="focusedFindings"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Focused Findings</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="For focused system examinations you have performed"
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </TabsContent>
 
             <TabsContent value="vitals">
-            <p className='text-sm'>Record any vitals.</p>
-            <div className='mx-auto'>
-            <FormField
-            control={form.control}
-            name="bloodPressure"
-            render={({ field }) => (
-              <FormItem className='max-w-[280px] w-full mx-auto'>
-                <FormLabel>Blood Pressure</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    className="max-w-[80px]"
-                    rightLabel="mmHg"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <p className="text-sm my-4">Record any vitals.</p>
+              <div className="mx-auto">
+                <FormField
+                  control={form.control}
+                  name="bloodPressure"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[280px] w-full mx-auto">
+                      <FormLabel>Blood Pressure</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder=""
+                          {...field}
+                          className="max-w-[80px]"
+                          rightLabel="mmHg"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          <FormField
-            control={form.control}
-            name="heartRate"
-            render={({ field }) => (
-              <FormItem className='max-w-[280px] w-full mx-auto'>
-                <FormLabel>Heart Rate</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    className="max-w-[80px]"
-                    type="number"
-                    rightLabel="beats per minute"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                <FormField
+                  control={form.control}
+                  name="heartRate"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[280px] w-full mx-auto">
+                      <FormLabel>Heart Rate</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder=""
+                          {...field}
+                          className="max-w-[80px]"
+                          type="number"
+                          rightLabel="beats per minute"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          <FormField
-            control={form.control}
-            name="respiratoryRate"
-            render={({ field }) => (
-              <FormItem className='max-w-[280px] w-full mx-auto'>
-                <FormLabel>Respiratory Rate</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                    rightLabel="breaths per minute"
-                  />
-                </FormControl>
+                <FormField
+                  control={form.control}
+                  name="respiratoryRate"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[280px] w-full mx-auto">
+                      <FormLabel>Respiratory Rate</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder=""
+                          {...field}
+                          type="number"
+                          className="max-w-[80px]"
+                          rightLabel="breaths per minute"
+                        />
+                      </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          <FormField
-            control={form.control}
-            name="oxygenSaturation"
-            render={({ field }) => (
-              <FormItem className='max-w-[280px] w-full mx-auto'>
-                <FormLabel>SpO2</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                    rightLabel="%"
-                  />
-                </FormControl>
+                <FormField
+                  control={form.control}
+                  name="oxygenSaturation"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[280px] w-full mx-auto">
+                      <FormLabel>SpO2</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder=""
+                          {...field}
+                          type="number"
+                          className="max-w-[80px]"
+                          rightLabel="%"
+                        />
+                      </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="temperature"
-            render={({ field }) => (
-              <FormItem className='max-w-[280px] w-full mx-auto'>
-                <FormLabel>Temperature</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                    rightLabel="°C"
-                  />
-                </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="temperature"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[280px] w-full mx-auto">
+                      <FormLabel>Temperature</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder=""
+                          {...field}
+                          type="number"
+                          className="max-w-[80px]"
+                          rightLabel="°C"
+                        />
+                      </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-</div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="diagnosis">
-            <p className='text-sm'>Suspected problems and plan.</p>
+              <p className="text-sm my-4">Suspected problems and plan.</p>
 
-            <FormField
-            control={form.control}
-            name="differentialDiagnosis"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Differential Diagnosis</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="differentialDiagnosis"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Differential Diagnosis</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="diagnosis"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Diagnosis</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="diagnosis"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Diagnosis</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="plan"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Plan</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
+              <FormField
+                control={form.control}
+                name="plan"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Plan</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </TabsContent>
           </Tabs>
 
-
           {/* Clinical Exam */}
-
-          
 
           {/* Vitals */}
 
-          
-
           {/* Diagnosis and Treatment Plan */}
-
-          
 
           <Button type="submit">Submit</Button>
         </form>
