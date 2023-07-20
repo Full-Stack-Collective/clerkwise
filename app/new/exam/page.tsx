@@ -101,11 +101,11 @@ function FirstExam() {
         >
 
           <Tabs defaultValue="history" className="w-full">
-            <TabsList>
+            <TabsList >
               <TabsTrigger value="history">History</TabsTrigger>
               <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
               <TabsTrigger value="vitals">Vitals</TabsTrigger>
-              <TabsTrigger value="diagnosis">Diagnosis & Plan</TabsTrigger>
+              <TabsTrigger value="diagnosis">Diagnosis</TabsTrigger>
             </TabsList>
             <TabsContent value="history">
               <p className='text-sm'>Document Patient History here.</p>
