@@ -13,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 
 
@@ -51,10 +50,10 @@ export function Vitals() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       bloodPressure: '',
-      // heartRate: '',
-      // respiratoryRate: '',
-      // oxygenSaturation: '',
-      // temperature: '',
+      // heartRate: 0,
+      // respiratoryRate: 0,
+      // oxygenSaturation: 0,
+      // temperature: 0,
     },
   });
 

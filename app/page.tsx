@@ -14,7 +14,12 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <RegisterPatient />
+      {/* <RegisterPatient /> */}
+      <PatientHistory />
+      <ClinicalExam />
+      <Vitals />
+      <DiagnosisAndPlan />
+
     </main>
   );
 }
