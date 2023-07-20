@@ -92,14 +92,13 @@ function FirstExam() {
   });
   return (
     <div className="p-4 max-w-lg w-full m-auto h-">
-      <h2 className="font-semibold">History and Exam</h2>
+      <h2 className="font-semibold text-lg">Patient History</h2>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-md w-full"
         >
-          <h2 className="font-semibold text-lg">Patient History</h2>
 
           <Tabs defaultValue="history" className="w-[400px]">
             <TabsList>
@@ -306,11 +305,12 @@ function FirstExam() {
 
             <TabsContent value="vitals">
             <p className='text-sm'>Record any vitals.</p>
+            <div className='mx-auto'>
             <FormField
             control={form.control}
             name="bloodPressure"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='max-w-[280px] w-full mx-auto'>
                 <FormLabel>Blood Pressure</FormLabel>
                 <FormControl>
                   <Input
@@ -329,7 +329,7 @@ function FirstExam() {
             control={form.control}
             name="heartRate"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='max-w-[280px] w-full mx-auto'>
                 <FormLabel>Heart Rate</FormLabel>
                 <FormControl>
                   <Input
@@ -349,7 +349,7 @@ function FirstExam() {
             control={form.control}
             name="respiratoryRate"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='max-w-[280px] w-full mx-auto'>
                 <FormLabel>Respiratory Rate</FormLabel>
                 <FormControl>
                   <Input
@@ -370,7 +370,7 @@ function FirstExam() {
             control={form.control}
             name="oxygenSaturation"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='max-w-[280px] w-full mx-auto'>
                 <FormLabel>SpO2</FormLabel>
                 <FormControl>
                   <Input
@@ -390,7 +390,7 @@ function FirstExam() {
             control={form.control}
             name="temperature"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className='max-w-[280px] w-full mx-auto'>
                 <FormLabel>Temperature</FormLabel>
                 <FormControl>
                   <Input
@@ -406,7 +406,7 @@ function FirstExam() {
               </FormItem>
             )}
           />
-
+</div>
             </TabsContent>
 
             <TabsContent value="diagnosis">
