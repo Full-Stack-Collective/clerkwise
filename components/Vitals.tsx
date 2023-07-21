@@ -15,30 +15,30 @@ import {
 } from '@/components/ui/form';
 import { Input } from './ui/input';
 
-
 const formSchema = z.object({
-  bloodPressure: z
-    .string()
-    .regex(/\d{2,3}\/\d{2,3}/gm, {
-      message: 'Please enter BP in format Systolic/Diastolic',
-    }),
+  bloodPressure: z.string().regex(/\d{2,3}\/\d{2,3}/gm, {
+    message: 'Please enter BP in format Systolic/Diastolic',
+  }),
   heartRate: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
     .int()
-    .min(0, { message: 'Please enter a positive number' }).optional()
-    ,
+    .min(0, { message: 'Please enter a positive number' })
+    .optional(),
   respiratoryRate: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
     .int()
-    .min(0, { message: 'Please enter a positive number' }).optional(),
+    .min(0, { message: 'Please enter a positive number' })
+    .optional(),
   oxygenSaturation: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
     .int()
     .min(0, { message: 'Please enter a positive number' })
-    .max(100, { message: 'Value cannot be greater than 100' }).optional(),
+    .max(100, { message: 'Value cannot be greater than 100' })
+    .optional(),
   temperature: z.coerce
     .number({ invalid_type_error: 'Please enter a number' })
-    .min(0, { message: 'Please enter a positive number' }).optional(),
+    .min(0, { message: 'Please enter a positive number' })
+    .optional(),
 });
 
 function onSubmit(values: z.infer<typeof formSchema>) {
@@ -72,10 +72,12 @@ export function Vitals() {
             <FormItem>
               <FormLabel>Blood Pressure</FormLabel>
               <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input placeholder="" {...field} className="max-w-[80px]" />
-                  <span className="text-sm">mmHg</span>
-                </div>
+                <Input
+                  placeholder=""
+                  {...field}
+                  className="max-w-[80px]"
+                  rightLabel="mmHg"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -89,15 +91,13 @@ export function Vitals() {
             <FormItem>
               <FormLabel>Heart Rate</FormLabel>
               <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input
-                    placeholder=""
-                    {...field}
-                    className="max-w-[80px]"
-                    type="number"
-                  />
-                  <span className="text-sm">beats per minute</span>
-                </div>
+                <Input
+                  placeholder=""
+                  {...field}
+                  className="max-w-[80px]"
+                  type="number"
+                  rightLabel="beats per minute"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -111,15 +111,13 @@ export function Vitals() {
             <FormItem>
               <FormLabel>Respiratory Rate</FormLabel>
               <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                  />
-                  <span className="text-sm">breaths per minute</span>
-                </div>
+                <Input
+                  placeholder=""
+                  {...field}
+                  type="number"
+                  className="max-w-[80px]"
+                  rightLabel="breaths per minute"
+                />
               </FormControl>
 
               <FormMessage />
@@ -134,15 +132,13 @@ export function Vitals() {
             <FormItem>
               <FormLabel>SpO2</FormLabel>
               <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                  />
-                  <span className="text-sm">%</span>
-                </div>
+                <Input
+                  placeholder=""
+                  {...field}
+                  type="number"
+                  className="max-w-[80px]"
+                  rightLabel="%"
+                />
               </FormControl>
 
               <FormMessage />
@@ -156,15 +152,13 @@ export function Vitals() {
             <FormItem>
               <FormLabel>Temperature</FormLabel>
               <FormControl>
-                <div className="flex items-center gap-2">
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                  />
-                  <span className="text-sm">°C</span>
-                </div>
+                <Input
+                  placeholder=""
+                  {...field}
+                  type="number"
+                  className="max-w-[80px]"
+                  rightLabel="°C"
+                />
               </FormControl>
 
               <FormMessage />
