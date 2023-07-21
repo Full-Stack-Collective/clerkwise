@@ -22,8 +22,8 @@ export default function RootLayout({
           <h2 className='font-semibold text-lg'>Clerkwise</h2>
         </header>
         {children}
-        <footer className='p-4'>
-          <p>&copy; {new Date().getFullYear()} </p>
+        <footer className='p-4 pt-16'>
+          <p className='text-center'>&copy; {new Date().getFullYear()} Full Stack Collective </p>
         </footer>
       </body>
     </html>
