@@ -1,6 +1,6 @@
 'use client';
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { User, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,6 +28,7 @@ import {
 import { Loader2 } from 'lucide-react';
 import { ButtonLoading } from './ui/button-loading';
 
+
 const formSchema = z.object({
   email: z.string().min(2).max(50).email(),
   password: z.string().min(8),
@@ -43,10 +44,11 @@ export default function Login() {
   });
 
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null)
 
   const handleSignUp = async () => {
     await supabase.auth.signUp({
@@ -69,12 +71,19 @@ export default function Login() {
       password,
     });
 
+    const { user } = data 
+    const { id: providerId } = user as User ;
+
+    const { data: practice} = await supabase.from("Providers").select('practice').eq('id', providerId)
+
+    console.log('Practice', practice![0]['practice'])
+
     setIsLoading(false);
 
     if (error) {
       setInvalidLogin(true);
     }
-    if (data.session) router.push('/');
+    // if (data.session) router.push('/');
   };
 
   const handleSignOut = async () => {
