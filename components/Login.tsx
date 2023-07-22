@@ -84,9 +84,9 @@ export default function Login() {
 
   return (
     <>
-      <div className="flex gap-2 mb-12">
-        <button onClick={handleSignUp}>Sign up</button>
-        <button onClick={handleSignOut}>Sign out</button>
+      <div className="flex gap-2 mb-12 max-w-md p-2 justify-center mx-auto">
+        <Button variant="outline" onClick={handleSignUp}>Sign up</Button>
+        <Button onClick={handleSignOut}>Sign out</Button>
       </div>
 
       <Card className="w-[350px] mx-auto">
