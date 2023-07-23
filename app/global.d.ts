@@ -11,4 +11,9 @@ declare global {
 
   type Practice = Database['public']['Tables']['Practice']['Insert'];
   type SOAP = Database['public']['Tables']['Soap Assessments']['Insert'];
+
+  type UserInfo = {
+    providerId: string;
+    practiceId: string;
+  };
 }

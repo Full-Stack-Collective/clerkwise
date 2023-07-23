@@ -1,6 +1,9 @@
 'use client';
 
-import { User, createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import {
+  User,
+  createClientComponentClient,
+} from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,7 +30,7 @@ import {
 } from '@/components/ui/form';
 import { Loader2 } from 'lucide-react';
 import { ButtonLoading } from './ui/button-loading';
-
+import { UserContext } from '@/contexts/userContext';
 
 const formSchema = z.object({
   email: z.string().min(2).max(50).email(),
@@ -48,7 +51,10 @@ export default function Login() {
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState<UserInfo>({
+    providerId: '',
+    practiceId: '',
+  });
 
   const handleSignUp = async () => {
     await supabase.auth.signUp({
@@ -71,12 +77,17 @@ export default function Login() {
       password,
     });
 
-    const { user } = data 
-    const { id: providerId } = user as User ;
+    const { user } = data;
+    const { id: providerId } = user as User;
 
-    const { data: practice} = await supabase.from("Providers").select('practice').eq('id', providerId)
+    const { data: practice } = await supabase
+      .from('Providers')
+      .select('practice')
+      .eq('id', providerId);
 
-    console.log('Practice', practice![0]['practice'])
+    const [{ practice: practiceId }] = practice as Provider[];
+
+    setCurrentUser({ providerId, practiceId });
 
     setIsLoading(false);
 
@@ -92,9 +103,11 @@ export default function Login() {
   };
 
   return (
-    <>
+    <UserContext.Provider value={currentUser}>
       <div className="flex gap-2 mb-12 max-w-md p-2 justify-center mx-auto">
-        <Button variant="outline" onClick={handleSignUp}>Sign up</Button>
+        <Button variant="outline" onClick={handleSignUp}>
+          Sign up
+        </Button>
         <Button onClick={handleSignOut}>Sign out</Button>
       </div>
 
@@ -152,6 +165,6 @@ export default function Login() {
           </p>
         </CardContent>
       </Card>
-    </>
+    </UserContext.Provider>
   );
 }
