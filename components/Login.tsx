@@ -87,7 +87,9 @@ export default function Login() {
 
     const [{ practice: practiceId }] = practice as Provider[];
 
-    setCurrentUser({ providerId, practiceId });
+    if (providerId && practiceId) {
+      setCurrentUser({ providerId, practiceId });
+    }
 
     setIsLoading(false);
 
