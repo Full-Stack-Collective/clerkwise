@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/form';
 import { Loader2 } from 'lucide-react';
 import { ButtonLoading } from './ui/button-loading';
-import { UserContext } from '@/contexts/userContext';
+import { useUserContext } from '@/contexts/userContext';
 
 const formSchema = z.object({
   email: z.string().min(2).max(50).email(),
@@ -48,13 +48,11 @@ export default function Login() {
 
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
+  const { userInfo } = useUserContext();
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState<UserInfo>({
-    providerId: '',
-    practiceId: '',
-  });
+
 
   const handleSignUp = async () => {
     await supabase.auth.signUp({
@@ -88,15 +86,17 @@ export default function Login() {
     const [{ practice: practiceId }] = practice as Provider[];
 
     if (providerId && practiceId) {
-      setCurrentUser({ providerId, practiceId });
+      setUserInfo({ providerId, practiceId });
     }
+
+    
 
     setIsLoading(false);
 
     if (error) {
       setInvalidLogin(true);
     }
-    // if (data.session) router.push('/');
+    if (data.session) router.push('/');
   };
 
   const handleSignOut = async () => {
