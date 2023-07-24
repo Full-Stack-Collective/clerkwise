@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useUserStore } from '@/stores/userStore';
 
 const formSchema = z.object({
   presentingComplaint: z.string().min(2, {
@@ -60,11 +61,16 @@ const formSchema = z.object({
   plan: z.string(),
 });
 
+
 function onSubmit(values: z.infer<typeof formSchema>) {
   console.table(values);
 }
 
 function FirstExam() {
+  
+  const { userInfo } = useUserStore();
+  const {providerId, practiceId } = userInfo;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
