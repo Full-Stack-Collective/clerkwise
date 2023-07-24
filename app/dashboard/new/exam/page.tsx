@@ -16,7 +16,6 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { createClinicalRecord } from './actions';
 import { useUserStore } from '@/stores/userStore';
 
 const formSchema = z.object({
@@ -65,7 +64,6 @@ const formSchema = z.object({
 
 function onSubmit(values: z.infer<typeof formSchema>) {
   console.table(values);
-  createClinicalRecord(values)
 }
 
 function FirstExam() {
