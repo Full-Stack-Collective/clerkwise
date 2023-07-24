@@ -1,18 +1,18 @@
 'use server';
 
+import { useUserStore } from '@/stores/userStore';
 import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
-export const addPatient = async (formData) => {
+
+// Should this request be made as a client
+
+export const createClinicalRecord = async (formData: any) => {
   const supabase = createServerActionClient({ cookies });
 
-  const { presentingComplaint, pastMedicalHistory, bloodPressure, diagnosis, plan } = formData
+  const { presenting_complaint: presentingComplaint, past_medical_history: pastMedicalHistory, blood_pressure: bloodPressure, diagnosis, plan } = formData
 
-  const {
-    data: {
-      user: { id: provider },
-    },
-  } = await supabase.auth.getUser();
+
 
   const { data: patientResult } = await supabase.from('Patients').select('id').eq('first_name', 'Joe').eq('surname', 'Cool')
 
