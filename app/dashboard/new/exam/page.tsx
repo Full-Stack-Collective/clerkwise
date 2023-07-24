@@ -10,14 +10,13 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { addPatient } from './actions';
-import { UserContext } from '@/contexts/userContext';
 
 const formSchema = z.object({
   presentingComplaint: z.string().min(2, {
@@ -68,7 +67,6 @@ function onSubmit(values: z.infer<typeof formSchema>) {
 }
 
 function FirstExam() {
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

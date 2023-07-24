@@ -9,6 +9,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useUserStore } from '@/stores/userStore';
 
 import { Button } from './ui/button';
 import {
@@ -28,9 +29,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Loader2 } from 'lucide-react';
 import { ButtonLoading } from './ui/button-loading';
-import { useUserContext } from '@/contexts/userContext';
 
 const formSchema = z.object({
   email: z.string().min(2).max(50).email(),
@@ -48,11 +47,10 @@ export default function Login() {
 
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
-  const { userInfo } = useUserContext();
+  const { setUserInfo } = useUserStore();
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
 
   const handleSignUp = async () => {
     await supabase.auth.signUp({
@@ -89,14 +87,12 @@ export default function Login() {
       setUserInfo({ providerId, practiceId });
     }
 
-    
-
     setIsLoading(false);
 
     if (error) {
       setInvalidLogin(true);
     }
-    if (data.session) router.push('/');
+    // if (data.session) router.push('/');
   };
 
   const handleSignOut = async () => {
@@ -105,7 +101,7 @@ export default function Login() {
   };
 
   return (
-    <UserContext.Provider value={currentUser}>
+    <>
       <div className="flex gap-2 mb-12 max-w-md p-2 justify-center mx-auto">
         <Button variant="outline" onClick={handleSignUp}>
           Sign up
@@ -167,6 +163,6 @@ export default function Login() {
           </p>
         </CardContent>
       </Card>
-    </UserContext.Provider>
+    </>
   );
 }

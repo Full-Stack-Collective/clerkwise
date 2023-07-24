@@ -1,20 +1,19 @@
-'use client';
+'use client'
 
-import { UserContextProvider } from '@/contexts/userContext';
+import { useUserStore } from "@/stores/userStore";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <UserContextProvider>
-      <section>
-        {/* Include shared UI here e.g. a header or sidebar */}
-        <nav></nav>
 
+  const { userInfo } = useUserStore();
+  console.log(userInfo)
+
+  return (
+      <section>
         {children}
       </section>
-    </UserContextProvider>
   );
 }
