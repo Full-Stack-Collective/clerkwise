@@ -47,7 +47,7 @@ export default function Login() {
 
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
-  const { setUserInfo } = useUserStore();
+  const setUserInfo = useUserStore((state) => state.setUserInfo);
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,12 +87,14 @@ export default function Login() {
       setUserInfo({ providerId, practiceId });
     }
 
+    console.log(useUserStore.getState().userInfo)
+
     setIsLoading(false);
 
     if (error) {
       setInvalidLogin(true);
     }
-    // if (data.session) router.push('/');
+    if (data.session) router.push('/');
   };
 
   const handleSignOut = async () => {

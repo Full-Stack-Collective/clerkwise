@@ -8,10 +8,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
 
-  const { userInfo } = useUserStore();
-  console.log(userInfo)
 
   return (
+    
       <section>
         {children}
       </section>

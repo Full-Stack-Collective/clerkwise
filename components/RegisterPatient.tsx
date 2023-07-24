@@ -16,6 +16,7 @@ import {
 import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useUserStore } from '@/stores/userStore';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -29,6 +30,8 @@ const formSchema = z.object({
   id: z.string(),
   phone: z.string(),
   emergencyContact: z.string(),
+  providerId: z.string(),
+  practiceId: z.string(),
 });
 
 const supabase = createClientComponentClient();
@@ -37,21 +40,23 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
   console.log(values);
   const { firstName, surname, sex, dateOfBirth, id, phone, emergencyContact } =
     values;
-  const { data, error } = await supabase
-    .from('Patients')
-    .insert({
-      first_name: firstName,
-      surname,
-      sex,
-      date_of_birth: dateOfBirth,
-      national_id: id,
-      phone,
-      emergency_contact: emergencyContact,
-    });
+  const { data, error } = await supabase.from('Patients').insert({
+    first_name: firstName,
+    surname,
+    sex,
+    date_of_birth: dateOfBirth,
+    national_id: id,
+    phone,
+    emergency_contact: emergencyContact,
+  });
   if (error) console.error(error);
 }
 
 export function RegisterPatient() {
+  
+  const userInfo = useUserStore((state) => state.userInfo)
+  console.log( userInfo )
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

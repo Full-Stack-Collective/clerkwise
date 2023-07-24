@@ -7,7 +7,8 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <Link href='/new/exam' className={buttonVariants({ variant: 'outline' })}>New Patient Exam</Link>
+      <Link href='/dashboard/new/patient' className={buttonVariants({ variant: 'outline' })}>Create New Patient</Link>
+      <Link href='/dashboard/new/exam' className={buttonVariants({ variant: 'outline' })}>New Patient Exam</Link>
     </main>
   );
 }
