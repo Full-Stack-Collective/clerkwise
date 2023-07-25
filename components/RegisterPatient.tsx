@@ -70,11 +70,9 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
 }
 
 export function RegisterPatient() {
-  // const providerInfo = useUserStore((state) => state.providerInfo);
   const { providerInfo } : { providerInfo: ProviderInfo} = retrievePersistentLocalStorageData('current-provider');
  
-  console.log(providerInfo.practiceId)
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,8 +82,8 @@ export function RegisterPatient() {
       id: '',
       phone: '',
       emergencyContact: '',
-      // practiceId: providerInfo.practiceId,
-      // providerId: providerInfo.providerId,
+      practiceId: providerInfo.practiceId,
+      providerId: providerInfo.providerId,
     },
   });
 

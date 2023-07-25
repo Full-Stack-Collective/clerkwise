@@ -94,7 +94,7 @@ export default function Login() {
     if (error) {
       setInvalidLogin(true);
     }
-    if (data.session) router.push('/');
+    if (data.session) router.push('/dashboard');
   };
 
   const handleSignOut = async () => {
