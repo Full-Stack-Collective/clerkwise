@@ -9,7 +9,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/currentProviderStore';
 
 import { Button } from './ui/button';
 import {
@@ -47,7 +47,7 @@ export default function Login() {
 
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
-  const setUserInfo = useUserStore((state) => state.setUserInfo);
+  const setUserInfo = useUserStore((state) => state.setProviderInfo);
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +87,7 @@ export default function Login() {
       setUserInfo({ providerId, practiceId });
     }
 
-    console.log(useUserStore.getState().userInfo)
+    console.log(useUserStore.getState().providerInfo);
 
     setIsLoading(false);
 

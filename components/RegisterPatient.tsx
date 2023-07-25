@@ -16,7 +16,8 @@ import {
 import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/currentProviderStore';
+import { retrievePersistentLocalStorageData } from '@/utils/localStorageRetrieval';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -37,26 +38,43 @@ const formSchema = z.object({
 const supabase = createClientComponentClient();
 
 async function onSubmit(values: z.infer<typeof formSchema>) {
-  console.log(values);
-  const { firstName, surname, sex, dateOfBirth, id, phone, emergencyContact } =
-    values;
-  const { data, error } = await supabase.from('Patients').insert({
-    first_name: firstName,
+  const {
+    firstName,
     surname,
     sex,
-    date_of_birth: dateOfBirth,
-    national_id: id,
+    dateOfBirth,
+    id,
     phone,
-    emergency_contact: emergencyContact,
-  });
+    emergencyContact,
+    practiceId,
+    providerId,
+  } = values;
+
+  if (!practiceId || !providerId) return;
+
+  const { data, error } = await supabase
+    .from('Patients')
+    .insert({
+      first_name: firstName,
+      surname,
+      sex,
+      date_of_birth: dateOfBirth,
+      national_id: id,
+      phone,
+      emergency_contact: emergencyContact,
+      primary_provider: providerId,
+      practice: practiceId,
+    })
+    .select();
   if (error) console.error(error);
 }
 
 export function RegisterPatient() {
+  // const providerInfo = useUserStore((state) => state.providerInfo);
+  const { providerInfo } : { providerInfo: ProviderInfo} = retrievePersistentLocalStorageData('current-provider');
+ 
+  console.log(providerInfo.practiceId)
   
-  const userInfo = useUserStore((state) => state.userInfo)
-  console.log( userInfo )
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,6 +84,8 @@ export function RegisterPatient() {
       id: '',
       phone: '',
       emergencyContact: '',
+      // practiceId: providerInfo.practiceId,
+      // providerId: providerInfo.providerId,
     },
   });
 
