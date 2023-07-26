@@ -4,7 +4,6 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
-import { retrievePersistentLocalStorageData } from '@/utils/localStorageRetrieval';
 import Link from 'next/link';
 
 // UI Elements
@@ -22,7 +21,7 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from './ui/toast';
 import { usePatientStore } from '@/stores/currentPatientStore';
-import { useEffect, useState } from 'react';
+import { useUserStore } from '@/stores/currentProviderStore';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -43,18 +42,9 @@ const formSchema = z.object({
 const supabase = createClientComponentClient();
 
 export function RegisterPatient() {
-  const [currentProvider, setcurrentProvider] = useState<ProviderInfo>({
-    practiceId: '',
-    providerId: '',
-    providerFirstName: '',
-    providerLastName: '',
-  });
 
-  useEffect(() => {
-    const { providerInfo }: { providerInfo: ProviderInfo } =
-      retrievePersistentLocalStorageData('current-provider');
-    setcurrentProvider(providerInfo);
-  }, []);
+
+  const { providerId, practiceId } = useUserStore().providerInfo;
 
   const setCurrentPatient = usePatientStore((state) => state.setCurrentPatient);
 
@@ -67,8 +57,8 @@ export function RegisterPatient() {
       id: '',
       phone: '',
       emergencyContact: '',
-      practiceId: currentProvider?.practiceId,
-      providerId: currentProvider?.providerId,
+      practiceId,
+      providerId,
     },
   });
 
@@ -86,7 +76,7 @@ export function RegisterPatient() {
     } = values;
 
     try {
-      if (!practiceId || !providerId) return;
+      if (!practiceId || !providerId) throw Error('User is not logged in');
 
       const { data, error } = await supabase
         .from('Patients')
