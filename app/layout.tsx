@@ -21,8 +21,11 @@ export default function RootLayout({
         <header className='py-3 px-4'>
           <h2 className='font-semibold text-lg'>Clerkwise</h2>
         </header>
+        <main className='max-w-3xl w-full sm:px-4 px-2'>
+
         {children}
-        <footer className='p-4 pt-16'>
+        </main>
+        <footer className='w-full p-4 pt-16 fixed bottom-2'>
           <p className='text-center'>&copy; {new Date().getFullYear()} Full Stack Collective </p>
         </footer>
       </body>
