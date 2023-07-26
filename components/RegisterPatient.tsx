@@ -1,10 +1,14 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
+import { retrievePersistentLocalStorageData } from '@/utils/localStorageRetrieval';
+import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
+// UI Elements
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,9 +19,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useUserStore } from '@/stores/currentProviderStore';
-import { retrievePersistentLocalStorageData } from '@/utils/localStorageRetrieval';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from './ui/toast';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -27,7 +30,7 @@ const formSchema = z.object({
     message: 'Name must be at least 2 characters.',
   }),
   sex: z.string({ required_error: 'Sex is required' }),
-  dateOfBirth: z.string(),
+  dateOfBirth: z.string().min(6, {message: "DOB is required"}),
   id: z.string(),
   phone: z.string(),
   emergencyContact: z.string(),
@@ -37,13 +40,11 @@ const formSchema = z.object({
 
 const supabase = createClientComponentClient();
 
-
-
 export function RegisterPatient() {
   const { providerInfo }: { providerInfo: ProviderInfo } =
     retrievePersistentLocalStorageData('current-provider');
 
-    const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: '',
@@ -57,7 +58,6 @@ export function RegisterPatient() {
     },
   });
 
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const {
       firstName,
@@ -70,9 +70,9 @@ export function RegisterPatient() {
       practiceId,
       providerId,
     } = values;
-  
+
     if (!practiceId || !providerId) return;
-  
+
     const { error } = await supabase.from('Patients').insert({
       first_name: firstName,
       surname,
@@ -86,16 +86,27 @@ export function RegisterPatient() {
     });
     if (error) console.error(error);
     else {
-      console.log('success!')
+      console.log('success!');
+
+      toast({
+        title: 'Patient successfully created',
+        description: 'Ready to start clerking?',
+        action: (
+          <ToastAction altText="Clerk Patient">
+            <Link
+              href="/dashboard/new/exam"
+            >
+              Clerk Patient
+            </Link>
+          </ToastAction>
+        ),
+      });
+
       form.reset();
-    };
+    }
   }
 
-
-
-
-
-
+  const { toast } = useToast();
 
   return (
     <Form {...form}>
