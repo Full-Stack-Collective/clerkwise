@@ -68,34 +68,49 @@ export default function Login() {
     setInvalidLogin(false);
     setIsLoading(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    const { user } = data;
+      if (error) throw Error('Invalid Login');
 
-    const { id: providerId } = user as User;
+      const { user } = data;
 
-    const { data: practice } = await supabase
-      .from('Providers')
-      .select('practice, first_name, last_name')
-      .eq('id', providerId);
+      const { id: providerId } = user as User;
 
+      const { data: practice } = await supabase
+        .from('Providers')
+        .select('practice, first_name, last_name')
+        .eq('id', providerId);
 
+      const [
+        {
+          practice: practiceId,
+          first_name: providerFirstName,
+          last_name: providerLastName,
+        },
+      ] = practice as Provider[];
 
-    const [{ practice: practiceId, first_name: providerFirstName, last_name: providerLastName }] = practice as Provider[];
+      if (providerId && practiceId && providerFirstName && providerLastName) {
+        setUserInfo({
+          providerId,
+          practiceId,
+          providerFirstName,
+          providerLastName,
+        });
+      }
 
-    if (providerId && practiceId && providerFirstName && providerLastName) {
-      setUserInfo({ providerId, practiceId, providerFirstName, providerLastName });
-    }
-
-    setIsLoading(false);
-
-    if (error) {
+      if (data.session) router.push('/dashboard');
+    } catch (error) {
       setInvalidLogin(true);
     }
-    if (data.session) router.push('/dashboard');
+    
+    finally{
+      setIsLoading(false)
+      
+    }
   };
 
   const handleSignOut = async () => {
