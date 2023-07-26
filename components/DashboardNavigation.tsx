@@ -2,7 +2,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 
-export function MainNav({
+export function DashboardNavigation({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
@@ -18,19 +18,19 @@ export function MainNav({
         Dashboard
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Customers
+        Patients
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Products
+        Appointments
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Settings

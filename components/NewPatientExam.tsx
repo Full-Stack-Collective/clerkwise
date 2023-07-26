@@ -16,7 +16,9 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { useUserStore } from '@/stores/currentProviderStore';
+import { useProviderStore } from '@/stores/currentProviderStore';
+import { usePatientStore } from '@/stores/currentPatientStore';
+import { createClinicalRecord } from '@/app/dashboard/new/exam/actions';
 
 const formSchema = z.object({
   presentingComplaint: z.string().min(2, {
@@ -31,7 +33,6 @@ const formSchema = z.object({
   systemsReview: z.string(),
   onExamination: z.string(),
   observations: z.string(),
-  fluidBalance: z.string(),
   focusedFindings: z.string(),
   bloodPressure: z.string().regex(/\d{2,3}\/\d{2,3}/gm, {
     message: 'Please enter BP in format Systolic/Diastolic',
@@ -59,15 +60,19 @@ const formSchema = z.object({
   differentialDiagnosis: z.string(),
   diagnosis: z.string(),
   plan: z.string(),
+  patient: z.string(),
+  provider: z.string(),
 });
 
 function onSubmit(values: z.infer<typeof formSchema>) {
   console.table(values);
+  createClinicalRecord(values)
 }
 
 function NewPatientExam() {
-  const userInfo = useUserStore((state) => state.providerInfo);
-  console.log(userInfo);
+  const { providerId } = useProviderStore().providerInfo;
+  const { patientId, patientFirstName, patientLastName } =
+    usePatientStore().currentPatient;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,7 +87,6 @@ function NewPatientExam() {
       systemsReview: '',
       onExamination: '',
       observations: '',
-      fluidBalance: '',
       focusedFindings: '',
       bloodPressure: '',
       heartRate: 0,
@@ -92,12 +96,17 @@ function NewPatientExam() {
       differentialDiagnosis: '',
       diagnosis: '',
       plan: '',
+      patient: patientId,
+      provider: providerId,
     },
   });
   return (
     <div className="p-4 max-w-lg w-full m-auto h-">
-      <h2 className="font-semibold text-lg">Patient History</h2>
-
+      <h2 className="font-bold text-lg">Patient History</h2>
+      <p className="my-3">
+        <span className="font-semibold">Current Patient: </span>
+        {patientFirstName} {patientLastName}
+      </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -439,16 +448,9 @@ function NewPatientExam() {
                   </FormItem>
                 )}
               />
+              <Button className='my-5' type="submit">Submit</Button>
             </TabsContent>
           </Tabs>
-
-          {/* Clinical Exam */}
-
-          {/* Vitals */}
-
-          {/* Diagnosis and Treatment Plan */}
-
-          <Button type="submit">Submit</Button>
         </form>
       </Form>
     </div>

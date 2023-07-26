@@ -6,7 +6,7 @@ type CurrentProviderState = {
   setProviderInfo(providerInfo: ProviderInfo): void;
 };
 
-export const useUserStore = create(
+export const useProviderStore = create(
   persist<CurrentProviderState>(
     (set) => ({
       providerInfo: { practiceId: '', providerId: '', providerFirstName: '', providerLastName: '' },
