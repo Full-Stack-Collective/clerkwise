@@ -6,7 +6,7 @@ function Dashboard() {
   
 
   return (
-    <div className="max-w-xl p-4 mx-auto">
+    <div className="max-w-xl w-full p-4 mx-auto">
       <h1 className='text-center font-semibold'>Dashboard</h1>
       <div className='flex justify-between w-full max-w-sm mx-auto my-10'>
         <Link
