@@ -30,7 +30,7 @@ const formSchema = z.object({
     message: 'Name must be at least 2 characters.',
   }),
   sex: z.string({ required_error: 'Sex is required' }),
-  dateOfBirth: z.string().min(6, {message: "DOB is required"}),
+  dateOfBirth: z.string().min(6, { message: 'DOB is required' }),
   id: z.string(),
   phone: z.string(),
   emergencyContact: z.string(),
@@ -71,38 +71,39 @@ export function RegisterPatient() {
       providerId,
     } = values;
 
-    if (!practiceId || !providerId) return;
+    try {
+      if (!practiceId || !providerId) return;
 
-    const { error } = await supabase.from('Patients').insert({
-      first_name: firstName,
-      surname,
-      sex,
-      date_of_birth: dateOfBirth,
-      national_id: id,
-      phone,
-      emergency_contact: emergencyContact,
-      primary_provider: providerId,
-      practice: practiceId,
-    });
-    if (error) console.error(error);
-    else {
-      console.log('success!');
-
-      toast({
-        title: 'Patient successfully created',
-        description: 'Ready to start clerking?',
-        action: (
-          <ToastAction altText="Clerk Patient">
-            <Link
-              href="/dashboard/new/exam"
-            >
-              Clerk Patient
-            </Link>
-          </ToastAction>
-        ),
+      const { error } = await supabase.from('Patients').insert({
+        first_name: firstName,
+        surname,
+        sex,
+        date_of_birth: dateOfBirth,
+        national_id: id,
+        phone,
+        emergency_contact: emergencyContact,
+        primary_provider: providerId,
+        practice: practiceId,
       });
+      if (error) throw error;
+      else {
+        toast({
+          title: 'Patient successfully created',
+          description: 'Ready to start clerking?',
+          action: (
+            <ToastAction altText="Clerk Patient">
+              <Link href="/dashboard/new/exam">Clerk Patient</Link>
+            </ToastAction>
+          ),
+        });
 
-      form.reset();
+        form.reset();
+      }
+    } catch {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+      });
     }
   }
 

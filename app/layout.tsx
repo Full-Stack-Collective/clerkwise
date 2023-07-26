@@ -25,7 +25,7 @@ export default function RootLayout({
 
         {children}
         </main>
-        <footer className='w-full p-4 pt-16 fixed bottom-2'>
+        <footer className='w-full p-4 pt-16 '>
           <p className='text-center'>&copy; {new Date().getFullYear()} Full Stack Collective </p>
         </footer>
       </body>
