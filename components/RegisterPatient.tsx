@@ -21,7 +21,7 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from './ui/toast';
 import { usePatientStore } from '@/stores/currentPatientStore';
-import { useUserStore } from '@/stores/currentProviderStore';
+import { useProviderStore } from '@/stores/currentProviderStore';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -44,7 +44,7 @@ const supabase = createClientComponentClient();
 export function RegisterPatient() {
 
 
-  const { providerId, practiceId } = useUserStore().providerInfo;
+  const { providerId, practiceId } = useProviderStore().providerInfo;
 
   const setCurrentPatient = usePatientStore((state) => state.setCurrentPatient);
 
