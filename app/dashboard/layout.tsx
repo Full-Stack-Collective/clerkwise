@@ -1,19 +1,18 @@
-'use client'
-
-import { useUserStore } from "@/stores/userStore";
+import { MainNav } from '@/components/ui/main-nav';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-
-  const { userInfo } = useUserStore();
-  console.log(userInfo)
-
   return (
-      <section>
-        {children}
-      </section>
+    <>
+    <MainNav className='mb-12' />
+    <section>
+      {children}
+      <Toaster />
+    </section>
+    </>
   );
 }

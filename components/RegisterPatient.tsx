@@ -1,9 +1,13 @@
 'use client';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
+import { retrievePersistentLocalStorageData } from '@/utils/localStorageRetrieval';
+import Link from 'next/link';
 
+// UI Elements
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -15,7 +19,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from './ui/toast';
+import { usePatientStore } from '@/stores/currentPatientStore';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -25,33 +31,22 @@ const formSchema = z.object({
     message: 'Name must be at least 2 characters.',
   }),
   sex: z.string({ required_error: 'Sex is required' }),
-  dateOfBirth: z.string(),
+  dateOfBirth: z.string().min(6, { message: 'DOB is required' }),
   id: z.string(),
   phone: z.string(),
   emergencyContact: z.string(),
+  providerId: z.string(),
+  practiceId: z.string(),
 });
 
 const supabase = createClientComponentClient();
 
-async function onSubmit(values: z.infer<typeof formSchema>) {
-  console.log(values);
-  const { firstName, surname, sex, dateOfBirth, id, phone, emergencyContact } =
-    values;
-  const { data, error } = await supabase
-    .from('Patients')
-    .insert({
-      first_name: firstName,
-      surname,
-      sex,
-      date_of_birth: dateOfBirth,
-      national_id: id,
-      phone,
-      emergency_contact: emergencyContact,
-    });
-  if (error) console.error(error);
-}
-
 export function RegisterPatient() {
+  const { providerInfo }: { providerInfo: ProviderInfo } =
+    retrievePersistentLocalStorageData('current-provider');
+
+  const setCurrentPatient = usePatientStore((state) => state.setCurrentPatient);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,8 +56,75 @@ export function RegisterPatient() {
       id: '',
       phone: '',
       emergencyContact: '',
+      practiceId: providerInfo.practiceId,
+      providerId: providerInfo.providerId,
     },
   });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const {
+      firstName,
+      surname,
+      sex,
+      dateOfBirth,
+      id,
+      phone,
+      emergencyContact,
+      practiceId,
+      providerId,
+    } = values;
+
+    try {
+      if (!practiceId || !providerId) return;
+
+      const { data, error } = await supabase
+        .from('Patients')
+        .insert({
+          first_name: firstName,
+          surname,
+          sex,
+          date_of_birth: dateOfBirth,
+          national_id: id,
+          phone,
+          emergency_contact: emergencyContact,
+          primary_provider: providerId,
+          practice: practiceId,
+        })
+        .select('id, first_name, surname');
+      if (error) throw error;
+      else {
+        const [
+          {
+            id: patientId,
+            first_name: patientFirstName,
+            surname: patientLastName,
+          },
+        ] = data as Patient[];
+        if (patientId && patientFirstName && patientLastName) {
+          setCurrentPatient({ patientId, patientFirstName, patientLastName });
+        }
+
+        toast({
+          title: 'Patient successfully created',
+          description: 'Ready to start clerking?',
+          action: (
+            <ToastAction altText="Clerk Patient">
+              <Link href="/dashboard/new/exam">Clerk Patient</Link>
+            </ToastAction>
+          ),
+        });
+
+        form.reset();
+      }
+    } catch {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+      });
+    }
+  }
+
+  const { toast } = useToast();
 
   return (
     <Form {...form}>

@@ -12,8 +12,16 @@ declare global {
   type Practice = Database['public']['Tables']['Practice']['Insert'];
   type SOAP = Database['public']['Tables']['Soap Assessments']['Insert'];
 
-  type UserInfo = {
+  type ProviderInfo = {
     providerId: string;
     practiceId: string;
+    providerFirstName: string;
+    providerLastName: string;
   };
+
+  type CurrentPatient ={
+    patientId: string;
+    patientFirstName: string;
+    patientLastName: string
+  }
 }

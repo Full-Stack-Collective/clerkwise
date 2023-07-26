@@ -9,7 +9,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/currentProviderStore';
 
 import { Button } from './ui/button';
 import {
@@ -47,7 +47,7 @@ export default function Login() {
 
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
-  const { setUserInfo } = useUserStore();
+  const setUserInfo = useUserStore((state) => state.setProviderInfo);
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,17 +74,20 @@ export default function Login() {
     });
 
     const { user } = data;
+
     const { id: providerId } = user as User;
 
     const { data: practice } = await supabase
       .from('Providers')
-      .select('practice')
+      .select('practice, first_name, last_name')
       .eq('id', providerId);
 
-    const [{ practice: practiceId }] = practice as Provider[];
 
-    if (providerId && practiceId) {
-      setUserInfo({ providerId, practiceId });
+
+    const [{ practice: practiceId, first_name: providerFirstName, last_name: providerLastName }] = practice as Provider[];
+
+    if (providerId && practiceId && providerFirstName && providerLastName) {
+      setUserInfo({ providerId, practiceId, providerFirstName, providerLastName });
     }
 
     setIsLoading(false);
@@ -92,7 +95,7 @@ export default function Login() {
     if (error) {
       setInvalidLogin(true);
     }
-    // if (data.session) router.push('/');
+    if (data.session) router.push('/dashboard');
   };
 
   const handleSignOut = async () => {
