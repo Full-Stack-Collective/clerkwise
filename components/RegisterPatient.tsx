@@ -22,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from './ui/toast';
 import { usePatientStore } from '@/stores/currentPatientStore';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -42,8 +43,18 @@ const formSchema = z.object({
 const supabase = createClientComponentClient();
 
 export function RegisterPatient() {
-  const { providerInfo }: { providerInfo: ProviderInfo } =
-    retrievePersistentLocalStorageData('current-provider');
+  const [currentProvider, setcurrentProvider] = useState<ProviderInfo>({
+    practiceId: '',
+    providerId: '',
+    providerFirstName: '',
+    providerLastName: '',
+  });
+
+  useEffect(() => {
+    const { providerInfo }: { providerInfo: ProviderInfo } =
+      retrievePersistentLocalStorageData('current-provider');
+    setcurrentProvider(providerInfo);
+  }, []);
 
   const setCurrentPatient = usePatientStore((state) => state.setCurrentPatient);
 
@@ -56,8 +67,8 @@ export function RegisterPatient() {
       id: '',
       phone: '',
       emergencyContact: '',
-      practiceId: providerInfo.practiceId,
-      providerId: providerInfo.providerId,
+      practiceId: currentProvider?.practiceId,
+      providerId: currentProvider?.providerId,
     },
   });
 
