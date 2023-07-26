@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-    <MainNav className='mb-12' />
+    <MainNav className='mb-12 w-full px-4' />
     <section>
       {children}
       <Toaster />
