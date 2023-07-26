@@ -18,4 +18,10 @@ declare global {
     providerFirstName: string;
     providerLastName: string;
   };
+
+  type CurrentPatient ={
+    patientId: string;
+    patientFirstName: string;
+    patientLastName: string
+  }
 }

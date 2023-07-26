@@ -21,6 +21,7 @@ import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from './ui/toast';
+import { usePatientStore } from '@/stores/currentPatientStore';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -43,6 +44,8 @@ const supabase = createClientComponentClient();
 export function RegisterPatient() {
   const { providerInfo }: { providerInfo: ProviderInfo } =
     retrievePersistentLocalStorageData('current-provider');
+
+  const setCurrentPatient = usePatientStore((state) => state.setCurrentPatient);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,20 +77,33 @@ export function RegisterPatient() {
     try {
       if (!practiceId || !providerId) return;
 
-      const { data, error } = await supabase.from('Patients').insert({
-        first_name: firstName,
-        surname,
-        sex,
-        date_of_birth: dateOfBirth,
-        national_id: id,
-        phone,
-        emergency_contact: emergencyContact,
-        primary_provider: providerId,
-        practice: practiceId,
-      }).select();
+      const { data, error } = await supabase
+        .from('Patients')
+        .insert({
+          first_name: firstName,
+          surname,
+          sex,
+          date_of_birth: dateOfBirth,
+          national_id: id,
+          phone,
+          emergency_contact: emergencyContact,
+          primary_provider: providerId,
+          practice: practiceId,
+        })
+        .select('id, first_name, surname');
       if (error) throw error;
       else {
-        console.log(data)
+        const [
+          {
+            id: patientId,
+            first_name: patientFirstName,
+            surname: patientLastName,
+          },
+        ] = data as Patient[];
+        if (patientId && patientFirstName && patientLastName) {
+          setCurrentPatient({ patientId, patientFirstName, patientLastName });
+        }
+
         toast({
           title: 'Patient successfully created',
           description: 'Ready to start clerking?',
