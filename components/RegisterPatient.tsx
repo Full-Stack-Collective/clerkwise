@@ -8,7 +8,7 @@ import { retrievePersistentLocalStorageData } from '@/utils/localStorageRetrieva
 import Link from 'next/link';
 
 // UI Elements
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -74,7 +74,7 @@ export function RegisterPatient() {
     try {
       if (!practiceId || !providerId) return;
 
-      const { error } = await supabase.from('Patients').insert({
+      const { data, error } = await supabase.from('Patients').insert({
         first_name: firstName,
         surname,
         sex,
@@ -84,9 +84,10 @@ export function RegisterPatient() {
         emergency_contact: emergencyContact,
         primary_provider: providerId,
         practice: practiceId,
-      });
+      }).select();
       if (error) throw error;
       else {
+        console.log(data)
         toast({
           title: 'Patient successfully created',
           description: 'Ready to start clerking?',
