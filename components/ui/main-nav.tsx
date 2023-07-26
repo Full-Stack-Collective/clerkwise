@@ -18,13 +18,13 @@ export function MainNav({
         Dashboard
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Customers
+        Patients
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Products
