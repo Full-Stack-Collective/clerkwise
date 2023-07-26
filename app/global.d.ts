@@ -15,5 +15,7 @@ declare global {
   type ProviderInfo = {
     providerId: string;
     practiceId: string;
+    providerFirstName: string;
+    providerLastName: string;
   };
 }

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 type CurrentProviderState = {
   providerInfo: ProviderInfo;
@@ -9,7 +9,7 @@ type CurrentProviderState = {
 export const useUserStore = create(
   persist<CurrentProviderState>(
     (set) => ({
-      providerInfo: { practiceId: '', providerId: '' },
+      providerInfo: { practiceId: '', providerId: '', providerFirstName: '', providerLastName: '' },
       setProviderInfo: (providerInfo: ProviderInfo) => set({ providerInfo }),
     }),
     {

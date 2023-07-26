@@ -37,43 +37,13 @@ const formSchema = z.object({
 
 const supabase = createClientComponentClient();
 
-async function onSubmit(values: z.infer<typeof formSchema>) {
-  const {
-    firstName,
-    surname,
-    sex,
-    dateOfBirth,
-    id,
-    phone,
-    emergencyContact,
-    practiceId,
-    providerId,
-  } = values;
 
-  if (!practiceId || !providerId) return;
-
-  const { data, error } = await supabase
-    .from('Patients')
-    .insert({
-      first_name: firstName,
-      surname,
-      sex,
-      date_of_birth: dateOfBirth,
-      national_id: id,
-      phone,
-      emergency_contact: emergencyContact,
-      primary_provider: providerId,
-      practice: practiceId,
-    })
-    .select();
-  if (error) console.error(error);
-}
 
 export function RegisterPatient() {
-  const { providerInfo } : { providerInfo: ProviderInfo} = retrievePersistentLocalStorageData('current-provider');
- 
+  const { providerInfo }: { providerInfo: ProviderInfo } =
+    retrievePersistentLocalStorageData('current-provider');
 
-  const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: '',
@@ -86,6 +56,46 @@ export function RegisterPatient() {
       providerId: providerInfo.providerId,
     },
   });
+
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const {
+      firstName,
+      surname,
+      sex,
+      dateOfBirth,
+      id,
+      phone,
+      emergencyContact,
+      practiceId,
+      providerId,
+    } = values;
+  
+    if (!practiceId || !providerId) return;
+  
+    const { error } = await supabase.from('Patients').insert({
+      first_name: firstName,
+      surname,
+      sex,
+      date_of_birth: dateOfBirth,
+      national_id: id,
+      phone,
+      emergency_contact: emergencyContact,
+      primary_provider: providerId,
+      practice: practiceId,
+    });
+    if (error) console.error(error);
+    else {
+      console.log('success!')
+      form.reset();
+    };
+  }
+
+
+
+
+
+
 
   return (
     <Form {...form}>

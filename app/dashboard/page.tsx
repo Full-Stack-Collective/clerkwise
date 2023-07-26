@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 
 function Dashboard() {
+
+  
+
   return (
     <div className="max-w-xl p-4 mx-auto">
       <h1 className='text-center font-semibold'>Dashboard</h1>

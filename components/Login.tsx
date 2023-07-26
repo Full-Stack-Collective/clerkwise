@@ -74,20 +74,21 @@ export default function Login() {
     });
 
     const { user } = data;
+
     const { id: providerId } = user as User;
 
     const { data: practice } = await supabase
       .from('Providers')
-      .select('practice')
+      .select('practice, first_name, last_name')
       .eq('id', providerId);
 
-    const [{ practice: practiceId }] = practice as Provider[];
 
-    if (providerId && practiceId) {
-      setUserInfo({ providerId, practiceId });
+
+    const [{ practice: practiceId, first_name: providerFirstName, last_name: providerLastName }] = practice as Provider[];
+
+    if (providerId && practiceId && providerFirstName && providerLastName) {
+      setUserInfo({ providerId, practiceId, providerFirstName, providerLastName });
     }
-
-    console.log(useUserStore.getState().providerInfo);
 
     setIsLoading(false);
 
