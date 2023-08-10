@@ -8,11 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-<<<<<<< HEAD
     <DashboardNavigation className='mb-12' />
-=======
-    <MainNav className='mb-12 w-full px-4' />
->>>>>>> main
     <section>
       {children}
       <Toaster />

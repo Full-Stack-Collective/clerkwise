@@ -37,26 +37,12 @@ const formSchema = z.object({
   bloodPressure: z.string().regex(/\d{2,3}\/\d{2,3}/gm, {
     message: 'Please enter BP in format Systolic/Diastolic',
   }),
-  heartRate: z.coerce
-    .number({ invalid_type_error: 'Please enter a number' })
-    .int()
-    .min(0, { message: 'Please enter a positive number' })
-    .optional(),
-  respiratoryRate: z.coerce
-    .number({ invalid_type_error: 'Please enter a number' })
-    .int()
-    .min(0, { message: 'Please enter a positive number' })
-    .optional(),
-  oxygenSaturation: z.coerce
-    .number({ invalid_type_error: 'Please enter a number' })
-    .int()
-    .min(0, { message: 'Please enter a positive number' })
-    .max(100, { message: 'Value cannot be greater than 100' })
-    .optional(),
-  temperature: z.coerce
-    .number({ invalid_type_error: 'Please enter a number' })
-    .min(0, { message: 'Please enter a positive number' })
-    .optional(),
+  heartRate: z.string().regex(/^[1-9]{1,3}\d$/gm, {message: 'Enter a positive number'}).min(0).optional(),
+  respiratoryRate: z.string().regex(/^[1-9]{1,3}\d$/gm, {message: 'Enter a positive number'}).min(0).optional(),
+  oxygenSaturation: z.string().regex(/^[1-9][0-9]?$|^100$/gm, {message: 'Enter a number up to 100'}).min(0).optional(),
+  temperature: z.string().regex(/^[1-9]{1,3}\d$/gm, {message: 'Enter a positive number'}).min(0).optional(),
+  randomBloodSugar: z.string().regex(/^[1-9]{1,3}\d$/gm, {message: 'Enter a positive number'}).min(0).optional(),
+  urine: z.string().optional(),
   differentialDiagnosis: z.string(),
   diagnosis: z.string(),
   plan: z.string(),
@@ -66,7 +52,7 @@ const formSchema = z.object({
 
 function onSubmit(values: z.infer<typeof formSchema>) {
   console.table(values);
-  createClinicalRecord(values)
+  createClinicalRecord(values);
 }
 
 function NewPatientExam() {
@@ -89,10 +75,12 @@ function NewPatientExam() {
       observations: '',
       focusedFindings: '',
       bloodPressure: '',
-      heartRate: 0,
-      respiratoryRate: 0,
-      oxygenSaturation: 0,
-      temperature: 0,
+      heartRate: '',
+      respiratoryRate: '',
+      oxygenSaturation: '',
+      temperature: '',
+      randomBloodSugar: '',
+      urine: '',
       differentialDiagnosis: '',
       diagnosis: '',
       plan: '',
@@ -115,8 +103,8 @@ function NewPatientExam() {
           <Tabs defaultValue="history" className="w-full">
             <TabsList>
               <TabsTrigger value="history">History</TabsTrigger>
-              <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
               <TabsTrigger value="vitals">Vitals</TabsTrigger>
+              <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
               <TabsTrigger value="diagnosis">Diagnosis</TabsTrigger>
             </TabsList>
             <TabsContent value="history">
@@ -244,57 +232,6 @@ function NewPatientExam() {
                 )}
               />
             </TabsContent>
-            <TabsContent value="clinicalExam">
-              <p className="text-sm my-4">Note your clinical findings</p>
-
-              <FormField
-                control={form.control}
-                name="observations"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Observations</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="onExamination"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>On Examination</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="focusedFindings"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Focused Findings</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="For focused system examinations you have performed"
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </TabsContent>
 
             <TabsContent value="vitals">
               <p className="text-sm my-4">Record any vitals.</p>
@@ -399,7 +336,98 @@ function NewPatientExam() {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="randomBloodSugar"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[280px] w-full mx-auto">
+                      <FormLabel>Random Blood Sugar</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder=""
+                          {...field}
+                          type="number"
+                          className="max-w-[80px]"
+                          rightLabel="mg/dL"
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="urine"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[280px] w-full mx-auto">
+                      <FormLabel>Urine</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder=""
+                          {...field}
+                          type="text"
+                          // className="max-w-[80px]"
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
+            </TabsContent>
+
+            <TabsContent value="clinicalExam">
+              <p className="text-sm my-4">Note your clinical findings</p>
+
+              <FormField
+                control={form.control}
+                name="observations"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Observations</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="onExamination"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>On Examination</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="focusedFindings"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Focused Findings</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="For focused system examinations you have performed"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </TabsContent>
 
             <TabsContent value="diagnosis">
@@ -448,7 +476,9 @@ function NewPatientExam() {
                   </FormItem>
                 )}
               />
-              <Button className='my-5' type="submit">Submit</Button>
+              <Button className="my-5" type="submit">
+                Submit
+              </Button>
             </TabsContent>
           </Tabs>
         </form>
