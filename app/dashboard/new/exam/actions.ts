@@ -1,11 +1,13 @@
 'use server';
 
+import { examFormSchema } from '@/components/NewPatientExam';
 import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { z } from 'zod';
 
 // Should this request be made as a client
 
-export const createClinicalRecord = async (formData: any) => {
+export const createClinicalRecord = async (formData: z.infer<typeof examFormSchema>) => {
   const supabase = createServerActionClient({ cookies });
 
   const {
@@ -25,6 +27,8 @@ export const createClinicalRecord = async (formData: any) => {
     respiratoryRate,
     oxygenSaturation,
     temperature,
+    randomBloodSugar,
+    urine,
     differentialDiagnosis,
     diagnosis,
     plan,
@@ -47,10 +51,12 @@ export const createClinicalRecord = async (formData: any) => {
     observations,
     focused_findings: focusedFindings,
     blood_pressure: bloodPressure,
-    heart_rate: heartRate,
-    respiratory_rate: respiratoryRate,
-    oxygen_saturation: oxygenSaturation,
-    temperature,
+    heart_rate: parseInt(heartRate),
+    respiratory_rate: parseInt(respiratoryRate),
+    oxygen_saturation: parseInt(oxygenSaturation),
+    temperature: parseInt(temperature),
+    random_blood_sugar: parseInt(randomBloodSugar),
+    urine,
     differential_diagnosis: differentialDiagnosis,
     diagnosis,
     plan,

@@ -20,7 +20,7 @@ import { useProviderStore } from '@/stores/currentProviderStore';
 import { usePatientStore } from '@/stores/currentPatientStore';
 import { createClinicalRecord } from '@/app/dashboard/new/exam/actions';
 
-const formSchema = z.object({
+export const examFormSchema = z.object({
   presentingComplaint: z.string().min(2, {
     message: 'PC must be at least 2 characters.',
   }),
@@ -50,7 +50,7 @@ const formSchema = z.object({
   provider: z.string(),
 });
 
-function onSubmit(values: z.infer<typeof formSchema>) {
+function onSubmit(values: z.infer<typeof examFormSchema>) {
   console.table(values);
   createClinicalRecord(values);
 }
@@ -60,8 +60,8 @@ function NewPatientExam() {
   const { patientId, patientFirstName, patientLastName } =
     usePatientStore().currentPatient;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof examFormSchema>>({
+    resolver: zodResolver(examFormSchema),
     defaultValues: {
       presentingComplaint: '',
       historyPresentingComplaint: '',
