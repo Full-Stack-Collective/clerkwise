@@ -7,7 +7,9 @@ import { z } from 'zod';
 
 // Should this request be made as a client
 
-export const createClinicalRecord = async (formData: z.infer<typeof examFormSchema>) => {
+export const createClinicalRecord = async (
+  formData: z.infer<typeof examFormSchema>
+) => {
   const supabase = createServerActionClient({ cookies });
 
   const {
@@ -51,11 +53,11 @@ export const createClinicalRecord = async (formData: z.infer<typeof examFormSche
     observations,
     focused_findings: focusedFindings,
     blood_pressure: bloodPressure,
-    heart_rate: parseInt(heartRate),
-    respiratory_rate: parseInt(respiratoryRate),
-    oxygen_saturation: parseInt(oxygenSaturation),
-    temperature: parseInt(temperature),
-    random_blood_sugar: parseInt(randomBloodSugar),
+    heart_rate: parseInt(heartRate as string),
+    respiratory_rate: parseInt(respiratoryRate as string),
+    oxygen_saturation: parseInt(oxygenSaturation as string),
+    temperature: parseInt(temperature as string),
+    random_blood_sugar: parseInt(randomBloodSugar as string),
     urine,
     differential_diagnosis: differentialDiagnosis,
     diagnosis,
@@ -63,5 +65,5 @@ export const createClinicalRecord = async (formData: z.infer<typeof examFormSche
   });
 
   if (error) console.error(error);
-  else console.log('Success!')
+  else console.log('Success!');
 };

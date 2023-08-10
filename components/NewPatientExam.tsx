@@ -46,8 +46,8 @@ export const examFormSchema = z.object({
   differentialDiagnosis: z.string(),
   diagnosis: z.string(),
   plan: z.string(),
-  patient: z.string(),
-  provider: z.string(),
+  patientId: z.string(),
+  providerId: z.string(),
 });
 
 function onSubmit(values: z.infer<typeof examFormSchema>) {
@@ -60,9 +60,7 @@ function NewPatientExam() {
   const { patientId, patientFirstName, patientLastName } =
     usePatientStore().currentPatient;
 
-  const form = useForm<z.infer<typeof examFormSchema>>({
-    resolver: zodResolver(examFormSchema),
-    defaultValues: {
+    const defaultValues = {
       presentingComplaint: '',
       historyPresentingComplaint: '',
       pastMedicalHistory: '',
@@ -84,9 +82,14 @@ function NewPatientExam() {
       differentialDiagnosis: '',
       diagnosis: '',
       plan: '',
-      patient: patientId,
-      provider: providerId,
-    },
+      patientId: patientId,
+      providerId: providerId,
+    }
+
+  const form = useForm<z.infer<typeof examFormSchema>>({
+    resolver: zodResolver(examFormSchema),
+    defaultValues,
+    mode: 'onChange'
   });
   return (
     <div className="p-4 max-w-lg w-full m-auto h-">
