@@ -36,12 +36,38 @@ export const examFormSchema = z.object({
   focusedFindings: z.string(),
   bloodPressure: z.string().regex(/\d{2,3}\/\d{2,3}/gm, {
     message: 'Please enter BP in format Systolic/Diastolic',
-  }),
-  heartRate: z.string().regex(/^(?:[1-9]|[1-9][0-9]|[12][0-9]{2}|300)$/gm, {message: 'Enter a number between 1 and 300'}).optional(),
-  respiratoryRate: z.string().regex(/^(?:[1-9]|[1-9][0-9]|100)$/gm, {message: 'Enter a number between 1 and 100'}).optional(),
-  oxygenSaturation: z.string().regex(/^[1-9][0-9]?$|^100$/gm, {message: 'Enter a number up to 100'}).optional(),
-  temperature: z.string().regex(/^(?:[1-9]|[1-9][0-9]|100)$/gm, {message: 'Enter a number between 1 and 100'}).optional(),
-  randomBloodSugar: z.string().regex(/^[0-9]{1,3}\d$/gm, {message: 'Enter a number greater than 10'}).optional(),
+  }).optional().or(z.literal('')),
+  heartRate: z
+    .string()
+    .regex(/^(?:[1-9]|[1-9][0-9]|[12][0-9]{2}|300)$/gm, {
+      message: 'Enter a number between 1 and 300',
+    })
+    .optional()
+    .or(z.literal('')),
+  respiratoryRate: z
+    .string()
+    .regex(/^(?:[1-9]|[1-9][0-9]|100)$/gm, {
+      message: 'Enter a number between 1 and 100',
+    })
+    .optional()
+    .or(z.literal('')),
+  oxygenSaturation: z
+    .string()
+    .regex(/^[1-9][0-9]?$|^100$/gm, { message: 'Enter a number up to 100' })
+    .optional()
+    .or(z.literal('')),
+  temperature: z
+    .string()
+    .regex(/^(?:[1-9]|[1-9][0-9]|100)$/gm, {
+      message: 'Enter a number between 1 and 100',
+    })
+    .optional()
+    .or(z.literal('')),
+  randomBloodSugar: z
+    .string()
+    .regex(/^[0-9]{1,3}\d$/gm, { message: 'Enter a number greater than 10' })
+    .optional()
+    .or(z.literal('')),
   urine: z.string().optional(),
   differentialDiagnosis: z.string(),
   diagnosis: z.string(),
@@ -60,36 +86,36 @@ function NewPatientExam() {
   const { patientId, patientFirstName, patientLastName } =
     usePatientStore().currentPatient;
 
-    const defaultValues = {
-      presentingComplaint: '',
-      historyPresentingComplaint: '',
-      pastMedicalHistory: '',
-      drugHistory: '',
-      familyHistory: '',
-      socialHistory: '',
-      allergies: '',
-      systemsReview: '',
-      onExamination: '',
-      observations: '',
-      focusedFindings: '',
-      bloodPressure: '',
-      heartRate: '',
-      respiratoryRate: '',
-      oxygenSaturation: '',
-      temperature: '',
-      randomBloodSugar: '',
-      urine: '',
-      differentialDiagnosis: '',
-      diagnosis: '',
-      plan: '',
-      patientId: patientId,
-      providerId: providerId,
-    }
+  const defaultValues = {
+    presentingComplaint: '',
+    historyPresentingComplaint: '',
+    pastMedicalHistory: '',
+    drugHistory: '',
+    familyHistory: '',
+    socialHistory: '',
+    allergies: '',
+    systemsReview: '',
+    onExamination: '',
+    observations: '',
+    focusedFindings: '',
+    bloodPressure: '',
+    heartRate: '',
+    respiratoryRate: '',
+    oxygenSaturation: '',
+    temperature: '',
+    randomBloodSugar: '',
+    urine: '',
+    differentialDiagnosis: '',
+    diagnosis: '',
+    plan: '',
+    patientId: patientId,
+    providerId: providerId,
+  };
 
   const form = useForm<z.infer<typeof examFormSchema>>({
     resolver: zodResolver(examFormSchema),
     defaultValues,
-    mode: 'onChange'
+    mode: 'onChange',
   });
   return (
     <div className="p-4 max-w-lg w-full m-auto h-">
