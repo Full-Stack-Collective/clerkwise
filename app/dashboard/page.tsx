@@ -1,9 +1,20 @@
 import Link from 'next/link';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation';
+// <--- UI --->
+
 import { buttonVariants } from '@/components/ui/button';
 
-function Dashboard() {
+async function Dashboard() {
 
-  
+  const supabase = createServerComponentClient( { cookies })
+  const { data: {session }} = await supabase.auth.getSession()
+
+  if(!session){
+    redirect('/login')
+  }
+
 
   return (
     <div className="max-w-xl w-full p-4 mx-auto">
