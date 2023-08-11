@@ -58,7 +58,7 @@ export const examFormSchema = z.object({
     .or(z.literal('')),
   temperature: z
     .string()
-    .regex(/^(?:[1-9]|[1-9][0-9]|100)$/gm, {
+    .regex(/^\d*\.?\d*$/gm, {
       message: 'Enter a number between 1 and 100',
     })
     .optional()
