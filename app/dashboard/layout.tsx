@@ -1,4 +1,4 @@
-import { MainNav } from '@/components/ui/main-nav';
+import { DashboardNavigation } from '@/components/DashboardNavigation';
 import { Toaster } from '@/components/ui/toaster';
 
 export default function DashboardLayout({
@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-    <MainNav className='mb-12 w-full px-4' />
+    <DashboardNavigation className='mb-12' />
     <section>
       {children}
       <Toaster />
