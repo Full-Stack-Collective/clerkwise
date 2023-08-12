@@ -24,7 +24,7 @@ export default async function RecentPatients() {
     .from('Patients')
     .select('created_at, id, first_name, surname, date_of_birth')
     .order('created_at', { ascending: false })
-    .limit(10);
+    .limit(8);
 
   return (
     <Card className="col-span-3">
