@@ -113,18 +113,13 @@ export default function Login() {
     }
   };
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
-  };
 
   return (
     <>
       <div className="flex gap-2 mb-12 max-w-md p-2 justify-center mx-auto">
-        <Button variant="outline" onClick={handleSignUp}>
+        {/* <Button variant="outline" onClick={handleSignUp}>
           Sign up
-        </Button>
-        <Button onClick={handleSignOut}>Sign out</Button>
+        </Button> */}
       </div>
 
       <Card className="w-[350px] mx-auto">
