@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import LogoutButton from './LogoutButton';
+import { useProviderStore } from '@/stores/currentProviderStore';
 
 export function DashboardNavigation({
   className,
@@ -13,8 +14,11 @@ export function DashboardNavigation({
 }: React.HTMLAttributes<HTMLElement>) {
   const supabase = createClientComponentClient();
   const router = useRouter();
+  const setUserInfo = useProviderStore((state) => state.setProviderInfo);
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    localStorage.clear();
     router.refresh();
   };
   return (

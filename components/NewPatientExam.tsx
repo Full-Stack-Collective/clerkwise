@@ -86,6 +86,9 @@ function NewPatientExam() {
   const { patientId, patientFirstName, patientLastName } =
     usePatientStore().currentPatient;
 
+    console.log('ProviderId:', providerId)
+    console.log('PatienId:', patientFirstName)
+
   const defaultValues = {
     presentingComplaint: '',
     historyPresentingComplaint: '',
