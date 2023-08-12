@@ -1,11 +1,14 @@
 import Link from 'next/link';
+import RecentPatients from '@/components/RecentPatients';
+import { useProviderStore } from '@/stores/currentProviderStore';
 
 // <--- UI --->
 
 import { buttonVariants } from '@/components/ui/button';
-import RecentPatients from '@/components/RecentPatients';
 
 async function Dashboard() {
+
+
   return (
     <div className="max-w-xl w-full p-4 mx-auto">
       <h1 className="text-center font-semibold text-2xl">Dashboard</h1>
@@ -23,7 +26,7 @@ async function Dashboard() {
           New Patient Exam
         </Link>
       </div>
-      <RecentPatients />
+      <RecentPatients/>
     </div>
   );
 }
