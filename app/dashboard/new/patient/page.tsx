@@ -6,7 +6,7 @@ export default function Register() {
   
 
   return (
-    <div className="max-w-sm m-auto py-4">
+    <div className="max-w-md m-auto py-4">
       <RegisterPatient />
     </div>
   );

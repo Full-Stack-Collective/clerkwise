@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import LogoutButton from './LogoutButton';
 import { useProviderStore } from '@/stores/currentProviderStore';
+import { usePatientStore } from '@/stores/currentPatientStore';
 
 export function DashboardNavigation({
   className,
@@ -14,11 +15,13 @@ export function DashboardNavigation({
 }: React.HTMLAttributes<HTMLElement>) {
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const setUserInfo = useProviderStore((state) => state.setProviderInfo);
+  const providerStore = useProviderStore();
+  const patientStore = usePatientStore();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    localStorage.clear();
+    patientStore.reset();
+    providerStore.reset();
     router.refresh();
   };
   return (

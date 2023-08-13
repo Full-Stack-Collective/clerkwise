@@ -102,17 +102,15 @@ export default function Login() {
         });
       }
 
-      if (data.session) router.push('/dashboard');
+      if (data.session) {
+        router.push('/dashboard');
+      }
     } catch (error) {
       setInvalidLogin(true);
-    }
-    
-    finally{
-      setIsLoading(false)
-      
+    } finally {
+      setIsLoading(false);
     }
   };
-
 
   return (
     <>
