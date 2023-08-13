@@ -19,6 +19,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useProviderStore } from '@/stores/currentProviderStore';
 import { usePatientStore } from '@/stores/currentPatientStore';
 import { createClinicalRecord } from '@/app/dashboard/new/exam/actions';
+import BackButton from './BackButton';
 
 export const examFormSchema = z.object({
   presentingComplaint: z.string().min(2, {
@@ -119,6 +120,7 @@ function NewPatientExam() {
   });
   return (
     <div className="p-4 max-w-lg w-full m-auto h-">
+      <BackButton />
       <h2 className="font-bold text-lg">Patient History</h2>
       <p className="my-3">
         <span className="font-semibold">Current Patient: </span>

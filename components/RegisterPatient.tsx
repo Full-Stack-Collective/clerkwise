@@ -30,6 +30,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
+import BackButton from './BackButton';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -136,10 +137,11 @@ export function RegisterPatient() {
 
   return (
     <>
+    <BackButton />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-md w-full"
+          className="space-y-8 max-w-sm w-full mx-auto"
         >
           <h2 className="font-semibold text-lg">Register New Patient</h2>
           <FormField
