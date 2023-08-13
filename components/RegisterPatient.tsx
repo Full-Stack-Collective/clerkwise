@@ -34,14 +34,14 @@ import BackButton from './BackButton';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
-    message: 'Name must be at least 2 characters.',
+    message: 'First name must be at least 2 characters.',
   }),
   surname: z.string().min(2, {
-    message: 'Name must be at least 2 characters.',
+    message: 'Surname must be at least 2 characters.',
   }),
   sex: z.string({ required_error: 'Sex is required' }),
   dateOfBirth: z.string().min(6, { message: 'DOB is required' }),
-  email: z.string().email().optional(),
+  email: z.string().email().optional().or(z.literal('')),
   phone: z.string(),
   streetAddress: z.string().optional(),
   city: z.string().optional(),
@@ -151,7 +151,9 @@ export function RegisterPatient() {
             name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  First Name
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="" {...field} className="max-w-xs" />
                 </FormControl>
@@ -166,7 +168,9 @@ export function RegisterPatient() {
             name="surname"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Surname</FormLabel>
+                <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  Surname
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="" {...field} className="max-w-xs" />
                 </FormControl>
@@ -181,7 +185,9 @@ export function RegisterPatient() {
             name="sex"
             render={({ field }) => (
               <FormItem className="space-y-3">
-                <FormLabel>Sex</FormLabel>
+                <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  Sex
+                </FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -211,7 +217,9 @@ export function RegisterPatient() {
             name="dateOfBirth"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Date of Birth</FormLabel>
+                <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  Date of Birth
+                </FormLabel>
                 <FormControl>
                   <Input type="date" {...field} className="max-w-xs" />
                 </FormControl>
