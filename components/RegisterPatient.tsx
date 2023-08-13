@@ -54,7 +54,9 @@ const supabase = createClientComponentClient();
 
 export function RegisterPatient() {
   const { providerId, practiceId } = useProviderStore().providerInfo;
-  const setCurrentPatient = usePatientStore((state) => state.setCurrentPatient);
+  const [registeredPatient, setRegisteredPatient] =
+    useState<CurrentPatient | null>(null);
+  const currentPatient = usePatientStore();
 
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
@@ -119,7 +121,11 @@ export function RegisterPatient() {
           },
         ] = data as Patient[];
         if (patientId && patientFirstName && patientLastName) {
-          setCurrentPatient({ patientId, patientFirstName, patientLastName });
+          setRegisteredPatient({
+            patientId,
+            patientFirstName,
+            patientLastName,
+          });
         }
 
         setIsConfirmationOpen(true);
@@ -327,7 +333,11 @@ export function RegisterPatient() {
             <Link
               className={buttonVariants()}
               href="/dashboard/new/exam"
-              onClick={() => setIsConfirmationOpen(false)}
+              onClick={() => {
+                setIsConfirmationOpen(false);
+                if (registeredPatient)
+                  currentPatient.setCurrentPatient(registeredPatient);
+              }}
             >
               Clerk Patient
             </Link>
