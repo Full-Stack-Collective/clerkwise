@@ -22,6 +22,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from './ui/toast';
 import { usePatientStore } from '@/stores/currentPatientStore';
 import { useProviderStore } from '@/stores/currentProviderStore';
+import { Textarea } from './ui/textarea';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -32,8 +33,10 @@ const formSchema = z.object({
   }),
   sex: z.string({ required_error: 'Sex is required' }),
   dateOfBirth: z.string().min(6, { message: 'DOB is required' }),
-  id: z.string(),
+  email: z.string().email().optional(),
   phone: z.string(),
+  streetAddress: z.string().optional(),
+  city: z.string().optional(),
   emergencyContact: z.string(),
   providerId: z.string(),
   practiceId: z.string(),
@@ -42,8 +45,6 @@ const formSchema = z.object({
 const supabase = createClientComponentClient();
 
 export function RegisterPatient() {
-
-
   const { providerId, practiceId } = useProviderStore().providerInfo;
 
   const setCurrentPatient = usePatientStore((state) => state.setCurrentPatient);
@@ -54,12 +55,15 @@ export function RegisterPatient() {
       firstName: '',
       surname: '',
       dateOfBirth: '',
-      id: '',
+      email: '',
       phone: '',
+      streetAddress: '',
+      city: '',
       emergencyContact: '',
       practiceId,
       providerId,
     },
+    mode: 'onChange',
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -68,8 +72,10 @@ export function RegisterPatient() {
       surname,
       sex,
       dateOfBirth,
-      id,
+      email,
       phone,
+      city,
+      streetAddress,
       emergencyContact,
       practiceId,
       providerId,
@@ -85,8 +91,10 @@ export function RegisterPatient() {
           surname,
           sex,
           date_of_birth: dateOfBirth,
-          national_id: id,
+          email,
           phone,
+          street_address: streetAddress,
+          city,
           emergency_contact: emergencyContact,
           primary_provider: providerId,
           practice: practiceId,
@@ -193,6 +201,7 @@ export function RegisterPatient() {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="dateOfBirth"
@@ -200,7 +209,7 @@ export function RegisterPatient() {
             <FormItem>
               <FormLabel>Date of Birth</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <Input type="date" {...field} className="max-w-xs" />
               </FormControl>
 
               <FormMessage />
@@ -210,10 +219,10 @@ export function RegisterPatient() {
 
         <FormField
           control={form.control}
-          name="id"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ID</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input {...field} className="max-w-xs" />
               </FormControl>
@@ -231,6 +240,34 @@ export function RegisterPatient() {
               <FormLabel>Phone</FormLabel>
               <FormControl>
                 <Input type="tel" {...field} className="max-w-xs" />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="streetAddress"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Street Address</FormLabel>
+              <FormControl>
+                <Textarea placeholder="" className="max-w-xs" {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>City</FormLabel>
+              <FormControl>
+                <Input type="text" {...field} className="max-w-xs" />
               </FormControl>
 
               <FormMessage />
