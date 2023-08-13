@@ -137,11 +137,13 @@ export function RegisterPatient() {
 
   return (
     <>
-    <BackButton />
+      <BackButton />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-sm w-full mx-auto"
+          autoSave="off"
+          autoComplete="off"
         >
           <h2 className="font-semibold text-lg">Register New Patient</h2>
           <FormField
@@ -295,7 +297,10 @@ export function RegisterPatient() {
           <Button type="submit">Submit</Button>
         </form>
       </Form>
-      <Dialog open={isConfirmationOpen} onOpenChange={() => setIsConfirmationOpen(false)}>
+      <Dialog
+        open={isConfirmationOpen}
+        onOpenChange={() => setIsConfirmationOpen(false)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Patient successfully registered</DialogTitle>
@@ -304,7 +309,6 @@ export function RegisterPatient() {
             </DialogDescription>
           </DialogHeader>
           <div className="w-full flex justify-around">
-
             <Link
               className={buttonVariants({ variant: 'outline' })}
               href="/dashboard"

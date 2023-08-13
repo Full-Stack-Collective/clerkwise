@@ -130,6 +130,8 @@ function NewPatientExam() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-md w-full px-2"
+          autoSave='off'
+          autoComplete='off'
         >
           <Tabs defaultValue="history" className="w-full">
             <TabsList>
