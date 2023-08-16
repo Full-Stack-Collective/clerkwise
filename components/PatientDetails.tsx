@@ -9,28 +9,44 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { title } from 'process';
 
-export function PatientDetails() {
+export function PatientDetails({ patientData }: any) {
+  const [{
+    first_name,
+    surname,
+    sex,
+    date_of_birth,
+    email,
+    phone,
+    street_address,
+    city,
+    emergency_contact_name,
+    emergency_contact,
+  }] = patientData;
+
+  console.log(patientData)
   const chartFields = [
-    { title: 'Email' },
-    { title: 'Phone Number' },
-    { title: 'Address' },
-    { title: 'Emergency Contact' },
+    { title: 'Email', value: email },
+    { title: 'Phone Number', value: phone },
+    { title: 'Address', value: `${street_address}, ${city}` },
+    { title: 'Emergency Contact', value: `${emergency_contact_name}, ${emergency_contact}` },
   ];
+
 
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Harry Potter</CardTitle>
-        <CardDescription>Male</CardDescription>
-        <CardDescription>August 23, 1993 (30 years old)</CardDescription>
+        <CardTitle>{first_name} {surname}</CardTitle>
+        <CardDescription>{sex}</CardDescription>
+        <CardDescription> {date_of_birth} (30 years old)</CardDescription>
       </CardHeader>
       <CardContent>
-          {chartFields.map(field =>
-            <p key={field.title}><span className='font-semibold'>{field.title}: </span></p>)}
-        
-        </CardContent>
+        {chartFields.map((field) => (
+          <p key={field.title}>
+            <span className="font-semibold">{field.title}: </span> {field.value}
+          </p>
+        ))}
+      </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Cancel</Button>
         <Button>Deploy</Button>
