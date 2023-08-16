@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import RecentPatients from '@/components/RecentPatients';
-import { useProviderStore } from '@/stores/currentProviderStore';
 
 // <--- UI --->
 
