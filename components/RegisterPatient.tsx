@@ -45,6 +45,7 @@ const formSchema = z.object({
   phone: z.string(),
   streetAddress: z.string().optional(),
   city: z.string().optional(),
+  emergencyContactName: z.string(),
   emergencyContact: z.string(),
   providerId: z.string(),
   practiceId: z.string(),
@@ -70,6 +71,7 @@ export function RegisterPatient() {
       phone: '',
       streetAddress: '',
       city: '',
+      emergencyContactName: '',
       emergencyContact: '',
       practiceId,
       providerId,
@@ -87,6 +89,7 @@ export function RegisterPatient() {
       phone,
       city,
       streetAddress,
+      emergencyContactName,
       emergencyContact,
       practiceId,
       providerId,
@@ -106,6 +109,7 @@ export function RegisterPatient() {
           phone,
           street_address: streetAddress,
           city,
+          emergency_contact_name: emergencyContactName,
           emergency_contact: emergencyContact,
           primary_provider: providerId,
           practice: practiceId,
@@ -295,10 +299,24 @@ export function RegisterPatient() {
 
           <FormField
             control={form.control}
+            name="emergencyContactName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Emergency Contact Name</FormLabel>
+                <FormControl>
+                  <Input {...field} className="max-w-xs" />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="emergencyContact"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Emergency Contact</FormLabel>
+                <FormLabel>Emergency Contact Number</FormLabel>
                 <FormControl>
                   <Input type="tel" {...field} className="max-w-xs" />
                 </FormControl>
@@ -308,7 +326,10 @@ export function RegisterPatient() {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button disabled={
+              !form.formState.isDirty ||
+              (form.formState.isDirty && !form.formState.isValid)
+            } type="submit">Submit</Button>
         </form>
       </Form>
       <Dialog
