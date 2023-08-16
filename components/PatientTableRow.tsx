@@ -1,8 +1,7 @@
 import React from 'react';
 import { TableCell, TableRow } from './ui/table';
-import { useRouter } from 'next/navigation';
-import { usePatientStore } from '@/stores/currentPatientStore';
 import Link from 'next/link';
+import { Separator } from './ui/separator';
 
 type Patient = {
   created_at: string;
@@ -14,13 +13,13 @@ type Patient = {
 function PatientTableRow({ patient }: { patient: Patient }) {
   const { created_at, id, first_name, surname } = patient;
   return (
-    <TableRow key={id} className="cursor-pointer">
-      <TableCell className="font-medium">{`${first_name} ${surname}`}</TableCell>
-
-      <TableCell className="text-right">
-        {new Date(created_at).toDateString()}
-      </TableCell>
-    </TableRow>
+    <li key={id} className="cursor-pointer hover:bg-slate-100">
+      <Link href={`/dashboard/patient/${id}`} className='flex justify-between my-2 p-2'>
+        <p className="font-medium">{`${first_name} ${surname}`}</p>
+        <p className="text-right font-light">{new Date(created_at).toDateString()}</p>
+      </Link>
+      <Separator/>
+    </li>
   );
 }
 

@@ -6,13 +6,14 @@ import { usePatientStore } from '@/stores/currentPatientStore';
 
 const supabase = createServerComponentClient({ cookies });
 
-async function PatientChart() {
+async function PatientChart({ params }: { params: { id: string } }) {
 
-  const patientId = usePatientStore.getState().currentPatient.patientId
+  const { id } = params;
+
   const { data: patientData } = await supabase
     .from('Patients')
     .select('*')
-    .eq('id', 'ac680e41-7932-4554-8e39-f59a31410f64');
+    .eq('id', id);
 
   return (
     <div className="max-w-2xl w-full">

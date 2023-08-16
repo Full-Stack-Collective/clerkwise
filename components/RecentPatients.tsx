@@ -35,14 +35,11 @@ export default async function RecentPatients() {
         <CardDescription>Your most recently used charts</CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="max-w-[180px]">Name</TableHead>
-              <TableHead className="text-right">Last Seen</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+            <div className='flex justify-between'>
+              <p className="max-w-[180px]">Name</p>
+              <p className="text-right">Last Seen</p>
+            </div>
+          <ul className='list-none'>
             {recentPatients ? (
               recentPatients.map((patient) => {
                 
@@ -53,8 +50,7 @@ export default async function RecentPatients() {
             ) : (
               <p>Recent patients could not be loaded</p>
             )}
-          </TableBody>
-        </Table>
+          </ul>
       </CardContent>
     </Card>
   );
