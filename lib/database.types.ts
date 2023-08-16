@@ -23,17 +23,21 @@ export interface Database {
           heart_rate: number | null
           history_presenting_complaint: string | null
           id: string
+          observations: string | null
           on_examination: string | null
+          oxygen_saturation: number | null
           past_medical_history: string | null
           patient: string | null
           plan: string | null
           presenting_complaint: string
           provider: string | null
+          random_blood_sugar: number | null
           respiratory_rate: number | null
           social_history: string | null
-          spo2: number | null
-          systesms_review: string | null
+          systems_review: string | null
           temperature: number | null
+          updated_at: string | null
+          urine: string | null
         }
         Insert: {
           allergies?: string | null
@@ -48,17 +52,21 @@ export interface Database {
           heart_rate?: number | null
           history_presenting_complaint?: string | null
           id?: string
+          observations?: string | null
           on_examination?: string | null
+          oxygen_saturation?: number | null
           past_medical_history?: string | null
           patient?: string | null
           plan?: string | null
           presenting_complaint: string
           provider?: string | null
+          random_blood_sugar?: number | null
           respiratory_rate?: number | null
           social_history?: string | null
-          spo2?: number | null
-          systesms_review?: string | null
+          systems_review?: string | null
           temperature?: number | null
+          updated_at?: string | null
+          urine?: string | null
         }
         Update: {
           allergies?: string | null
@@ -73,17 +81,21 @@ export interface Database {
           heart_rate?: number | null
           history_presenting_complaint?: string | null
           id?: string
+          observations?: string | null
           on_examination?: string | null
+          oxygen_saturation?: number | null
           past_medical_history?: string | null
           patient?: string | null
           plan?: string | null
           presenting_complaint?: string
           provider?: string | null
+          random_blood_sugar?: number | null
           respiratory_rate?: number | null
           social_history?: string | null
-          spo2?: number | null
-          systesms_review?: string | null
+          systems_review?: string | null
           temperature?: number | null
+          updated_at?: string | null
+          urine?: string | null
         }
         Relationships: [
           {
@@ -102,45 +114,51 @@ export interface Database {
       }
       Patients: {
         Row: {
+          city: string | null
           created_at: string | null
           date_of_birth: string | null
-          drivers_permit: string | null
+          email: string | null
           emergency_contact: string | null
+          emergency_contact_name: string | null
           first_name: string
           id: string
-          national_id: string | null
           phone: string | null
           practice: string | null
           primary_provider: string | null
           sex: Database["public"]["Enums"]["sex_type"] | null
+          street_address: string | null
           surname: string
         }
         Insert: {
+          city?: string | null
           created_at?: string | null
           date_of_birth?: string | null
-          drivers_permit?: string | null
+          email?: string | null
           emergency_contact?: string | null
+          emergency_contact_name?: string | null
           first_name: string
           id?: string
-          national_id?: string | null
           phone?: string | null
           practice?: string | null
           primary_provider?: string | null
           sex?: Database["public"]["Enums"]["sex_type"] | null
+          street_address?: string | null
           surname: string
         }
         Update: {
+          city?: string | null
           created_at?: string | null
           date_of_birth?: string | null
-          drivers_permit?: string | null
+          email?: string | null
           emergency_contact?: string | null
+          emergency_contact_name?: string | null
           first_name?: string
           id?: string
-          national_id?: string | null
           phone?: string | null
           practice?: string | null
           primary_provider?: string | null
           sex?: Database["public"]["Enums"]["sex_type"] | null
+          street_address?: string | null
           surname?: string
         }
         Relationships: [
@@ -166,7 +184,6 @@ export interface Database {
           owner: string | null
           patients: string | null
           practice_name: string | null
-          providers: string | null
         }
         Insert: {
           created_at?: string | null
@@ -175,7 +192,6 @@ export interface Database {
           owner?: string | null
           patients?: string | null
           practice_name?: string | null
-          providers?: string | null
         }
         Update: {
           created_at?: string | null
@@ -184,7 +200,6 @@ export interface Database {
           owner?: string | null
           patients?: string | null
           practice_name?: string | null
-          providers?: string | null
         }
         Relationships: [
           {
@@ -197,12 +212,6 @@ export interface Database {
             foreignKeyName: "Practice_patients_fkey"
             columns: ["patients"]
             referencedRelation: "Patients"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "Practice_providers_fkey"
-            columns: ["providers"]
-            referencedRelation: "Providers"
             referencedColumns: ["id"]
           }
         ]
@@ -219,7 +228,7 @@ export interface Database {
         Insert: {
           created_at?: string | null
           first_name?: string | null
-          id?: string
+          id: string
           last_name?: string | null
           practice?: string | null
           specialty?: string | null
@@ -263,6 +272,7 @@ export interface Database {
           spo2: number | null
           subjective_findings: string | null
           temperature: number | null
+          updated_at: string | null
         }
         Insert: {
           assessment?: string | null
@@ -279,6 +289,7 @@ export interface Database {
           spo2?: number | null
           subjective_findings?: string | null
           temperature?: number | null
+          updated_at?: string | null
         }
         Update: {
           assessment?: string | null
@@ -295,6 +306,7 @@ export interface Database {
           spo2?: number | null
           subjective_findings?: string | null
           temperature?: number | null
+          updated_at?: string | null
         }
         Relationships: [
           {

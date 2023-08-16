@@ -2,10 +2,13 @@ import { PatientDetails } from '@/components/PatientDetails';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import React from 'react';
 import { cookies } from 'next/headers';
+import { usePatientStore } from '@/stores/currentPatientStore';
 
 const supabase = createServerComponentClient({ cookies });
 
 async function PatientChart() {
+
+  const patientId = usePatientStore.getState().currentPatient.patientId
   const { data: patientData } = await supabase
     .from('Patients')
     .select('*')

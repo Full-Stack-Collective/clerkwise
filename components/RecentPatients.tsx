@@ -1,3 +1,4 @@
+
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import {
@@ -9,13 +10,13 @@ import {
 } from './ui/card';
 import {
   Table,
-  TableCaption,
   TableHeader,
   TableRow,
   TableHead,
   TableBody,
   TableCell,
 } from './ui/table';
+import PatientTableRow from './PatientTableRow';
 
 export default async function RecentPatients() {
   const supabase = createServerComponentClient({ cookies });
@@ -25,6 +26,7 @@ export default async function RecentPatients() {
     .select('created_at, id, first_name, surname, date_of_birth')
     .order('created_at', { ascending: false })
     .limit(8);
+
 
   return (
     <Card className="col-span-3">
@@ -43,16 +45,9 @@ export default async function RecentPatients() {
           <TableBody>
             {recentPatients ? (
               recentPatients.map((patient) => {
-                const { created_at, id, first_name, surname, date_of_birth } =
-                  patient;
+                
                 return (
-                  <TableRow key={id}>
-                    <TableCell className="font-medium">{`${first_name} ${surname}`}</TableCell>
-
-                    <TableCell className="text-right">
-                      {new Date(created_at).toDateString()}
-                    </TableCell>
-                  </TableRow>
+                  <PatientTableRow patient={patient} key={patient.id}/>
                 );
               })
             ) : (

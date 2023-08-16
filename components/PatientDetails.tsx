@@ -38,7 +38,7 @@ export function PatientDetails({ patientData }: any) {
     },
   ];
 
-  const currentAge = calculateAge(date_of_birth);
+  calculateAge(date_of_birth);
 
   return (
     <Card className="w-[350px]">
@@ -48,7 +48,8 @@ export function PatientDetails({ patientData }: any) {
         </CardTitle>
         <CardDescription>{capitalizeWord(sex)}</CardDescription>
         <CardDescription>
-          {formatDate(date_of_birth)} {`(${currentAge} years)`}
+          {' '}
+          {formatDate(date_of_birth)} {`(${calculateAge(date_of_birth)} years)`}
         </CardDescription>
       </CardHeader>
       <CardContent>
