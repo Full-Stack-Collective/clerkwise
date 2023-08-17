@@ -21,7 +21,7 @@ declare global {
 
   type CurrentPatient ={
     patientId: string;
-    patientFirstName: string;
-    patientLastName: string
+    patientFirstName?: string;
+    patientLastName?: string
   }
 }
