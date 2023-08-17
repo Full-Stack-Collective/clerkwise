@@ -15,8 +15,8 @@ function PatientTableRow({ patient }: { patient: Patient }) {
   return (
     <li key={id} className="cursor-pointer hover:bg-slate-100">
       <Link href={`/dashboard/patient/${id}`} className='flex justify-between my-2 p-2'>
-        <p className="font-medium">{`${first_name} ${surname}`}</p>
-        <p className="text-right font-light">{new Date(created_at).toDateString()}</p>
+        <p className="font-medium text-sm">{`${first_name} ${surname}`}</p>
+        <p className="text-right font-light text-sm">{new Date(created_at).toDateString()}</p>
       </Link>
       <Separator/>
     </li>

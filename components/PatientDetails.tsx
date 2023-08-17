@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -11,10 +11,12 @@ import {
 } from '@/components/ui/card';
 import { capitalizeWord, formatDate } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
+import Link from 'next/link';
 
-export function PatientDetails({ patientData }: any) {
+export function PatientDetails({ patientData, clinicalAssessment }: any) {
   const [
     {
+      id,
       first_name,
       surname,
       sex,
@@ -41,7 +43,7 @@ export function PatientDetails({ patientData }: any) {
   calculateAge(date_of_birth);
 
   return (
-    <Card className="w-[350px]">
+    <Card className="max-w-xs w-full">
       <CardHeader>
         <CardTitle>
           {first_name} {surname}
@@ -70,14 +72,11 @@ export function PatientDetails({ patientData }: any) {
         {emergency_contact ? (
           <p className="my-2">
             <span className="font-semibold">Emergency Contact: </span>
-              {emergency_contact_name} - {emergency_contact}
+            {emergency_contact_name} - {emergency_contact}
           </p>
         ) : null}
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
+      <CardFooter className="flex justify-between"></CardFooter>
     </Card>
   );
 }

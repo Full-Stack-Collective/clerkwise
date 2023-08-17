@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useProviderStore } from '@/stores/currentProviderStore';
 import { usePatientStore } from '@/stores/currentPatientStore';
-import { createClinicalRecord } from '@/app/dashboard/new/exam/actions';
+import { createClinicalRecord } from '@/app/dashboard/new/exam/[id]/actions';
 import BackButton from './BackButton';
 
 export const examFormSchema = z.object({

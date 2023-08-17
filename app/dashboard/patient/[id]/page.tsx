@@ -2,20 +2,39 @@ import { PatientDetails } from '@/components/PatientDetails';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import React from 'react';
 import { cookies } from 'next/headers';
-import { usePatientStore } from '@/stores/currentPatientStore';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
+import PatientExamCard from '@/components/PatientExamCard';
 
 const supabase = createServerComponentClient({ cookies });
+
+const getPatientChart = async (patientId: string) => {
+  return await supabase.from('Patients').select('*').eq('id', patientId);
+};
+
+const getClinicalAssesment = async (patientId: string) => {
+  return await supabase
+    .from('Clinical Records')
+    .select('*')
+    .eq('patient', patientId);
+};
+
+const getSoapAssessments = async (patientId: string) => {
+  return await supabase
+    .from('Soap Assessments')
+    .select('*')
+    .eq('patient', patientId);
+};
 
 async function PatientChart({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const { data: patientData } = await supabase
-    .from('Patients')
-    .select('*')
-    .eq('id', id);
+  const { data: patientData } = await getPatientChart(id);
+  const { data: clinicalAssessment } = await getClinicalAssesment(id);
+  const { data: soapAssessments } = await getSoapAssessments(id);
+
+  console.log('ClinicalAssessment >>>', clinicalAssessment);
 
   return (
     <div className="max-w-2xl w-full">
@@ -28,7 +47,12 @@ async function PatientChart({ params }: { params: { id: string } }) {
       </Link>
 
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
-      <PatientDetails patientData={patientData} />
+      <div className='flex flex-col sm:flex-row justify-between items-center gap-4'>
+        <PatientDetails patientData={patientData} />
+        <div>
+          <PatientExamCard clinicalAssessment={clinicalAssessment} id={id} />
+        </div>
+      </div>
     </div>
   );
 }

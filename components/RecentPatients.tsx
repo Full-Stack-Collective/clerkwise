@@ -1,4 +1,3 @@
-
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import {
@@ -27,7 +26,6 @@ export default async function RecentPatients() {
     .order('created_at', { ascending: false })
     .limit(8);
 
-
   return (
     <Card className="col-span-3">
       <CardHeader>
@@ -35,22 +33,23 @@ export default async function RecentPatients() {
         <CardDescription>Your most recently used charts</CardDescription>
       </CardHeader>
       <CardContent>
-            <div className='flex justify-between'>
-              <p className="max-w-[180px]">Name</p>
-              <p className="text-right">Last Seen</p>
-            </div>
-          <ul className='list-none'>
-            {recentPatients ? (
-              recentPatients.map((patient) => {
-                
-                return (
-                  <PatientTableRow patient={patient} key={patient.id}/>
-                );
-              })
-            ) : (
-              <p>Recent patients could not be loaded</p>
-            )}
-          </ul>
+        <div className="flex justify-between p-2">
+          <p className="font-medium text-muted-foreground max-w-[180px]">
+            Name
+          </p>
+          <p className="font-medium text-muted-foreground text-right">
+            Last Seen
+          </p>
+        </div>
+        <ul className="list-none">
+          {recentPatients ? (
+            recentPatients.map((patient) => {
+              return <PatientTableRow patient={patient} key={patient.id} />;
+            })
+          ) : (
+            <p>Recent patients could not be loaded</p>
+          )}
+        </ul>
       </CardContent>
     </Card>
   );
