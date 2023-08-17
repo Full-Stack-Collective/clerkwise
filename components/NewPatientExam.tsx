@@ -35,9 +35,13 @@ export const examFormSchema = z.object({
   onExamination: z.string(),
   observations: z.string(),
   focusedFindings: z.string(),
-  bloodPressure: z.string().regex(/\d{2,3}\/\d{2,3}/gm, {
-    message: 'Please enter BP in format Systolic/Diastolic',
-  }).optional().or(z.literal('')),
+  bloodPressure: z
+    .string()
+    .regex(/\d{2,3}\/\d{2,3}/gm, {
+      message: 'Please enter BP in format Systolic/Diastolic',
+    })
+    .optional()
+    .or(z.literal('')),
   heartRate: z
     .string()
     .regex(/^(?:[1-9]|[1-9][0-9]|[12][0-9]{2}|300)$/gm, {
@@ -82,10 +86,19 @@ function onSubmit(values: z.infer<typeof examFormSchema>) {
   createClinicalRecord(values);
 }
 
-function NewPatientExam() {
+function NewPatientExam({
+  patientId,
+  patientFirstName,
+  patientLastName,
+}: {
+  patientId: string;
+  patientFirstName: string;
+  patientLastName: string;
+}) {
   const { providerId } = useProviderStore().providerInfo;
-  const { patientId, patientFirstName, patientLastName } =
-    usePatientStore().currentPatient;
+
+  // const { patientId, patientFirstName, patientLastName } =
+  //   usePatientStore().currentPatient;
 
   const defaultValues = {
     presentingComplaint: '',
@@ -130,8 +143,8 @@ function NewPatientExam() {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-md w-full px-2"
-          autoSave='off'
-          autoComplete='off'
+          autoSave="off"
+          autoComplete="off"
         >
           <Tabs defaultValue="history" className="w-full">
             <TabsList>

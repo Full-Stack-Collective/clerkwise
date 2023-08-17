@@ -34,7 +34,6 @@ async function PatientChart({ params }: { params: { id: string } }) {
   const { data: clinicalAssessment } = await getClinicalAssesment(id);
   const { data: soapAssessments } = await getSoapAssessments(id);
 
-  console.log('ClinicalAssessment >>>', clinicalAssessment);
 
   return (
     <div className="max-w-2xl w-full">
@@ -50,7 +49,7 @@ async function PatientChart({ params }: { params: { id: string } }) {
       <div className='flex flex-col sm:flex-row justify-between items-center gap-4'>
         <PatientDetails patientData={patientData} />
         <div>
-          <PatientExamCard clinicalAssessment={clinicalAssessment} id={id} />
+          <PatientExamCard clinicalAssessment={clinicalAssessment as ClinicalRecord[]} id={id} />
         </div>
       </div>
     </div>

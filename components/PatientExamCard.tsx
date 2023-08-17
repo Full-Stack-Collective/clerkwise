@@ -1,13 +1,20 @@
 import Link from 'next/link';
 
 import { buttonVariants } from './ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from './ui/card';
+import { ChevronRight } from 'lucide-react';
 
 function PatientExamCard({
   clinicalAssessment,
   id,
 }: {
-  clinicalAssessment: any[];
+  clinicalAssessment: ClinicalRecord[];
   id: string;
 }) {
   const clinicalAssessmentExists = clinicalAssessment.length > 0;
@@ -15,18 +22,18 @@ function PatientExamCard({
   return (
     <Card className="max-w-xs w-full ">
       <CardHeader>
-        <CardTitle>Clinical Exam</CardTitle>
+        <CardTitle className="text-xl">Clinical Exam</CardTitle>
       </CardHeader>
       {!clinicalAssessmentExists ? (
         <CardContent className="flex flex-col items-center">
-          <p className="text-sm mb-4">
-            This patient hasn&apos;t yet been examined
-          </p>
+          <CardDescription className="text-sm mb-4">
+            There are no records for this patient.
+          </CardDescription>
           <Link
             href={`/dashboard/new/exam/${id}`}
-            className={buttonVariants({ variant: 'outline' })}
+            className={buttonVariants({ variant: 'default' })}
           >
-            Clerk Now
+            Clerk Now <ChevronRight className="h-4 w-4" />
           </Link>
         </CardContent>
       ) : (

@@ -7,14 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from './ui/table';
 import PatientTableRow from './PatientTableRow';
 
 export default async function RecentPatients() {
