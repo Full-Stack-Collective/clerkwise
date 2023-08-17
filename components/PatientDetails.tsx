@@ -53,11 +53,26 @@ export function PatientDetails({ patientData }: any) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {chartFields.map((field) => (
-          <p key={field.title} className="my-2">
-            <span className="font-semibold">{field.title}: </span> {field.value}
+        <p className="my-2">
+          <span className="font-semibold">Phone Number: </span>
+          {phone}
+        </p>
+        {street_address || city ? (
+          <p className="my-2">
+            <span className="font-semibold">Address: </span>
+            {street_address && `${street_address},`} {city && city}
           </p>
-        ))}
+        ) : null}
+        <p className="my-2">
+          <span className="font-semibold">Email: </span>
+          {email}
+        </p>
+        {emergency_contact ? (
+          <p className="my-2">
+            <span className="font-semibold">Emergency Contact: </span>
+              {emergency_contact_name} - {emergency_contact}
+          </p>
+        ) : null}
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline">Cancel</Button>
