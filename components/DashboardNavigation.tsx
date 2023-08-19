@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import LogoutButton from './LogoutButton';
 import { useProviderStore } from '@/stores/currentProviderStore';
 import { usePatientStore } from '@/stores/currentPatientStore';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 export function DashboardNavigation({
   className,
@@ -18,6 +19,8 @@ export function DashboardNavigation({
   const providerStore = useProviderStore();
   const patientStore = usePatientStore();
 
+  const { providerFirstName, providerLastName } = providerStore.providerInfo;
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     patientStore.reset();
@@ -25,36 +28,45 @@ export function DashboardNavigation({
     router.refresh();
   };
   return (
-    <nav className="flex items-start justify-between w-full" {...props}>
-      <div
-        className={cn('flex items-center space-x-4 lg:space-x-6', className)}
-      >
-        <Link
-          href="/dashboard"
-          className="text-sm font-medium transition-colors hover:text-primary"
+    <div className="w-full">
+      <nav className="flex items-start justify-between w-full" {...props}>
+        <div
+          className={cn('flex items-center space-x-4 lg:space-x-6', className)}
         >
-          Dashboard
-        </Link>
-        <Link
-          href="/dashboard"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
-          Patients
-        </Link>
-        <Link
-          href="/dashboard"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
-          Appointments
-        </Link>
-        <Link
+          <Link
+            href="/dashboard"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/dashboard"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
+            Patients
+          </Link>
+          <Link
+            href="/dashboard"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
+            Appointments
+          </Link>
+          {/* <Link
           href="/dashboard"
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
         >
           Settings
-        </Link>
-      </div>
-      <LogoutButton handleSignOut={handleSignOut} />
-    </nav>
+        </Link> */}
+        </div>
+        <div className='flex items-center gap-3'>
+          <Avatar>
+            <AvatarImage src="" />
+            <AvatarFallback>AA</AvatarFallback>
+          </Avatar>
+          <span className='font-light text-xs'>Dr. {providerFirstName} {providerLastName}</span>
+        <LogoutButton handleSignOut={handleSignOut} />
+        </div>
+      </nav>
+    </div>
   );
 }
