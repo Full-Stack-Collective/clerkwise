@@ -50,7 +50,6 @@ export function PatientDetails({ patientData, clinicalAssessment }: any) {
         </CardTitle>
         <CardDescription>{capitalizeWord(sex)}</CardDescription>
         <CardDescription>
-          {' '}
           {formatDate(date_of_birth)} {`(${calculateAge(date_of_birth)} years)`}
         </CardDescription>
       </CardHeader>
