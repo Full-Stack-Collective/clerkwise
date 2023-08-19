@@ -58,13 +58,20 @@ export function DashboardNavigation({
           Settings
         </Link> */}
         </div>
-        <div className='flex items-center gap-3'>
-          <Avatar>
-            <AvatarImage src="" />
-            <AvatarFallback>AA</AvatarFallback>
-          </Avatar>
-          <span className='font-light text-xs'>Dr. {providerFirstName} {providerLastName}</span>
-        <LogoutButton handleSignOut={handleSignOut} />
+        <div className="flex flex-col items-end gap-3">
+          <LogoutButton handleSignOut={handleSignOut} />
+          <div className="flex items-center justify-end">
+            <Avatar>
+              <AvatarImage src="" />
+              <AvatarFallback>
+                {providerFirstName[0]}
+                {providerLastName[0]}
+              </AvatarFallback>
+            </Avatar>
+            <span className="font-light text-xs">
+              Dr. {providerFirstName} {providerLastName}
+            </span>
+          </div>
         </div>
       </nav>
     </div>
