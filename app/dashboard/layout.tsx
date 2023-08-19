@@ -19,6 +19,7 @@ export default async function DashboardLayout({
     redirect('/login');
   }
 
+
   return (
     <>
       <div className="flex justify-between">

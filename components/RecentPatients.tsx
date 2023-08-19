@@ -7,15 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
-import {
-  Table,
-  TableCaption,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from './ui/table';
+import PatientTableRow from './PatientTableRow';
 
 export default async function RecentPatients() {
   const supabase = createServerComponentClient({ cookies });
@@ -33,33 +25,23 @@ export default async function RecentPatients() {
         <CardDescription>Your most recently used charts</CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="max-w-[180px]">Name</TableHead>
-              <TableHead className="text-right">Last Seen</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {recentPatients ? (
-              recentPatients.map((patient) => {
-                const { created_at, id, first_name, surname, date_of_birth } =
-                  patient;
-                return (
-                  <TableRow key={id}>
-                    <TableCell className="font-medium">{`${first_name} ${surname}`}</TableCell>
-
-                    <TableCell className="text-right">
-                      {new Date(created_at).toDateString()}
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <p>Recent patients could not be loaded</p>
-            )}
-          </TableBody>
-        </Table>
+        <div className="flex justify-between p-2">
+          <p className="font-medium text-muted-foreground max-w-[180px]">
+            Name
+          </p>
+          <p className="font-medium text-muted-foreground text-right">
+            Last Seen
+          </p>
+        </div>
+        <ul className="list-none">
+          {recentPatients ? (
+            recentPatients.map((patient) => {
+              return <PatientTableRow patient={patient} key={patient.id} />;
+            })
+          ) : (
+            <p>Recent patients could not be loaded</p>
+          )}
+        </ul>
       </CardContent>
     </Card>
   );

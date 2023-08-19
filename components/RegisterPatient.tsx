@@ -20,7 +20,6 @@ import {
 import { Input } from './ui/input';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { useToast } from '@/components/ui/use-toast';
-import { usePatientStore } from '@/stores/currentPatientStore';
 import { useProviderStore } from '@/stores/currentProviderStore';
 import { Textarea } from './ui/textarea';
 import {
@@ -57,7 +56,6 @@ export function RegisterPatient() {
   const { providerId, practiceId } = useProviderStore().providerInfo;
   const [registeredPatient, setRegisteredPatient] =
     useState<CurrentPatient | null>(null);
-  const currentPatient = usePatientStore();
 
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
@@ -117,18 +115,10 @@ export function RegisterPatient() {
         .select('id, first_name, surname');
       if (error) throw error;
       else {
-        const [
-          {
-            id: patientId,
-            first_name: patientFirstName,
-            surname: patientLastName,
-          },
-        ] = data as Patient[];
-        if (patientId && patientFirstName && patientLastName) {
+        const [{ id: patientId }] = data as Patient[];
+        if (patientId) {
           setRegisteredPatient({
             patientId,
-            patientFirstName,
-            patientLastName,
           });
         }
 
@@ -326,10 +316,15 @@ export function RegisterPatient() {
             )}
           />
 
-          <Button disabled={
+          <Button
+            disabled={
               !form.formState.isDirty ||
               (form.formState.isDirty && !form.formState.isValid)
-            } type="submit">Submit</Button>
+            }
+            type="submit"
+          >
+            Submit
+          </Button>
         </form>
       </Form>
       <Dialog
@@ -353,11 +348,9 @@ export function RegisterPatient() {
             </Link>
             <Link
               className={buttonVariants()}
-              href="/dashboard/new/exam"
+              href={`/dashboard/new/exam/${registeredPatient?.patientId}`}
               onClick={() => {
                 setIsConfirmationOpen(false);
-                if (registeredPatient)
-                  currentPatient.setCurrentPatient(registeredPatient);
               }}
             >
               Clerk Patient

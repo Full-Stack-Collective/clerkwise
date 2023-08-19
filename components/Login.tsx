@@ -138,7 +138,7 @@ export default function Login() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="doctor@clerkwise.com" {...field} />
+                      <Input {...field} />
                     </FormControl>
 
                     <FormMessage />
