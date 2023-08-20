@@ -1,4 +1,3 @@
-import { formatDate } from "@/utils/textFormatters"
 import {  columns } from "./columns"
 import { DataTable } from "./data-table"
  
@@ -10,8 +9,26 @@ async function getData(): Promise<Patient[]> {
       surname:'Ram',
       phone: '868-606-6060',
       email: "m@example.com",
-      date_of_birth: formatDate('1980-12-12'),
+      date_of_birth: '1980-12-12',
       city: 'Penal',
+      
+    },
+    {
+      first_name:'harry',
+      surname:'sam',
+      phone: '868-606-6060',
+      email: "m@example.com",
+      date_of_birth: '1980-12-12',
+      city: 'Sando',
+      
+    },
+    {
+      first_name:'bally',
+      surname:'ham',
+      phone: '868-606-6060',
+      email: "m@example.com",
+      date_of_birth: '1980-12-12',
+      city: 'Tong',
       
     },
     // ...
