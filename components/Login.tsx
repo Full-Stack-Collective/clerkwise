@@ -1,8 +1,7 @@
 'use client';
 
 import {
-  User,
-  createClientComponentClient,
+    createClientComponentClient,
 } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
@@ -47,7 +46,6 @@ export default function Login() {
 
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
-  const setUserInfo = useProviderStore((state) => state.setProviderInfo);
 
   const [invalidLogin, setInvalidLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,31 +74,6 @@ export default function Login() {
 
       if (error) throw Error('Invalid Login');
 
-      const { user } = data;
-
-      const { id: providerId } = user as User;
-
-      const { data: practice } = await supabase
-        .from('Providers')
-        .select('practice, first_name, last_name')
-        .eq('id', providerId);
-
-      const [
-        {
-          practice: practiceId,
-          first_name: providerFirstName,
-          last_name: providerLastName,
-        },
-      ] = practice as Provider[];
-
-      if (providerId && practiceId && providerFirstName && providerLastName) {
-        setUserInfo({
-          providerId,
-          practiceId,
-          providerFirstName,
-          providerLastName,
-        });
-      }
 
       if (data.session) {
         router.push('/dashboard');

@@ -16,8 +16,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { useProviderStore } from '@/stores/currentProviderStore';
-import { usePatientStore } from '@/stores/currentPatientStore';
+
 import { createClinicalRecord } from '@/app/dashboard/new/exam/[id]/actions';
 import BackButton from './BackButton';
 
@@ -90,15 +89,14 @@ function NewPatientExam({
   patientId,
   patientFirstName,
   patientLastName,
+  providerId
 }: {
   patientId: string;
   patientFirstName: string;
   patientLastName: string;
+  providerId: string
 }) {
-  const { providerId } = useProviderStore().providerInfo;
 
-  // const { patientId, patientFirstName, patientLastName } =
-  //   usePatientStore().currentPatient;
 
   const defaultValues = {
     presentingComplaint: '',

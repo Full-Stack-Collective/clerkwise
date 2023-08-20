@@ -2,6 +2,7 @@ import NewPatientExam from '@/components/NewPatientExam';
 import React from 'react';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { useProviderStore } from '@/stores/currentProviderStore';
 
 // This function to be moved to avoid duplication
 
@@ -22,6 +23,7 @@ const ExamHome = async ({ params }: { params: { id: string } }) => {
         patientId={patientId}
         patientFirstName={first_name}
         patientLastName={surname}
+        providerId={useProviderStore.getState().providerId}
       />
     </div>
   );

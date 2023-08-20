@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import LogoutButton from './LogoutButton';
 import { useProviderStore } from '@/stores/currentProviderStore';
-import { usePatientStore } from '@/stores/currentPatientStore';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 export function DashboardNavigation({
@@ -17,14 +16,14 @@ export function DashboardNavigation({
   const supabase = createClientComponentClient();
   const router = useRouter();
   const providerStore = useProviderStore();
-  const patientStore = usePatientStore();
 
-  const { providerFirstName, providerLastName } = providerStore.providerInfo;
+
+  const { providerFirstName, providerLastName } = providerStore
+
+  const providerInitials = providerFirstName[0] + providerLastName[0]
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    patientStore.reset();
-    providerStore.reset();
     router.refresh();
   };
   return (
@@ -40,7 +39,7 @@ export function DashboardNavigation({
             Dashboard
           </Link>
           <Link
-            href="/dashboard"
+            href="/dashboard/patients"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Patients
@@ -64,13 +63,12 @@ export function DashboardNavigation({
             <Avatar>
               <AvatarImage src="" />
               <AvatarFallback>
-                {providerFirstName[0]}
-                {providerLastName[0]}
+                {providerInitials}
               </AvatarFallback>
             </Avatar>
-            <span className="font-light text-xs">
+            <p className="font-light text-xs">
               Dr. {providerFirstName} {providerLastName}
-            </span>
+            </p>
           </div>
         </div>
       </nav>
