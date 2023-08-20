@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              <Settings2Icon className="mr-2 h-4 w-4"/>
+              <Settings2Icon className="mr-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -91,7 +91,7 @@ export function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {column.id.replaceAll('_', ' ')}
                   </DropdownMenuCheckboxItem>
                 );
               })}
@@ -126,7 +126,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="cursor-pointer">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
