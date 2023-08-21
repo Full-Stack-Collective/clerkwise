@@ -123,11 +123,11 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                
                 <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className="cursor-pointer"
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+                className="cursor-pointer"
+                // @ts-ignore
                   onClick={()=> router.push(`./patient/${row.original.id}`)}
                 >
                   {row.getVisibleCells().map((cell) => (

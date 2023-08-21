@@ -38,7 +38,7 @@ export default async function DashboardLayout({
   return (
     <>
       <StoreInitialiser
-        practiceId={id}
+        practiceId={practice as string}
         providerFirstName={first_name as string}
         providerLastName={last_name as string}
         providerId={id}

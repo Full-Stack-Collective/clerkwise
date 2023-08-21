@@ -37,14 +37,7 @@ async function PatientChart({ params }: { params: { id: string } }) {
 
   return (
     <div className="max-w-2xl w-full">
-      {/* <Link
-        className={buttonVariants({ variant: 'outline', size: 'sm' })}
-        href={'/dashboard'}
-      >
-        <ChevronLeft className="h-4 w-4" />
-        Back
-  
-      </Link> */}
+
     <BackButton />
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
