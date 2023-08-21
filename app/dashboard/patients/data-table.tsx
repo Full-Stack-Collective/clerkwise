@@ -9,7 +9,6 @@ import {
   useReactTable,
   SortingState,
   getSortedRowModel,
-  ColumnFiltersState,
   getFilteredRowModel,
   VisibilityState,
 } from '@tanstack/react-table';
@@ -130,10 +129,9 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                   className="cursor-pointer"
                   onClick={()=> router.push(`./patient/${row.original.id}`)}
-                  
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} >
+                    <TableCell key={cell.id} className='px-2' >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

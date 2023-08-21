@@ -13,7 +13,7 @@ export default async function DemoPage() {
   const data = await getAllPatients();
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 min-w-[600px]">
       {data && <DataTable columns={columns} data={data} />}
     </div>
   );
