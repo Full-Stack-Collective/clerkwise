@@ -5,7 +5,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // UI Elements
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -29,7 +29,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
-import BackButton from './BackButton';
 
 const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -53,10 +52,11 @@ const formSchema = z.object({
 const supabase = createClientComponentClient();
 
 export function RegisterPatient() {
-  const { providerId, practiceId } = useProviderStore().providerInfo;
+  const router = useRouter();
+
+  const { providerId, practiceId } = useProviderStore.getState();
   const [registeredPatient, setRegisteredPatient] =
     useState<CurrentPatient | null>(null);
-
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -125,7 +125,8 @@ export function RegisterPatient() {
         setIsConfirmationOpen(true);
         form.reset();
       }
-    } catch {
+    } catch (error) {
+      console.log(error);
       toast({
         title: 'Uh oh! Something went wrong.',
         description: 'There was a problem with your request.',
@@ -137,7 +138,6 @@ export function RegisterPatient() {
 
   return (
     <>
-      <BackButton />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -339,22 +339,26 @@ export function RegisterPatient() {
             </DialogDescription>
           </DialogHeader>
           <div className="w-full flex justify-around">
-            <Link
-              className={buttonVariants({ variant: 'outline' })}
-              href="/dashboard"
-              onClick={() => setIsConfirmationOpen(false)}
-            >
-              Back to Dashboard
-            </Link>
-            <Link
-              className={buttonVariants()}
-              href={`/dashboard/new/exam/${registeredPatient?.patientId}`}
+            <Button
+              variant="outline"
               onClick={() => {
                 setIsConfirmationOpen(false);
+                router.push('/dashboard');
+              }}
+            >
+              Back to Dashboard
+            </Button>
+            <Button
+              className={buttonVariants()}
+              onClick={() => {
+                setIsConfirmationOpen(false);
+                router.push(
+                  `/dashboard/new/exam/${registeredPatient?.patientId}`
+                );
               }}
             >
               Clerk Patient
-            </Link>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
