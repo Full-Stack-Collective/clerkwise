@@ -45,7 +45,7 @@ export function DashboardNavigation({
             Patients
           </Link>
           <Link
-            href="/dashboard"
+            href="/dashboard/appointments"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
             Appointments
