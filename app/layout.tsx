@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className='py-3 px-4'>
+        <header className='py-3 px-4 w-full'>
           <h2 className='font-semibold text-lg bg-gradient-to-br from-cyan-500 to-blue-900 bg-clip-text text-transparent'>Clerkwise</h2>
         </header>
         <main className='max-w-3xl w-full sm:px-4 px-2 mx-auto'>
