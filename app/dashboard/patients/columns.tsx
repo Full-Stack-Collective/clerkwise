@@ -22,7 +22,7 @@ export const columns: ColumnDef<Patient>[] = [
     cell: ({ row }) => {
       const firstName: string = row.getValue('surname');
       const formattedSurname = capitalizeWord(firstName);
-      return <div className="">{formattedSurname}</div>;
+      return <div className="pl-5">{formattedSurname}</div>;
     },
   },
   {
@@ -32,6 +32,7 @@ export const columns: ColumnDef<Patient>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className='w-max'
         >
           First Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -41,12 +42,12 @@ export const columns: ColumnDef<Patient>[] = [
     cell: ({ row }) => {
       const firstName: string = row.getValue('first_name');
       const formattedFirstName = capitalizeWord(firstName);
-      return <div className="">{formattedFirstName}</div>;
+      return <div >{formattedFirstName}</div>;
     },
   },
   {
     accessorKey: 'date_of_birth',
-    header: 'Date of Birth',
+    header: ({column}) => <div className='w-'>Date of Birth</div>,
     enableGlobalFilter: false,
     cell: ({ row }) => {
       const dateOfBirth: string = row.getValue('date_of_birth');

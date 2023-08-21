@@ -3,9 +3,9 @@ import { cookies } from 'next/headers';
 import { columns } from './columns';
 import { DataTable } from './data-table';
 
-async function getAllPatients(){
-  const supabase = createServerComponentClient<Database>({ cookies })
-  const {data} = await supabase.from('Patients').select()
+async function getAllPatients() {
+  const supabase = createServerComponentClient<Database>({ cookies });
+  const { data } = await supabase.from('Patients').select().order('surname', {ascending: true});
   return data;
 }
 
@@ -14,7 +14,7 @@ export default async function DemoPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+      {data && <DataTable columns={columns} data={data} />}
     </div>
   );
 }
