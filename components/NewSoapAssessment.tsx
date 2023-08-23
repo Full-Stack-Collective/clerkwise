@@ -108,12 +108,9 @@ export default function NewSoapAssessment({
   });
 
   const {
-    currentStepIndex,
     step,
-    steps,
     isFirstStep,
     isLastStep,
-    goTo,
     next,
     back,
   } = useMultistepForm([

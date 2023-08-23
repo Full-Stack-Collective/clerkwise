@@ -4,8 +4,6 @@ import * as z from 'zod';
 import { UseFormReturn } from 'react-hook-form';
 import { soapFormSchema } from './NewSoapAssessment';
 
-
-
 import {
   FormControl,
   FormField,
@@ -14,7 +12,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from './ui/input';
-
 
 
 export function Vitals({form}: {
