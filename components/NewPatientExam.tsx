@@ -81,7 +81,6 @@ export const examFormSchema = z.object({
 });
 
 function onSubmit(values: z.infer<typeof examFormSchema>) {
-  console.table(values);
   createClinicalRecord(values);
 }
 
@@ -130,7 +129,7 @@ function NewPatientExam({
     mode: 'onChange',
   });
   return (
-    <div className="p-4 max-w-lg w-full m-auto h-">
+    <div className="p-4 max-w-lg w-full m-auto">
       <BackButton />
       <h2 className="font-bold text-lg">Patient History</h2>
       <p className="my-3">
