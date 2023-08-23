@@ -15,8 +15,11 @@ import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
+import { useMultistepForm } from '@/hooks/useMultiStepForm';
+import SoapFields from './SoapFields';
+import { Vitals } from './Vitals';
 
-const soapFormSchema = z.object({
+export const soapFormSchema = z.object({
   subjectiveFindings: z.string().min(2, {
     message: 'PC must be at least 2 characters.',
   }),
@@ -104,6 +107,22 @@ export default function NewSoapAssessment({
     mode: 'onChange',
   });
 
+  const {
+    currentStepIndex,
+    step,
+    steps,
+    isFirstStep,
+    isLastStep,
+    goTo,
+    next,
+    back,
+  } = useMultistepForm([
+    <SoapFields form={form} key="soap" />,
+    <Vitals form={form} key="vitals" />,
+  ]);
+
+  const isStepOneValid = form.getFieldState('subjectiveFindings').invalid
+
   return (
     <div className="p-4 max-w-lg w-full m-auto">
       <h2 className="font-bold text-lg">SOAP Assessment</h2>
@@ -114,211 +133,39 @@ export default function NewSoapAssessment({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-md w-full px-2"
+          className="space-y-8 max-w-md w-full px-2 mx-auto"
           autoSave="off"
           autoComplete="off"
         >
-          <FormField
-            control={form.control}
-            name="subjectiveFindings"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Subjective Findings</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
+          {step}
+          <div
+            className={`flex ${
+              isFirstStep ? 'justify-end' : 'justify-between'
+            }`}
+          >
+            {!isFirstStep && (
+              <Button className="w-24" type="button" onClick={back}>
+                Back
+              </Button>
             )}
-          />
 
-          <FormField
-            control={form.control}
-            name="objectiveFindings"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Objective Findings</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
+            {isLastStep ? (
+              <Button
+                className="w-24"
+                disabled={
+                  !form.formState.isDirty ||
+                  (form.formState.isDirty && !form.formState.isValid)
+                }
+                type="submit"
+              >
+                Submit
+              </Button>
+            ) : (
+              <Button className="w-24" type="button" disabled={!form.formState.isDirty ||(form.formState.isDirty && isStepOneValid)} onClick={next}>
+                Next
+              </Button>
             )}
-          />
-
-          <FormField
-            control={form.control}
-            name="assessment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Assessment</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="plan"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Plan</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="bloodPressure"
-            render={({ field }) => (
-              <FormItem className="max-w-[280px] w-full mx-auto">
-                <FormLabel>Blood Pressure</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    className="max-w-[80px]"
-                    rightLabel="mmHg"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="heartRate"
-            render={({ field }) => (
-              <FormItem className="max-w-[280px] w-full mx-auto">
-                <FormLabel>Heart Rate</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    className="max-w-[80px]"
-                    type="number"
-                    rightLabel="beats per minute"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="respiratoryRate"
-            render={({ field }) => (
-              <FormItem className="max-w-[280px] w-full mx-auto">
-                <FormLabel>Respiratory Rate</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                    rightLabel="breaths per minute"
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="oxygenSaturation"
-            render={({ field }) => (
-              <FormItem className="max-w-[280px] w-full mx-auto">
-                <FormLabel>SpO2</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                    rightLabel="%"
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="temperature"
-            render={({ field }) => (
-              <FormItem className="max-w-[280px] w-full mx-auto">
-                <FormLabel>Temperature</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                    rightLabel="°C"
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="randomBloodSugar"
-            render={({ field }) => (
-              <FormItem className="max-w-[280px] w-full mx-auto">
-                <FormLabel>Random Blood Sugar</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="number"
-                    className="max-w-[80px]"
-                    rightLabel="mg/dL"
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="urine"
-            render={({ field }) => (
-              <FormItem className="max-w-[280px] w-full mx-auto">
-                <FormLabel>Urine</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder=""
-                    {...field}
-                    type="text"
-                    // className="max-w-[80px]"
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className="my-5" type="submit">
-            Submit
-          </Button>
+          </div>
         </form>
       </Form>
     </div>
