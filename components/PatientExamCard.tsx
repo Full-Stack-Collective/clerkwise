@@ -12,8 +12,8 @@ import {
   CardDescription,
 } from './ui/card';
 import { ChevronRight } from 'lucide-react';
-import { formatDate } from '@/utils/textFormatters';
 import ExamDetails from './ExamDetails';
+import { format } from 'date-fns';
 
 export default function PatientExamCard({
   clinicalAssessment,
@@ -51,7 +51,7 @@ export default function PatientExamCard({
           <CardContent className="flex flex-col items-center">
             {clinicalAssessmentExists ? (
               <CardDescription className="text-sm mb-4">
-                Exam Date: {formatDate(clinicalAssessment[0].exam_date!)}
+                Exam Date: {format(new Date(clinicalAssessment[0].exam_date!), 'PPP')}
               </CardDescription>
             ) : null}
             <Button onClick={() => setIsExamDetailsOpen(true)}>

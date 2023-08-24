@@ -101,7 +101,7 @@ export default function NewSoapAssessment({
     providerId: '',
   };
 
-  const form = useForm<z.infer<typeof soapFormSchema>>({
+   const form = useForm<z.infer<typeof soapFormSchema>>({
     resolver: zodResolver(soapFormSchema),
     defaultValues,
     mode: 'onChange',

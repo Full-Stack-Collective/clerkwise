@@ -9,9 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { capitalizeWord, formatDate } from '@/utils/textFormatters';
+import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
 import Link from 'next/link';
+import { format } from 'date-fns';
 
 export function PatientDetails({ patientData, clinicalAssessment }: any) {
   const [
@@ -50,7 +51,8 @@ export function PatientDetails({ patientData, clinicalAssessment }: any) {
         </CardTitle>
         <CardDescription>{capitalizeWord(sex)}</CardDescription>
         <CardDescription>
-          {formatDate(date_of_birth)} {`(${calculateAge(date_of_birth)} years)`}
+          {format(new Date(date_of_birth), 'PPP')}{' '}
+          {`(${calculateAge(date_of_birth)} years)`}
         </CardDescription>
       </CardHeader>
       <CardContent>
