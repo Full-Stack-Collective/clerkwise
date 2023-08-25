@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { DashboardNavigation } from '@/components/DashboardNavigation';
 import { Toaster } from '@/components/ui/toaster';
 import { useProviderStore } from '@/stores/currentProviderStore';
-import StoreInitialiser from '@/components/StoreInitialiser';
+import ProviderStoreInitialiser from '@/components/ProviderStoreInitialiser';
 
 export default async function DashboardLayout({
   children,
@@ -37,7 +37,7 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <StoreInitialiser
+      <ProviderStoreInitialiser
         practiceId={practice as string}
         providerFirstName={first_name as string}
         providerLastName={last_name as string}

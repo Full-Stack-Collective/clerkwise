@@ -7,8 +7,10 @@ import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import PatientExamCard from '@/components/PatientExamCard';
 import BackButton from '@/components/BackButton';
+import PatientSoapsCard from '@/components/PatientSoapsCard';
+import { usePatientStore } from '@/stores/currentPatientStore';
 
-const supabase = createServerComponentClient({ cookies });
+const supabase = createServerComponentClient<Database>({ cookies });
 
 const getPatientChart = async (patientId: string) => {
   return await supabase.from('Patients').select('*').eq('id', patientId);
@@ -32,22 +34,41 @@ async function PatientChart({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const { data: patientData } = await getPatientChart(id);
+  const { first_name, surname, primary_provider } = patientData![0];
+
+  usePatientStore.setState({
+    patientId: id,
+    patientFirstName: first_name,
+    patientLastName: surname,
+    providerId: primary_provider!,
+  });
+
   const { data: clinicalAssessment } = await getClinicalAssesment(id);
   const { data: soapAssessments } = await getSoapAssessments(id);
 
+  const clinicalAssessmentExists =
+    clinicalAssessment && clinicalAssessment.length > 0;
+
   return (
     <div className="max-w-2xl w-full">
-
-    <BackButton />
+      <BackButton />
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <PatientDetails patientData={patientData} />
-        {clinicalAssessment && patientData ? (
-          <PatientExamCard
-            clinicalAssessment={clinicalAssessment}
-            patientData={patientData[0]}
-          />
-        ) : null}
+        <div>
+          {clinicalAssessment && patientData ? (
+            <PatientExamCard
+              clinicalAssessment={clinicalAssessment}
+              patientData={patientData[0]}
+            />
+          ) : null}
+          {clinicalAssessmentExists && patientData ? (
+            <PatientSoapsCard
+              soapAssessments={soapAssessments}
+              patientData={patientData[0]}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );

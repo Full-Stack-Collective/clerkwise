@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { useMultistepForm } from '@/hooks/useMultiStepForm';
 import SoapFields from './SoapFields';
 import { Vitals } from './Vitals';
+import { usePatientStore } from '@/stores/currentPatientStore';
 
 export const soapFormSchema = z.object({
   subjectiveFindings: z.string().min(2, {
@@ -74,17 +75,10 @@ function onSubmit(values: z.infer<typeof soapFormSchema>) {
   console.table(values);
 }
 
-export default function NewSoapAssessment({
-  patientId,
-  patientFirstName,
-  patientLastName,
-  providerId,
-}: {
-  patientId: string;
-  patientFirstName: string;
-  patientLastName: string;
-  providerId: string;
-}) {
+export default function NewSoapAssessment() {
+
+  const { patientId, patientFirstName, patientLastName, providerId} = usePatientStore.getState()
+
   const defaultValues = {
     subjectiveFindings: '',
     objectiveFindings: '',

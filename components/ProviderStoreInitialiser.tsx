@@ -3,7 +3,7 @@
 import { useProviderStore } from '@/stores/currentProviderStore';
 import { useRef } from 'react';
 
-export default function StoreInitialiser({
+export default function ProviderStoreInitialiser({
   practiceId,
   providerFirstName,
   providerLastName,
