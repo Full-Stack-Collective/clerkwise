@@ -39,7 +39,7 @@ export default function PatientSoapsCard({
               Is this a follow up visit?
             </CardDescription>
             <Link
-              href={`/dashboard/new/soap/`}
+              href={`/dashboard/new/soap/${id}`}
               className={buttonVariants({ variant: 'default' })}
             >
               Create New SOAP <ChevronRight className="h-4 w-4" />

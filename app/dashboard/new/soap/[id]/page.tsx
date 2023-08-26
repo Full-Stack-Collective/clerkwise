@@ -3,9 +3,12 @@ import NewSoapAssessment from '@/components/NewSoapAssessment';
 import PatientStoreInitialiser from '@/components/PatientStoreInitializer';
 import { usePatientStore } from '@/stores/currentPatientStore';
 
-export default function SoapAssessment() {
+export default async function SoapAssessment({ params }: { params: { id: string } }) {
+
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
+
+    console.log(params, patientLastName)
 
   return (
     <div>

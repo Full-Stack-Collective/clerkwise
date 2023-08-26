@@ -78,6 +78,7 @@ function onSubmit(values: z.infer<typeof soapFormSchema>) {
 export default function NewSoapAssessment() {
 
   const { patientId, patientFirstName, patientLastName, providerId} = usePatientStore.getState()
+  console.log(patientLastName)
 
   const defaultValues = {
     subjectiveFindings: '',

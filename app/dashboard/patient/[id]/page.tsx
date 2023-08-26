@@ -1,10 +1,6 @@
 import { PatientDetails } from '@/components/PatientDetails';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import React from 'react';
 import { cookies } from 'next/headers';
-import { buttonVariants } from '@/components/ui/button';
-import Link from 'next/link';
-import { ChevronLeft } from 'lucide-react';
 import PatientExamCard from '@/components/PatientExamCard';
 import BackButton from '@/components/BackButton';
 import PatientSoapsCard from '@/components/PatientSoapsCard';
@@ -30,11 +26,17 @@ const getSoapAssessments = async (patientId: string) => {
     .eq('patient', patientId);
 };
 
+
 async function PatientChart({ params }: { params: { id: string } }) {
   const { id } = params;
 
   const { data: patientData } = await getPatientChart(id);
   const { first_name, surname, primary_provider } = patientData![0];
+  const { data: clinicalAssessment } = await getClinicalAssesment(id);
+  const { data: soapAssessments } = await getSoapAssessments(id);
+
+  const clinicalAssessmentExists =
+    clinicalAssessment && clinicalAssessment.length > 0;
 
   usePatientStore.setState({
     patientId: id,
@@ -42,12 +44,6 @@ async function PatientChart({ params }: { params: { id: string } }) {
     patientLastName: surname,
     providerId: primary_provider!,
   });
-
-  const { data: clinicalAssessment } = await getClinicalAssesment(id);
-  const { data: soapAssessments } = await getSoapAssessments(id);
-
-  const clinicalAssessmentExists =
-    clinicalAssessment && clinicalAssessment.length > 0;
 
   return (
     <div className="max-w-2xl w-full">
