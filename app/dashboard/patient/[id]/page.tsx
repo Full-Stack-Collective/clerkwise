@@ -1,7 +1,7 @@
 import { PatientDetails } from '@/components/PatientDetails';
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import PatientExamCard from '@/components/PatientExamCard';
+import PatientExamCard from '@/components/PatientClinicalExamCard';
 import BackButton from '@/components/BackButton';
 import PatientSoapsCard from '@/components/PatientSoapsCard';
 import { usePatientStore } from '@/stores/currentPatientStore';
