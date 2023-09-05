@@ -38,32 +38,37 @@ export const createClinicalRecord = async (
     providerId,
   } = formData;
 
-  const { error } = await supabase.from('Clinical Records').insert({
-    patient: patientId,
-    provider: providerId,
-    presenting_complaint: presentingComplaint,
-    history_presenting_complaint: historyPresentingComplaint,
-    past_medical_history: pastMedicalHistory,
-    drug_history: drugHistory,
-    family_history: familyHistory,
-    social_history: socialHistory,
-    allergies,
-    systems_review: systemsReview,
-    on_examination: onExamination,
-    observations,
-    focused_findings: focusedFindings,
-    blood_pressure: bloodPressure,
-    heart_rate: parseInt(heartRate as string),
-    respiratory_rate: parseInt(respiratoryRate as string),
-    oxygen_saturation: parseInt(oxygenSaturation as string),
-    temperature: parseInt(temperature as string),
-    random_blood_sugar: parseInt(randomBloodSugar as string),
-    urine,
-    differential_diagnosis: differentialDiagnosis,
-    diagnosis,
-    plan,
-  });
+  try {
+    const { error } = await supabase.from('Clinical Records').insert({
+      patient: patientId,
+      provider: providerId,
+      presenting_complaint: presentingComplaint,
+      history_presenting_complaint: historyPresentingComplaint,
+      past_medical_history: pastMedicalHistory,
+      drug_history: drugHistory,
+      family_history: familyHistory,
+      social_history: socialHistory,
+      allergies,
+      systems_review: systemsReview,
+      on_examination: onExamination,
+      observations,
+      focused_findings: focusedFindings,
+      blood_pressure: bloodPressure,
+      heart_rate: parseInt(heartRate as string),
+      respiratory_rate: parseInt(respiratoryRate as string),
+      oxygen_saturation: parseInt(oxygenSaturation as string),
+      temperature: parseInt(temperature as string),
+      random_blood_sugar: parseInt(randomBloodSugar as string),
+      urine,
+      differential_diagnosis: differentialDiagnosis,
+      diagnosis,
+      plan,
+    });
 
-  if (error) console.error(error);
-  else console.log('Success!');
+    if (error) throw new Error(`There was a problem: ${error}`);
+  } catch (error: unknown) {
+    if (error) {
+      throw new Error('Something went wrong:',error);
+    }
+  }
 };
