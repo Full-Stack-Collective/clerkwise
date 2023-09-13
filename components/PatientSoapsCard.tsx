@@ -46,27 +46,32 @@ export default function PatientSoapsCard({
           </CardContent>
         ) : (
           <CardContent className="flex flex-col items-center">
-            {soapAssessmentsExist ? (
-              <CardDescription className="text-sm mb-4">
-                Exam Date:{' '}
-                {format(new Date(soapAssessments[0].exam_date!), 'PPP')}
-              </CardDescription>
-            ) : null}
-            <Button onClick={() => setIsExamDetailsOpen(true)}>
-              View Exam <ChevronRight className="h-4 w-4" />
-            </Button>
+            {soapAssessments.map((soapAssessment: SOAP) => {
+              return (
+                <>
+                  <CardDescription key={soapAssessment.id} className="text-sm mb-4">
+                    Exam Date:{' '}
+                    {soapAssessment.exam_date &&
+                      format(new Date(soapAssessment.exam_date), 'PPP')}
+                  </CardDescription>
+                  <Button onClick={() => setIsExamDetailsOpen(true)}>
+                    View SOAP <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </>
+              );
+            })}
           </CardContent>
         )}
       </Card>
-      {soapAssessmentsExist ? (
-        null
-        // <ExamDetails
-        //   isOpen={isExamDetailsOpen}
-        //   onClose={() => setIsExamDetailsOpen(false)}
-        //   soapAssessments={soapAssessments[0]}
-        //   patientData={patientData}
-        // />
-      ) : null}
+      {soapAssessmentsExist
+        ? null
+        : // <ExamDetails
+          //   isOpen={isExamDetailsOpen}
+          //   onClose={() => setIsExamDetailsOpen(false)}
+          //   soapAssessments={soapAssessments[0]}
+          //   patientData={patientData}
+          // />
+          null}
     </>
   );
 }

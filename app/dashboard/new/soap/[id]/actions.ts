@@ -43,7 +43,7 @@ export const createSoapAssessment = async (
       plan,
     });
 
-    if (error) console.log(error);
+    if (error) throw new Error(`There was a problem: ${error}`);
   } catch (error: unknown) {
     if (error) {
       throw new Error('Something went wrong:',error);

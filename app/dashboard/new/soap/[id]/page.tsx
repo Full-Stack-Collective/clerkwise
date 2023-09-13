@@ -8,7 +8,9 @@ export default async function SoapAssessment({ params }: { params: { id: string 
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
 
-    console.log(params, patientLastName)
+    console.log('>>Last Name', patientLastName)
+    console.log('>>>>', patientId)
+    console.log('>>>>', providerId)
 
   return (
     <div>

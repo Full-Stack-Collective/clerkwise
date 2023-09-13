@@ -102,8 +102,8 @@ export default function NewSoapAssessment() {
     temperature: '',
     randomBloodSugar: '',
     urine: '',
-    patientId: '',
-    providerId: '',
+    patientId: patientId,
+    providerId: providerId,
   };
 
   const form = useForm<z.infer<typeof soapFormSchema>>({
