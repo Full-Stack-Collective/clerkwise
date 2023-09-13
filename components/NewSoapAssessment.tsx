@@ -1,24 +1,18 @@
 'use client';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Input } from '@/components/ui/input';
 import { useMultistepForm } from '@/hooks/useMultiStepForm';
 import SoapFields from './SoapFields';
 import { Vitals } from './Vitals';
 import { usePatientStore } from '@/stores/currentPatientStore';
+import { useRouter } from 'next/navigation';
+import { useToast } from './ui/use-toast';
+import { createSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
 
 export const soapFormSchema = z.object({
   subjectiveFindings: z.string().min(2, {
@@ -71,14 +65,30 @@ export const soapFormSchema = z.object({
   providerId: z.string(),
 });
 
-function onSubmit(values: z.infer<typeof soapFormSchema>) {
-  console.table(values);
-}
+
 
 export default function NewSoapAssessment() {
+  const { patientId, patientFirstName, patientLastName, providerId } =
+    usePatientStore.getState();
 
-  const { patientId, patientFirstName, patientLastName, providerId} = usePatientStore.getState()
-  console.log(patientLastName)
+    const router = useRouter();
+    const { toast } = useToast();
+    
+    function onSubmit(values: z.infer<typeof soapFormSchema>) {
+      createSoapAssessment(values)
+        .then(() => {
+          toast({ title: 'Your exam has been created' });
+          router.push(`/dashboard/patient/${patientId}`);
+        })
+        .catch((error) => {
+          console.error(error);
+          toast({
+            title: 'Uh oh! Something went wrong.',
+            description: 'There was a problem with your request.',
+          });
+        });
+    }
+
 
   const defaultValues = {
     subjectiveFindings: '',
@@ -96,24 +106,18 @@ export default function NewSoapAssessment() {
     providerId: '',
   };
 
-   const form = useForm<z.infer<typeof soapFormSchema>>({
+  const form = useForm<z.infer<typeof soapFormSchema>>({
     resolver: zodResolver(soapFormSchema),
     defaultValues,
     mode: 'onChange',
   });
 
-  const {
-    step,
-    isFirstStep,
-    isLastStep,
-    next,
-    back,
-  } = useMultistepForm([
+  const { step, isFirstStep, isLastStep, next, back } = useMultistepForm([
     <SoapFields form={form} key="soap" />,
     <Vitals form={form} key="vitals" />,
   ]);
 
-  const isStepOneValid = form.getFieldState('subjectiveFindings').invalid
+  const isStepOneValid = form.getFieldState('subjectiveFindings').invalid;
 
   return (
     <div className="p-4 max-w-lg w-full m-auto">
@@ -153,7 +157,15 @@ export default function NewSoapAssessment() {
                 Submit
               </Button>
             ) : (
-              <Button className="w-24" type="button" disabled={!form.formState.isDirty ||(form.formState.isDirty && isStepOneValid)} onClick={next}>
+              <Button
+                className="w-24"
+                type="button"
+                disabled={
+                  !form.formState.isDirty ||
+                  (form.formState.isDirty && isStepOneValid)
+                }
+                onClick={next}
+              >
                 Next
               </Button>
             )}

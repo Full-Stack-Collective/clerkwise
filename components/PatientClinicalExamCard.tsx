@@ -33,26 +33,26 @@ export default function PatientClinicalExamCard({
 
   const { id } = patientData;
 
-  useEffect(() => {
-    const channel = supabase
-      .channel('clinical exams')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'Clinical Records',
-        },
-        () => {
-          router.refresh();
-        }
-      )
-      .subscribe();
+  // useEffect(() => {
+  //   const channel = supabase
+  //     .channel('clinical exams')
+  //     .on(
+  //       'postgres_changes',
+  //       {
+  //         event: '*',
+  //         schema: 'public',
+  //         table: 'Clinical Records',
+  //       },
+  //       () => {
+  //         router.refresh();
+  //       }
+  //     )
+  //     .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase, router]);
+  //   return () => {
+  //     supabase.removeChannel(channel);
+  //   };
+  // }, [supabase, router]);
 
   return (
     <>

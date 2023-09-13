@@ -12,7 +12,6 @@ import {
   CardDescription,
 } from './ui/card';
 import { ChevronRight } from 'lucide-react';
-import ExamDetails from './ExamDetails';
 import { format } from 'date-fns';
 
 export default function PatientSoapsCard({
