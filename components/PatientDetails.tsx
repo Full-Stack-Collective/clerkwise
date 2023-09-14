@@ -12,7 +12,7 @@ import {
 import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
 import Link from 'next/link';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 export function PatientDetails({ patientData, clinicalAssessment }: any) {
   const [
@@ -51,7 +51,7 @@ export function PatientDetails({ patientData, clinicalAssessment }: any) {
         </CardTitle>
         <CardDescription>{capitalizeWord(sex)}</CardDescription>
         <CardDescription>
-          {format(new Date(date_of_birth), 'PPP')}{' '}
+          {format(parseISO(date_of_birth), 'PPP')}{' '}
           {`(${calculateAge(date_of_birth)} years)`}
         </CardDescription>
       </CardHeader>

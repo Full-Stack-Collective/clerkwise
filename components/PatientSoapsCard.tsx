@@ -12,7 +12,7 @@ import {
   CardDescription,
 } from './ui/card';
 import { ChevronRight } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 export default function PatientSoapsCard({
   soapAssessments,
@@ -32,7 +32,7 @@ export default function PatientSoapsCard({
         <CardHeader>
           <CardTitle className="text-xl">SOAP Assessments</CardTitle>
         </CardHeader>
-        {!soapAssessmentsExist ? (
+        {
           <CardContent className="flex flex-col items-center">
             <CardDescription className="text-sm mb-4">
               Is this a follow up visit?
@@ -43,25 +43,29 @@ export default function PatientSoapsCard({
             >
               Create New SOAP <ChevronRight className="h-4 w-4" />
             </Link>
+            {/* </CardContent>
+        
+          <CardContent className="flex flex-col items-center"> */}
+            {soapAssessmentsExist &&
+              soapAssessments.map((soapAssessment: SOAP) => {
+                return (
+                  <>
+                    <CardDescription
+                      key={soapAssessment.id}
+                      className="text-sm my-4"
+                    >
+                      Exam Date:{' '}
+                      {soapAssessment.exam_date &&
+                        format(parseISO(soapAssessment.exam_date), 'PPP')}
+                    </CardDescription>
+                    <Button onClick={() => setIsExamDetailsOpen(true)}>
+                      View SOAP <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </>
+                );
+              })}
           </CardContent>
-        ) : (
-          <CardContent className="flex flex-col items-center">
-            {soapAssessments.map((soapAssessment: SOAP) => {
-              return (
-                <>
-                  <CardDescription key={soapAssessment.id} className="text-sm mb-4">
-                    Exam Date:{' '}
-                    {soapAssessment.exam_date &&
-                      format(new Date(soapAssessment.exam_date), 'PPP')}
-                  </CardDescription>
-                  <Button onClick={() => setIsExamDetailsOpen(true)}>
-                    View SOAP <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </>
-              );
-            })}
-          </CardContent>
-        )}
+        }
       </Card>
       {soapAssessmentsExist
         ? null
