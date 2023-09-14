@@ -41,29 +41,33 @@ export default function PatientSoapsCard({
               href={`/dashboard/new/soap/${id}`}
               className={buttonVariants({ variant: 'default' })}
             >
-              Create New SOAP <ChevronRight className="h-4 w-4" />
+              New SOAP <ChevronRight className="h-4 w-4" />
             </Link>
             {/* </CardContent>
         
           <CardContent className="flex flex-col items-center"> */}
-            {soapAssessmentsExist &&
-              soapAssessments.map((soapAssessment: SOAP) => {
-                return (
-                  <>
-                    <CardDescription
-                      key={soapAssessment.id}
-                      className="text-sm my-4"
-                    >
-                      Exam Date:{' '}
-                      {soapAssessment.exam_date &&
-                        format(parseISO(soapAssessment.exam_date), 'PPP')}
-                    </CardDescription>
-                    <Button onClick={() => setIsExamDetailsOpen(true)}>
-                      View SOAP <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </>
-                );
-              })}
+            <div className='w-full py-5 mx-auto flex flex-col'>
+              <h2 className='text-lg font-semibold'>Past SOAPs</h2>
+              {soapAssessmentsExist &&
+                soapAssessments.map((soapAssessment: SOAP) => {
+                  return (
+                    <>
+                      <CardDescription
+                        key={soapAssessment.id}
+                        className="text-sm my-2"
+                      ></CardDescription>
+                      <Button
+                        variant={'secondary'}
+                        onClick={() => setIsExamDetailsOpen(true)}
+                      >
+                        {soapAssessment.exam_date &&
+                          format(parseISO(soapAssessment.exam_date), 'PP')}
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </>
+                  );
+                })}
+            </div>
           </CardContent>
         }
       </Card>

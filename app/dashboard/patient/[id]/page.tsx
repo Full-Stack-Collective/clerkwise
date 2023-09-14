@@ -51,7 +51,7 @@ async function PatientChart({ params }: { params: { id: string } }) {
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <PatientDetails patientData={patientData} />
-        <div>
+        <div className='flex flex-col gap-3'>
           {clinicalAssessment && patientData ? (
             <PatientClinicalExamCard
               clinicalAssessment={clinicalAssessment}
