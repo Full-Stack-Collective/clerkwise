@@ -46,27 +46,26 @@ export default function PatientSoapsCard({
             {/* </CardContent>
         
           <CardContent className="flex flex-col items-center"> */}
-            <div className='w-full py-5 mx-auto flex flex-col'>
-              <h2 className='text-lg font-semibold'>Past SOAPs</h2>
-              {soapAssessmentsExist &&
-                soapAssessments.map((soapAssessment: SOAP) => {
-                  return (
-                    <>
-                      <CardDescription
-                        key={soapAssessment.id}
-                        className="text-sm my-2"
-                      ></CardDescription>
-                      <Button
-                        variant={'secondary'}
-                        onClick={() => setIsExamDetailsOpen(true)}
-                      >
-                        {soapAssessment.exam_date &&
-                          format(parseISO(soapAssessment.exam_date), 'PP')}
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </>
-                  );
-                })}
+            <div className="w-full py-5 mx-auto flex flex-col">
+              <h2 className="text-lg font-semibold">Past SOAPs</h2>
+              <ul>
+                {soapAssessmentsExist &&
+                  soapAssessments.map((soapAssessment: SOAP) => {
+                    return (
+                      <li key={soapAssessment.id}>
+                        <CardDescription className="text-sm my-2"></CardDescription>
+                        <Button
+                          variant={'secondary'}
+                          onClick={() => setIsExamDetailsOpen(true)}
+                        >
+                          {soapAssessment.exam_date &&
+                            format(parseISO(soapAssessment.exam_date), 'PP')}
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </li>
+                    );
+                  })}
+              </ul>
             </div>
           </CardContent>
         }
