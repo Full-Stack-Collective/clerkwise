@@ -13,6 +13,7 @@ import {
 } from './ui/card';
 import { ChevronRight } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
+import SoapDetails from './SoapDetails';
 
 export default function PatientSoapsCard({
   soapAssessments,
@@ -72,12 +73,12 @@ export default function PatientSoapsCard({
       </Card>
       {soapAssessmentsExist
         ? null
-        : // <ExamDetails
-          //   isOpen={isExamDetailsOpen}
-          //   onClose={() => setIsExamDetailsOpen(false)}
-          //   soapAssessments={soapAssessments[0]}
-          //   patientData={patientData}
-          // />
+        :  <SoapDetails
+             isOpen={isExamDetailsOpen}
+             onClose={() => setIsExamDetailsOpen(false)}
+             soapAssessment={}
+             patientData={patientData}
+           />
           null}
     </>
   );
