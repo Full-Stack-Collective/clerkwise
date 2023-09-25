@@ -39,8 +39,7 @@ export default function SoapDetails({
     temperature,
     oxygen_saturation,
     random_blood_sugar,
-    urine
-    
+    urine,
   } = soapAssesment;
 
   return (
@@ -51,11 +50,11 @@ export default function SoapDetails({
             {first_name} {surname}
           </DialogTitle>
           <DialogDescription>
-            {capitalizeWord(sex as string)},
+            {capitalizeWord(sex as string)},{' '}
             {date_of_birth && calculateAge(date_of_birth)} years
           </DialogDescription>
           <DialogDescription>
-            Exam date: {exam_date && format(new Date(exam_date), 'PPP')}
+            {/* Exam date: {exam_date && format(new Date(exam_date), 'PPP')} */}
           </DialogDescription>
         </DialogHeader>
 
@@ -99,7 +98,6 @@ export default function SoapDetails({
               {urine || 'not recorded'}
             </p>
           </TabsContent>
-
         </Tabs>
 
         <DialogFooter>

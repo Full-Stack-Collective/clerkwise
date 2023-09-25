@@ -22,9 +22,17 @@ export default function PatientSoapsCard({
   soapAssessments: SOAP[] | null;
   patientData: Patient;
 }) {
-  const [isExamDetailsOpen, setIsExamDetailsOpen] = useState(false);
+  const [isSoapDetailsOpen, setIsSoapDetailsOpen] = useState(false);
+  const [currentSoap, setCurrentSoap] = useState<SOAP | null>(null)
 
   const soapAssessmentsExist = soapAssessments && soapAssessments.length > 0;
+
+  const handleSoapSelection = (event: Event) => {
+    console.log(event.target)
+    setIsSoapDetailsOpen(true)
+  }
+
+  // console.log(soapAssessments)
 
   const { id } = patientData;
   return (
@@ -57,7 +65,11 @@ export default function PatientSoapsCard({
                         <CardDescription className="text-sm my-2"></CardDescription>
                         <Button
                           variant={'secondary'}
-                          onClick={() => setIsExamDetailsOpen(true)}
+                          onClick={()=> {
+                            
+                            setCurrentSoap(soapAssessments.filter(assessment => assessment.id === soapAssessment.id)[0])
+                            setIsSoapDetailsOpen(true)
+                          }}
                         >
                           {soapAssessment.exam_date &&
                             format(parseISO(soapAssessment.exam_date), 'PP')}
@@ -71,15 +83,15 @@ export default function PatientSoapsCard({
           </CardContent>
         }
       </Card>
-      {soapAssessmentsExist
+      {!currentSoap
         ? null
         :  <SoapDetails
-             isOpen={isExamDetailsOpen}
-             onClose={() => setIsExamDetailsOpen(false)}
-             soapAssessment={}
+             isOpen={isSoapDetailsOpen}
+             onClose={() => setIsSoapDetailsOpen(false)}
              patientData={patientData}
+             soapAssesment={currentSoap}
            />
-          null}
+          }
     </>
   );
 }
