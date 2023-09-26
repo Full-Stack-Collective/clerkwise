@@ -57,7 +57,7 @@ export default function PatientSoapsCard({
           <CardContent className="flex flex-col items-center"> */}
             <div className="w-full py-5 mx-auto flex flex-col">
               <h2 className="text-lg font-semibold">Past SOAPs</h2>
-              <ul>
+              <ul className='mx-auto'>
                 {soapAssessmentsExist &&
                   soapAssessments.map((soapAssessment: SOAP) => {
                     return (
