@@ -14,6 +14,7 @@ import {
 import { ChevronRight } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import SoapDetails from './SoapDetails';
+import { ScrollArea } from './ui/scroll-area';
 
 export default function PatientSoapsCard({
   soapAssessments,
@@ -58,12 +59,12 @@ export default function PatientSoapsCard({
             {soapAssessmentsExist ? (
               <div className="w-full py-5 mx-auto flex flex-col">
                 <h2 className="text-lg font-semibold">Past SOAPs</h2>
-                <ul className="mx-auto">
+                <ScrollArea className='h-[96px]'>
+                <ul className="w-full flex flex-col gap-3 items-center">
                   {soapAssessmentsExist &&
                     soapAssessments.map((soapAssessment: SOAP) => {
                       return (
                         <li key={soapAssessment.id}>
-                          <CardDescription className="text-sm my-2"></CardDescription>
                           <Button
                             variant={'secondary'}
                             onClick={() => {
@@ -84,6 +85,7 @@ export default function PatientSoapsCard({
                       );
                     })}
                 </ul>
+                </ScrollArea>
               </div>
             ) : null}
           </CardContent>
