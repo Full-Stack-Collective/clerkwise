@@ -23,14 +23,14 @@ export default function PatientSoapsCard({
   patientData: Patient;
 }) {
   const [isSoapDetailsOpen, setIsSoapDetailsOpen] = useState(false);
-  const [currentSoap, setCurrentSoap] = useState<SOAP | null>(null)
+  const [currentSoap, setCurrentSoap] = useState<SOAP | null>(null);
 
   const soapAssessmentsExist = soapAssessments && soapAssessments.length > 0;
 
   const handleSoapSelection = (event: Event) => {
-    console.log(event.target)
-    setIsSoapDetailsOpen(true)
-  }
+    console.log(event.target);
+    setIsSoapDetailsOpen(true);
+  };
 
   // console.log(soapAssessments)
 
@@ -55,43 +55,48 @@ export default function PatientSoapsCard({
             {/* </CardContent>
         
           <CardContent className="flex flex-col items-center"> */}
-            <div className="w-full py-5 mx-auto flex flex-col">
-              <h2 className="text-lg font-semibold">Past SOAPs</h2>
-              <ul className='mx-auto'>
-                {soapAssessmentsExist &&
-                  soapAssessments.map((soapAssessment: SOAP) => {
-                    return (
-                      <li key={soapAssessment.id}>
-                        <CardDescription className="text-sm my-2"></CardDescription>
-                        <Button
-                          variant={'secondary'}
-                          onClick={()=> {
-                            
-                            setCurrentSoap(soapAssessments.filter(assessment => assessment.id === soapAssessment.id)[0])
-                            setIsSoapDetailsOpen(true)
-                          }}
-                        >
-                          {soapAssessment.exam_date &&
-                            format(parseISO(soapAssessment.exam_date), 'PP')}
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </li>
-                    );
-                  })}
-              </ul>
-            </div>
+            {soapAssessmentsExist ? (
+              <div className="w-full py-5 mx-auto flex flex-col">
+                <h2 className="text-lg font-semibold">Past SOAPs</h2>
+                <ul className="mx-auto">
+                  {soapAssessmentsExist &&
+                    soapAssessments.map((soapAssessment: SOAP) => {
+                      return (
+                        <li key={soapAssessment.id}>
+                          <CardDescription className="text-sm my-2"></CardDescription>
+                          <Button
+                            variant={'secondary'}
+                            onClick={() => {
+                              setCurrentSoap(
+                                soapAssessments.filter(
+                                  (assessment) =>
+                                    assessment.id === soapAssessment.id
+                                )[0]
+                              );
+                              setIsSoapDetailsOpen(true);
+                            }}
+                          >
+                            {soapAssessment.exam_date &&
+                              format(parseISO(soapAssessment.exam_date), 'PP')}
+                            <ChevronRight className="h-4 w-4" />
+                          </Button>
+                        </li>
+                      );
+                    })}
+                </ul>
+              </div>
+            ) : null}
           </CardContent>
         }
       </Card>
-      {!currentSoap
-        ? null
-        :  <SoapDetails
-             isOpen={isSoapDetailsOpen}
-             onClose={() => setIsSoapDetailsOpen(false)}
-             patientData={patientData}
-             soapAssesment={currentSoap}
-           />
-          }
+      {!currentSoap ? null : (
+        <SoapDetails
+          isOpen={isSoapDetailsOpen}
+          onClose={() => setIsSoapDetailsOpen(false)}
+          patientData={patientData}
+          soapAssesment={currentSoap}
+        />
+      )}
     </>
   );
 }
