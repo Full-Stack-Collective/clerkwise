@@ -3,14 +3,6 @@ export const capitalizeWord = (string: string | null): string | null => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 };
 
-export const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('en-us', {
-    timeZone: 'UTC',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-};
 
 export const formatPhoneNumber = (phoneNumber: string) => {
   const cleaned = ('' + phoneNumber).replace(/\D/g, '');

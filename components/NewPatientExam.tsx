@@ -19,6 +19,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 import { createClinicalRecord } from '@/app/dashboard/new/exam/[id]/actions';
 import BackButton from './BackButton';
+import { useRouter } from 'next/navigation';
+import { useToast } from './ui/use-toast';
 
 export const examFormSchema = z.object({
   presentingComplaint: z.string().min(2, {
@@ -80,24 +82,14 @@ export const examFormSchema = z.object({
   providerId: z.string(),
 });
 
-function onSubmit(values: z.infer<typeof examFormSchema>) {
-  console.table(values);
-  createClinicalRecord(values);
-}
-
 function NewPatientExam({
   patientId,
   patientFirstName,
   patientLastName,
-  providerId
-}: {
-  patientId: string;
-  patientFirstName: string;
-  patientLastName: string;
-  providerId: string
-}) {
+  providerId,
+}: CurrentPatient) {
 
-
+  
   const defaultValues = {
     presentingComplaint: '',
     historyPresentingComplaint: '',
@@ -129,8 +121,27 @@ function NewPatientExam({
     defaultValues,
     mode: 'onChange',
   });
+
+  const router = useRouter();
+  const { toast } = useToast();
+
+  function onSubmit(values: z.infer<typeof examFormSchema>) {
+    createClinicalRecord(values)
+      .then(() => {
+        toast({ title: 'Your exam has been created' });
+        router.push(`/dashboard/patient/${patientId}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
+        });
+      });
+  }
+
   return (
-    <div className="p-4 max-w-lg w-full m-auto h-">
+    <div className="p-4 max-w-lg w-full m-auto">
       <BackButton />
       <h2 className="font-bold text-lg">Patient History</h2>
       <p className="my-3">

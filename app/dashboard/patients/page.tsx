@@ -9,7 +9,7 @@ async function getAllPatients() {
   return data;
 }
 
-export default async function DemoPage() {
+export default async function AllPatientsPage() {
   const data = await getAllPatients();
 
   return (

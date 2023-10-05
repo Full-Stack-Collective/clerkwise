@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button, buttonVariants } from './ui/button';
 import {
@@ -12,10 +12,12 @@ import {
   CardDescription,
 } from './ui/card';
 import { ChevronRight } from 'lucide-react';
-import { formatDate } from '@/utils/textFormatters';
 import ExamDetails from './ExamDetails';
+import { format, parseISO } from 'date-fns';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
 
-export default function PatientExamCard({
+export default function PatientClinicalExamCard({
   clinicalAssessment,
   patientData,
 }: {
@@ -23,11 +25,34 @@ export default function PatientExamCard({
   patientData: Patient;
 }) {
   const [isExamDetailsOpen, setIsExamDetailsOpen] = useState(false);
+  const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const clinicalAssessmentExists =
     clinicalAssessment !== undefined && clinicalAssessment.length > 0;
 
   const { id } = patientData;
+
+  // useEffect(() => {
+  //   const channel = supabase
+  //     .channel('clinical exams')
+  //     .on(
+  //       'postgres_changes',
+  //       {
+  //         event: '*',
+  //         schema: 'public',
+  //         table: 'Clinical Records',
+  //       },
+  //       () => {
+  //         router.refresh();
+  //       }
+  //     )
+  //     .subscribe();
+
+  //   return () => {
+  //     supabase.removeChannel(channel);
+  //   };
+  // }, [supabase, router]);
 
   return (
     <>
@@ -51,7 +76,8 @@ export default function PatientExamCard({
           <CardContent className="flex flex-col items-center">
             {clinicalAssessmentExists ? (
               <CardDescription className="text-sm mb-4">
-                Exam Date: {formatDate(clinicalAssessment[0].exam_date!)}
+                Exam Date:{' '}
+                {format(parseISO(clinicalAssessment[0].exam_date!), 'PPP')}
               </CardDescription>
             ) : null}
             <Button onClick={() => setIsExamDetailsOpen(true)}>

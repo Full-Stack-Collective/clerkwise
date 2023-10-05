@@ -55,8 +55,9 @@ export function RegisterPatient() {
   const router = useRouter();
 
   const { providerId, practiceId } = useProviderStore.getState();
-  const [registeredPatient, setRegisteredPatient] =
-    useState<CurrentPatient | null>(null);
+  const [registeredPatient, setRegisteredPatient] = useState<{
+    patientId: string;
+  } | null>(null);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({

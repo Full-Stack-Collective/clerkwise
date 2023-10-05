@@ -269,7 +269,9 @@ export interface Database {
           plan: string | null
           provider: string | null
           respiratory_rate: number | null
-          spo2: number | null
+          oxygen_saturation: number | null
+          random_blood_sugar: number | null
+          urine: string | null
           subjective_findings: string | null
           temperature: number | null
           updated_at: string | null
@@ -286,9 +288,11 @@ export interface Database {
           plan?: string | null
           provider?: string | null
           respiratory_rate?: number | null
-          spo2?: number | null
+          oxygen_saturation?: number | null
           subjective_findings?: string | null
           temperature?: number | null
+          random_blood_sugar: number | null
+          urine: string | null
           updated_at?: string | null
         }
         Update: {
@@ -303,9 +307,11 @@ export interface Database {
           plan?: string | null
           provider?: string | null
           respiratory_rate?: number | null
-          spo2?: number | null
+          oxygen_saturation?: number | null
           subjective_findings?: string | null
           temperature?: number | null
+          random_blood_sugar: number | null
+          urine: string | null
           updated_at?: string | null
         }
         Relationships: [

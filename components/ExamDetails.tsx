@@ -9,8 +9,9 @@ import {
   DialogFooter,
 } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { capitalizeWord, formatDate } from '@/utils/textFormatters';
+import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
+import { format } from 'date-fns';
 
 type ExamDetailsProps = {
   clinicalAssessment: ClinicalRecord;
@@ -58,11 +59,11 @@ export default function ExamDetails({
             {first_name} {surname}
           </DialogTitle>
           <DialogDescription>
-            {capitalizeWord(sex as string)},{' '}
+            {capitalizeWord(sex as string)},
             {date_of_birth && calculateAge(date_of_birth)} years
           </DialogDescription>
           <DialogDescription>
-            Exam date: {formatDate(exam_date as string)}
+            Exam date: {exam_date && format(new Date(exam_date), 'PPP')}
           </DialogDescription>
         </DialogHeader>
 
