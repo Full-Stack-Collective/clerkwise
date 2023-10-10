@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {useState} from 'react';
+import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
+import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
+import {useForm} from 'react-hook-form';
+import {useRouter} from 'next/navigation';
 
 // UI Elements
-import { Button, buttonVariants } from '@/components/ui/button';
+import {Button, buttonVariants} from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -17,11 +17,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from './ui/input';
-import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { useToast } from '@/components/ui/use-toast';
-import { useProviderStore } from '@/stores/currentProviderStore';
-import { Textarea } from './ui/textarea';
+import {Input} from './ui/input';
+import {RadioGroup, RadioGroupItem} from './ui/radio-group';
+import {useToast} from '@/components/ui/use-toast';
+import {useProviderStore} from '@/stores/currentProviderStore';
+import {Textarea} from './ui/textarea';
 import {
   Dialog,
   DialogContent,
@@ -37,8 +37,8 @@ const formSchema = z.object({
   surname: z.string().min(2, {
     message: 'Surname must be at least 2 characters.',
   }),
-  sex: z.string({ required_error: 'Sex is required' }),
-  dateOfBirth: z.string().min(6, { message: 'DOB is required' }),
+  sex: z.string({required_error: 'Sex is required'}),
+  dateOfBirth: z.string().min(6, {message: 'DOB is required'}),
   email: z.string().email().optional().or(z.literal('')),
   phone: z.string(),
   streetAddress: z.string().optional(),
@@ -54,7 +54,7 @@ const supabase = createClientComponentClient();
 export function RegisterPatient() {
   const router = useRouter();
 
-  const { providerId, practiceId } = useProviderStore.getState();
+  const {providerId, practiceId} = useProviderStore.getState();
   const [registeredPatient, setRegisteredPatient] = useState<{
     patientId: string;
   } | null>(null);
@@ -94,10 +94,39 @@ export function RegisterPatient() {
       providerId,
     } = values;
 
+    console.log("Checking for:", firstName, surname, dateOfBirth);
+    // Check for duplicate patients
+    const {data: existingPatients, error: checkError} = await supabase
+      .from('Patients')
+      .select('*')
+      .eq('first_name', firstName.toLowerCase())
+      .eq('surname', surname.toLowerCase())
+      .eq('date_of_birth', dateOfBirth);
+      console.log("Existing Patients:", existingPatients);
+
+    if (checkError) {
+      console.log(checkError);
+      return;
+    }
+
+    if (existingPatients && existingPatients.length > 0) {
+      toast({
+        title: 'Duplicate Entry!',
+        description:
+          'A patient with the same name and date of birth already exists.',
+      });
+      //reset individual fields or reset the form?
+      //form.reset(); 
+      form.setValue('firstName', ''); 
+      form.setValue('surname', '');
+      form.setValue('dateOfBirth', '');
+      return;
+    }
+
     try {
       if (!practiceId || !providerId) throw Error('User is not logged in');
 
-      const { data, error } = await supabase
+      const {data, error} = await supabase
         .from('Patients')
         .insert({
           first_name: firstName,
@@ -116,7 +145,7 @@ export function RegisterPatient() {
         .select('id, first_name, surname');
       if (error) throw error;
       else {
-        const [{ id: patientId }] = data as Patient[];
+        const [{id: patientId}] = data as Patient[];
         if (patientId) {
           setRegisteredPatient({
             patientId,
@@ -135,7 +164,7 @@ export function RegisterPatient() {
     }
   }
 
-  const { toast } = useToast();
+  const {toast} = useToast();
 
   return (
     <>
@@ -150,7 +179,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="firstName"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
                   First Name
@@ -167,7 +196,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="surname"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
                   Surname
@@ -184,7 +213,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="sex"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem className="space-y-3">
                 <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
                   Sex
@@ -216,7 +245,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="dateOfBirth"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
                   Date of Birth
@@ -233,7 +262,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="email"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
@@ -248,7 +277,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="phone"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
@@ -262,7 +291,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="streetAddress"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Street Address</FormLabel>
                 <FormControl>
@@ -276,7 +305,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="city"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>City</FormLabel>
                 <FormControl>
@@ -291,7 +320,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="emergencyContactName"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Emergency Contact Name</FormLabel>
                 <FormControl>
@@ -305,7 +334,7 @@ export function RegisterPatient() {
           <FormField
             control={form.control}
             name="emergencyContact"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Emergency Contact Number</FormLabel>
                 <FormControl>
