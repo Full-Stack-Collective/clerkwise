@@ -94,9 +94,7 @@ export function RegisterPatient() {
       providerId,
     } = values;
 
-    console.log("Checking for:", firstName, surname, dateOfBirth);
-    // Check for duplicate patients
-    const {data: existingPatients, error: checkError} = await supabase
+    const {data: existingPatients, error} = await supabase
       .from('Patients')
       .select('*')
       .eq('first_name', firstName.toLowerCase())
@@ -104,8 +102,12 @@ export function RegisterPatient() {
       .eq('date_of_birth', dateOfBirth);
       console.log("Existing Patients:", existingPatients);
 
-    if (checkError) {
-      console.log(checkError);
+    if (error) {
+      console.log(error);
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+      });
       return;
     }
 
