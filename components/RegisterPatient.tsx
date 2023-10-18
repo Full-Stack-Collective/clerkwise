@@ -97,10 +97,10 @@ export function RegisterPatient() {
     const {data: existingPatients, error} = await supabase
       .from('Patients')
       .select('*')
-      .eq('first_name', firstName.toLowerCase())
-      .eq('surname', surname.toLowerCase())
+      .ilike('first_name', firstName)
+      .ilike('surname', surname)
       .eq('date_of_birth', dateOfBirth);
-      console.log("Existing Patients:", existingPatients);
+    console.log('Existing Patients:', existingPatients);
 
     if (error) {
       console.log(error);
@@ -118,8 +118,8 @@ export function RegisterPatient() {
           'A patient with the same name and date of birth already exists.',
       });
       //reset individual fields or reset the form?
-      //form.reset(); 
-      form.setValue('firstName', ''); 
+      //form.reset();
+      form.setValue('firstName', '');
       form.setValue('surname', '');
       form.setValue('dateOfBirth', '');
       return;
