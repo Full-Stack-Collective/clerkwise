@@ -30,8 +30,6 @@ const ExamHome = async ({ params }: { params: { id: string } }) => {
     clinicalAssessment &&
     clinicalAssessment.length > 0;
 
-  console.log(clinicalAssessment);
-
   return (
     <div>
       {clinicalAssessmentExists ? (

@@ -1,31 +1,30 @@
-import { PatientDetails } from '@/components/PatientDetails';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import PatientClinicalExamCard from '@/components/PatientClinicalExamCard';
-import BackButton from '@/components/BackButton';
-import PatientSoapsCard from '@/components/PatientSoapsCard';
-import { usePatientStore } from '@/stores/currentPatientStore';
+import { PatientDetails } from "@/components/PatientDetails";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import PatientClinicalExamCard from "@/components/PatientClinicalExamCard";
+import BackButton from "@/components/BackButton";
+import PatientSoapsCard from "@/components/PatientSoapsCard";
+import { usePatientStore } from "@/stores/currentPatientStore";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
 const getPatientChart = async (patientId: string) => {
-  return await supabase.from('Patients').select('*').eq('id', patientId);
+  return await supabase.from("Patients").select("*").eq("id", patientId);
 };
 
 const getClinicalAssesment = async (patientId: string) => {
   return await supabase
-    .from('Clinical Records')
-    .select('*')
-    .eq('patient', patientId);
+    .from("Clinical Records")
+    .select("*")
+    .eq("patient", patientId);
 };
 
 const getSoapAssessments = async (patientId: string) => {
   return await supabase
-    .from('Soap Assessments')
-    .select('*')
-    .eq('patient', patientId);
+    .from("Soap Assessments")
+    .select("*")
+    .eq("patient", patientId);
 };
-
 
 async function PatientChart({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -51,7 +50,7 @@ async function PatientChart({ params }: { params: { id: string } }) {
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <PatientDetails patientData={patientData} />
-        <div className='flex flex-col gap-3'>
+        <div className="flex flex-col gap-3">
           {clinicalAssessment && patientData ? (
             <PatientClinicalExamCard
               clinicalAssessment={clinicalAssessment}
