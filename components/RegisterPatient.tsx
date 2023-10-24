@@ -59,6 +59,7 @@ export function RegisterPatient() {
     patientId: string;
   } | null>(null);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,6 +78,9 @@ export function RegisterPatient() {
     },
     mode: 'onChange',
   });
+  function removeSpecialCharacters(str:string) {
+    return str.replace(/[^a-zA-Z0-9\s]/g, '').toLowerCase();
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const {
@@ -93,12 +97,13 @@ export function RegisterPatient() {
       practiceId,
       providerId,
     } = values;
-
+    const noSpecialCharFirstName = removeSpecialCharacters(firstName);
+    const noSpecialCharSurname = removeSpecialCharacters(surname);
     const {data: existingPatients, error} = await supabase
       .from('Patients')
       .select('*')
-      .ilike('first_name', firstName)
-      .ilike('surname', surname)
+      .ilike('first_name', noSpecialCharFirstName)
+      .ilike('surname', noSpecialCharSurname)
       .eq('date_of_birth', dateOfBirth);
     console.log('Existing Patients:', existingPatients);
 
@@ -112,16 +117,7 @@ export function RegisterPatient() {
     }
 
     if (existingPatients && existingPatients.length > 0) {
-      toast({
-        title: 'Duplicate Entry!',
-        description:
-          'A patient with the same name and date of birth already exists.',
-      });
-      //reset individual fields or reset the form?
-      //form.reset();
-      form.setValue('firstName', '');
-      form.setValue('surname', '');
-      form.setValue('dateOfBirth', '');
+      setIsErrorDialogOpen(true);
       return;
     }
 
@@ -390,6 +386,27 @@ export function RegisterPatient() {
               }}
             >
               Clerk Patient
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={isErrorDialogOpen}
+        onOpenChange={() => setIsErrorDialogOpen(false)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Duplicate Entry Detected!</DialogTitle>
+            <DialogDescription>
+              A patient with the same name and date of birth already exists.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="w-full flex justify-center">
+            <Button
+              variant="destructive"
+              onClick={() => setIsErrorDialogOpen(false)}
+            >
+              OK
             </Button>
           </div>
         </DialogContent>
