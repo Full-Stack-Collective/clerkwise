@@ -9,6 +9,16 @@ import {
   DialogFooter,
 } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {  MoreHorizontal, MoreVertical, Pencil, Settings2 } from 'lucide-react';
+
 import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
 import { format } from 'date-fns';
@@ -46,8 +56,30 @@ export default function SoapDetails({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>
-            {first_name} {surname}
+          <DialogTitle className='flex items-center gap-4 py-2'>
+              {first_name} {surname}
+            <div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" className='h-6'>
+                    <span className="sr-only">Actions</span>
+                    <Settings2 className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={() => {}}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={() => {}}
+                    className="text-red-600"
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </DialogTitle>
           <DialogDescription>
             {capitalizeWord(sex as string)},{' '}
