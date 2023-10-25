@@ -1,5 +1,6 @@
 "use client";
 
+import { DialogFooter } from "./ui/dialog";
 import {
   Form,
   FormControl,
@@ -17,8 +18,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-import { editClinicalRecord } from "@/app/dashboard/edit/exam/[id]/actions";
-import BackButton from "./BackButton";
+import { editClinicalRecord } from "@/app/dashboard/patient/[id]/actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 
@@ -84,11 +84,15 @@ export const examFormSchema = z.object({
 
 function EditPatientExam({
   patientId,
-  patientFirstName,
-  patientLastName,
   providerId,
   clinicalAssessment,
-}: CurrentPatient & { clinicalAssessment: ClinicalRecord }) {
+  onClose,
+  setIsEditing,
+}: CurrentPatient & {
+  clinicalAssessment: ClinicalRecord;
+  onClose?: () => void;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const {
     presenting_complaint,
     history_presenting_complaint,
@@ -148,6 +152,7 @@ function EditPatientExam({
   const { toast } = useToast();
 
   function onSubmit(values: z.infer<typeof examFormSchema>) {
+    setIsEditing((p: boolean) => !p);
     editClinicalRecord(values)
       .then(() => {
         toast({ title: "Your exam has been updated" });
@@ -164,12 +169,6 @@ function EditPatientExam({
 
   return (
     <div className="p-4 max-w-lg w-full m-auto">
-      <BackButton />
-      <h2 className="font-bold text-lg">Patient History</h2>
-      <p className="my-3">
-        <span className="font-semibold">Current Patient: </span>
-        {patientFirstName} {patientLastName}
-      </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -553,11 +552,14 @@ function EditPatientExam({
                   </FormItem>
                 )}
               />
-              <Button className="my-5" type="submit">
-                Submit
-              </Button>
             </TabsContent>
           </Tabs>
+          <DialogFooter>
+            <Button type="submit">Save</Button>
+            <Button variant="outline" onClick={onClose}>
+              Close
+            </Button>
+          </DialogFooter>
         </form>
       </Form>
     </div>
