@@ -12,7 +12,6 @@ import { Vitals } from './Vitals';
 import { usePatientStore } from '@/stores/currentPatientStore';
 import { useRouter } from 'next/navigation';
 import { useToast } from './ui/use-toast';
-import { createSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
 
 export const soapFormSchema = z.object({
   subjectiveFindings: z.string().min(2, {
@@ -65,33 +64,41 @@ export const soapFormSchema = z.object({
   providerId: z.string(),
 });
 
+type SoapAssessmentProps = {
+  handleSoapSubmit: (formData: z.infer<typeof soapFormSchema>) => Promise<void>;
+  soapData: SOAP | null;
+};
 
-
-export default function NewSoapAssessment() {
+export default function SoapAssessmentForm({
+  handleSoapSubmit,
+  soapData,
+}: SoapAssessmentProps) {
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
 
-    const router = useRouter();
-    const { toast } = useToast();
-    
-    function onSubmit(values: z.infer<typeof soapFormSchema>) {
-      createSoapAssessment(values)
-        .then(() => {
-          toast({ title: 'Your exam has been created' });
-          router.push(`/dashboard/patient/${patientId}`);
-        })
-        .catch((error) => {
-          console.error(error);
-          toast({
-            title: 'Uh oh! Something went wrong.',
-            description: 'There was a problem with your request.',
-          });
+  const router = useRouter();
+  const { toast } = useToast();
+
+  function onSubmit(values: z.infer<typeof soapFormSchema>) {
+
+    console.log('>>>>', patientId)
+    handleSoapSubmit(values)
+      .then(() => {
+        toast({ title: 'Your exam has been created' });
+        router.push(`/dashboard/patient/${patientId}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
         });
-    }
+      });
+  }
 
 
   const defaultValues = {
-    subjectiveFindings: '',
+    subjectiveFindings:'',
     objectiveFindings: '',
     assessment: '',
     plan: '',
@@ -102,8 +109,8 @@ export default function NewSoapAssessment() {
     temperature: '',
     randomBloodSugar: '',
     urine: '',
-    patientId: patientId,
-    providerId: providerId,
+    patientId: '',
+    providerId: '',
   };
 
   const form = useForm<z.infer<typeof soapFormSchema>>({

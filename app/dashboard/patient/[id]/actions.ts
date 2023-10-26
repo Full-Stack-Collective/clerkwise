@@ -5,7 +5,7 @@ import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
-export const createSoapAssessment = async (
+export const updateSoapAssessment = async (
   formData: z.infer<typeof soapFormSchema>
 ) => {
   const supabase = createServerActionClient({ cookies });
@@ -21,14 +21,10 @@ export const createSoapAssessment = async (
     temperature,
     randomBloodSugar,
     urine,
-    patientId,
-    providerId,
   } = formData;
 
   try {
-    const { error } = await supabase.from('Soap Assessments').insert({
-      patient: patientId,
-      provider: providerId,
+    const { error } = await supabase.from('Soap Assessments').update({
       subjective_findings: subjectiveFindings,
       objective_findings: objectiveFindings,
       assessment,
