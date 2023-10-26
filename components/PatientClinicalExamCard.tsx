@@ -41,7 +41,7 @@ export default function PatientClinicalExamCard({
   //       {
   //         event: '*',
   //         schema: 'public',
-  //         table: 'Clinical Records',
+  //         table: 'clinical_records',
   //       },
   //       () => {
   //         router.refresh();

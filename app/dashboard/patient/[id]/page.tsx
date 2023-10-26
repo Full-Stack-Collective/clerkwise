@@ -14,14 +14,14 @@ const getPatientChart = async (patientId: string) => {
 
 const getClinicalAssesment = async (patientId: string) => {
   return await supabase
-    .from('Clinical Records')
+    .from('clinical_records')
     .select('*')
     .eq('patient', patientId);
 };
 
 const getSoapAssessments = async (patientId: string) => {
   return await supabase
-    .from('Soap Assessments')
+    .from('soap_assessments')
     .select('*')
     .eq('patient', patientId);
 };
