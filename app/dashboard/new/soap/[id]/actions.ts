@@ -8,6 +8,8 @@ import { z } from 'zod';
 export const createSoapAssessment = async (
   formData: z.infer<typeof soapFormSchema>
 ) => {
+
+  console.log(formData)
   const supabase = createServerActionClient({ cookies });
   const {
     subjectiveFindings,

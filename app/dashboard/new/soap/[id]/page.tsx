@@ -13,10 +13,6 @@ export default async function SoapAssessment({
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
 
-  console.log('>>Last Name', patientLastName);
-  console.log('>>>>', patientId);
-  console.log('>>>>', providerId);
-
   return (
     <div>
       <PatientStoreInitialiser
