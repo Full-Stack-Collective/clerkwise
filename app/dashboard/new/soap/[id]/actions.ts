@@ -26,7 +26,7 @@ export const createSoapAssessment = async (
   } = formData;
 
   try {
-    const { error } = await supabase.from('Soap Assessments').insert({
+    const { error } = await supabase.from('soap_assessments').insert({
       patient: patientId,
       provider: providerId,
       subjective_findings: subjectiveFindings,
@@ -45,8 +45,7 @@ export const createSoapAssessment = async (
     if (error) throw new Error(`There was a problem: ${error}`);
   } catch (error: unknown) {
     if (error) {
-      console.log(error);
-      // throw new Error('Something went wrong:',error);
+      console.error(error);
     }
   }
 };

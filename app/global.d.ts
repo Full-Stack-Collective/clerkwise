@@ -10,7 +10,7 @@ declare global {
   type Provider = Database['public']['Tables']['Providers']['Insert'];
 
   type Practice = Database['public']['Tables']['Practice']['Insert'];
-  type SOAP = Database['public']['Tables']['Soap Assessments']['Insert'];
+  type SOAP = Database['public']['Tables']['soap_assessments']['Insert'];
 
   type ProviderInfo = {
     providerId: string;

@@ -66,12 +66,14 @@ export const soapFormSchema = z.object({
 
 type SoapAssessmentProps = {
   handleSoapSubmit: (formData: z.infer<typeof soapFormSchema>) => Promise<void>;
-  soapData: SOAP | null;
+  soapData?: SOAP;
+  handleClose?: () => void;
 };
 
 export default function SoapAssessmentForm({
   handleSoapSubmit,
   soapData,
+  handleClose,
 }: SoapAssessmentProps) {
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
@@ -80,12 +82,15 @@ export default function SoapAssessmentForm({
   const { toast } = useToast();
 
   function onSubmit(values: z.infer<typeof soapFormSchema>) {
-
-    console.log('>>>>', patientId)
+    console.log('>>>>', patientId);
     handleSoapSubmit(values)
       .then(() => {
-        toast({ title: 'Your exam has been created' });
-        router.push(`/dashboard/patient/${patientId}`);
+        toast({ title: 'Your exam has been saved' });
+        if (handleClose) {
+          handleClose();
+        } else {
+          router.push(`/dashboard/patient/${patientId}`);
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -96,21 +101,36 @@ export default function SoapAssessmentForm({
       });
   }
 
+  const {
+    subjective_findings,
+    objective_findings,
+    assessment,
+    plan,
+    blood_pressure,
+    heart_rate,
+    respiratory_rate,
+    oxygen_saturation,
+    temperature,
+    random_blood_sugar,
+    urine,
+    patient,
+    provider,
+  } = soapData || {};
 
   const defaultValues = {
-    subjectiveFindings:'',
-    objectiveFindings: '',
-    assessment: '',
-    plan: '',
-    bloodPressure: '',
-    heartRate: '',
-    respiratoryRate: '',
-    oxygenSaturation: '',
-    temperature: '',
-    randomBloodSugar: '',
-    urine: '',
-    patientId: '',
-    providerId: '',
+    subjectiveFindings: subjective_findings || '',
+    objectiveFindings: objective_findings || '',
+    assessment: assessment || '',
+    plan: plan || '',
+    bloodPressure: blood_pressure || '',
+    heartRate: heart_rate?.toString() || '',
+    respiratoryRate: respiratory_rate?.toString() || '',
+    oxygenSaturation: oxygen_saturation?.toString() || '',
+    temperature: temperature?.toString() || '',
+    randomBloodSugar: random_blood_sugar?.toString() || '',
+    urine: urine?.toString() || '',
+    patientId: patient as string,
+    providerId: provider as string,
   };
 
   const form = useForm<z.infer<typeof soapFormSchema>>({
@@ -156,8 +176,10 @@ export default function SoapAssessmentForm({
               <Button
                 className="w-24"
                 disabled={
-                  !form.formState.isDirty ||
-                  (form.formState.isDirty && !form.formState.isValid)
+                  !soapData
+                    ? !form.formState.isDirty ||
+                      (form.formState.isDirty && isStepOneValid)
+                    : form.formState.isDirty && isStepOneValid
                 }
                 type="submit"
               >
@@ -168,8 +190,10 @@ export default function SoapAssessmentForm({
                 className="w-24"
                 type="button"
                 disabled={
-                  !form.formState.isDirty ||
-                  (form.formState.isDirty && isStepOneValid)
+                  !soapData
+                    ? !form.formState.isDirty ||
+                      (form.formState.isDirty && isStepOneValid)
+                    : form.formState.isDirty && isStepOneValid
                 }
                 onClick={next}
               >

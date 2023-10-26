@@ -21,10 +21,11 @@ export const updateSoapAssessment = async (
     temperature,
     randomBloodSugar,
     urine,
+    patientId
   } = formData;
 
   try {
-    const { error } = await supabase.from('Soap Assessments').update({
+    const { error } = await supabase.from('soap_assessments').update({
       subjective_findings: subjectiveFindings,
       objective_findings: objectiveFindings,
       assessment,
@@ -36,7 +37,7 @@ export const updateSoapAssessment = async (
       random_blood_sugar: parseInt(randomBloodSugar as string),
       urine,
       plan,
-    });
+    }).eq("patient", patientId);
 
     if (error) throw new Error(`There was a problem: ${error}`);
   } catch (error: unknown) {

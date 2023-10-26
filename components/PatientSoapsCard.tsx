@@ -34,13 +34,13 @@ export default function PatientSoapsCard({
 
   useEffect(() => {
     const channel = supabase
-      .channel('soap assessments')
+      .channel('soap_assessments')
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
-          table: 'Soap Assessments',
+          table: 'soap_assessments',
         },
         () => {
           router.refresh();

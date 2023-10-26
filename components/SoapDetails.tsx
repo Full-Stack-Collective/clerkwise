@@ -13,7 +13,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
@@ -22,7 +21,7 @@ import { MoreVertical } from 'lucide-react';
 import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
 import { format } from 'date-fns';
-import NewSoapAssessment from './SoapAssessmentForm';
+import SoapAssessmentForm from './SoapAssessmentForm';
 import { updateSoapAssessment } from '@/app/dashboard/patient/[id]/actions';
 
 type SoapDetailsProps = {
@@ -62,6 +61,8 @@ export default function SoapDetails({
     setIsEditable(false);
   };
 
+  
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px] sm:h-[70vh] overflow-y-auto">
@@ -98,7 +99,7 @@ export default function SoapDetails({
         </DialogHeader>
 
         {isEditable ? (
-          <NewSoapAssessment handleSoapSubmit={updateSoapAssessment} soapData={soapAssesment}
+          <SoapAssessmentForm handleSoapSubmit={updateSoapAssessment} soapData={soapAssesment} handleClose={handleClose}
           
           
           />
