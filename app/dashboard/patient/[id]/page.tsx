@@ -15,7 +15,7 @@ const getPatientChart = async (patientId: string) => {
 
 const getClinicalAssesment = async (patientId: string) => {
   return await supabase
-    .from('Clinical Records')
+    .from('clinical_records')
     .select('*')
     .eq('patient', patientId);
 };

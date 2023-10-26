@@ -39,7 +39,7 @@ export const createClinicalRecord = async (
   } = formData;
 
   try {
-    const { error } = await supabase.from('Clinical Records').insert({
+    const { error } = await supabase.from('clinical_records').insert({
       patient: patientId,
       provider: providerId,
       presenting_complaint: presentingComplaint,

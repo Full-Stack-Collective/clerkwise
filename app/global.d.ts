@@ -3,7 +3,7 @@ import type { Database as DB } from '@/lib/database.types';
 declare global {
   type Database = DB;
   type ClinicalRecord =
-    Database['public']['Tables']['Clinical Records']['Insert'];
+    Database['public']['Tables']['clinical_records']['Insert'];
 
   type Patient = Database['public']['Tables']['Patients']['Insert'];
 
