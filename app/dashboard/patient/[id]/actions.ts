@@ -40,7 +40,7 @@ export const editClinicalRecord = async (
 
   try {
     const { error } = await supabase
-      .from("Clinical Records")
+      .from("clinical_records")
       .update({
         patient: patientId,
         provider: providerId,
