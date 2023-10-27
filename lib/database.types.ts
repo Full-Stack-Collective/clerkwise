@@ -9,7 +9,7 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      "Clinical Records": {
+      "clinical_records": {
         Row: {
           allergies: string | null
           blood_pressure: string | null
@@ -99,13 +99,13 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "Clinical Records_patient_fkey"
+            foreignKeyName: "clinical_records_patient_fkey"
             columns: ["patient"]
             referencedRelation: "Patients"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "Clinical Records_provider_fkey"
+            foreignKeyName: "clinical_records_provider_fkey"
             columns: ["provider"]
             referencedRelation: "Providers"
             referencedColumns: ["id"]
@@ -256,7 +256,7 @@ export interface Database {
           }
         ]
       }
-      "Soap Assessments": {
+      "soap_assessments": {
         Row: {
           assessment: string | null
           blood_pressure: string | null
@@ -316,13 +316,13 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "Soap Assessments_patient_fkey"
+            foreignKeyName: "soap_assessments_patient_fkey"
             columns: ["patient"]
             referencedRelation: "Patients"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "Soap Assessments_provider_fkey"
+            foreignKeyName: "soap_assessments_provider_fkey"
             columns: ["provider"]
             referencedRelation: "Providers"
             referencedColumns: ["id"]

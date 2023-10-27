@@ -35,8 +35,24 @@ export default function PatientClinicalExamCard({
   const { id } = patientData;
 
   useEffect(() => {
-    setPatient(patientData);
-  }, [patientData]);
+    const channel = supabase
+      .channel("clinical exams")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "clinical_records",
+        },
+        () => {
+          router.refresh();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, router]);
 
   useEffect(() => {
     const channel = supabase

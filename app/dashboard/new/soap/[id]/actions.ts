@@ -27,7 +27,7 @@ export const createSoapAssessment = async (
 
 
   try {
-    const { error } = await supabase.from('Soap Assessments').insert({
+    const { error } = await supabase.from('soap_assessments').insert({
       patient: patientId,
       provider: providerId,
       subjective_findings: subjectiveFindings,
