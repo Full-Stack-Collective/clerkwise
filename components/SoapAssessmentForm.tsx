@@ -82,7 +82,6 @@ export default function SoapAssessmentForm({
   const { toast } = useToast();
 
   function onSubmit(values: z.infer<typeof soapFormSchema>) {
-    console.log('>>>', handleSoapSubmit);
     handleSoapSubmit(values)
       .then(() => {
         toast({ title: 'Your exam has been saved' });

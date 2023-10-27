@@ -5,10 +5,11 @@ import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
-export const createSoapAssessment = async (
+export async function createSoapAssessment(
   formData: z.infer<typeof soapFormSchema>
-) => {
+){
 
+  'use server'
   console.log(formData)
   const supabase = createServerActionClient({ cookies });
   const {
@@ -48,6 +49,8 @@ export const createSoapAssessment = async (
   } catch (error: unknown) {
     if (error) {
       console.error(error);
+      throw new Error('Something went wrong:',error);
+
     }
   }
 };
