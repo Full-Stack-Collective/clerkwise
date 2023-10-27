@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from './ui/button';
+import React from "react";
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,11 +7,11 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from './ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { capitalizeWord } from '@/utils/textFormatters';
-import { calculateAge } from '@/utils/calculators';
-import { format } from 'date-fns';
+} from "./ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { capitalizeWord } from "@/utils/textFormatters";
+import { calculateAge } from "@/utils/calculators";
+import { format, parseISO } from "date-fns";
 
 type SoapDetailsProps = {
   soapAssesment: SOAP;
@@ -50,11 +50,11 @@ export default function SoapDetails({
             {first_name} {surname}
           </DialogTitle>
           <DialogDescription>
-            {capitalizeWord(sex as string)},{' '}
+            {capitalizeWord(sex as string)},{" "}
             {date_of_birth && calculateAge(date_of_birth)} years
           </DialogDescription>
           <DialogDescription>
-            {/* Exam date: {exam_date && format(new Date(exam_date), 'PPP')} */}
+            {/* Exam date: {exam_date && format(parseISO(exam_date), 'PPP')} */}
           </DialogDescription>
         </DialogHeader>
 
@@ -88,14 +88,14 @@ export default function SoapDetails({
             <h3 className="font-semibold">Temperature</h3>
             <p className="text-sm my-4">{temperature} °C</p>
             <h3 className="font-semibold">Random Blood Sugar</h3>
-            <p className={`text-sm my-4 ${{ random_blood_sugar } && 'italic'}`}>
+            <p className={`text-sm my-4 ${{ random_blood_sugar } && "italic"}`}>
               {random_blood_sugar
                 ? `${random_blood_sugar} mg/dL`
-                : 'not recorded'}
+                : "not recorded"}
             </p>
             <h3 className="font-semibold">Urine</h3>
-            <p className={`text-sm my-4 ${{ urine } && 'italic'}`}>
-              {urine || 'not recorded'}
+            <p className={`text-sm my-4 ${{ urine } && "italic"}`}>
+              {urine || "not recorded"}
             </p>
           </TabsContent>
         </Tabs>
