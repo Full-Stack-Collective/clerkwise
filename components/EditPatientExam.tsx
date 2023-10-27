@@ -556,7 +556,7 @@ function EditPatientExam({
           </Tabs>
           <DialogFooter>
             <Button type="submit">Save</Button>
-            <Button variant="outline" onClick={onClose}>
+            <Button type="button" variant="outline" onClick={onClose}>
               Close
             </Button>
           </DialogFooter>

@@ -24,6 +24,7 @@ export default function PatientClinicalExamCard({
   clinicalAssessment: ClinicalRecord[];
   patientData: Patient;
 }) {
+  const [patient, setPatient] = useState(patientData);
   const [isExamDetailsOpen, setIsExamDetailsOpen] = useState(false);
   const supabase = createClientComponentClient();
   const router = useRouter();
@@ -32,6 +33,10 @@ export default function PatientClinicalExamCard({
     clinicalAssessment !== undefined && clinicalAssessment.length > 0;
 
   const { id } = patientData;
+
+  useEffect(() => {
+    setPatient(patientData);
+  }, [patientData]);
 
   useEffect(() => {
     const channel = supabase
@@ -43,7 +48,9 @@ export default function PatientClinicalExamCard({
           schema: "public",
           table: "Clinical Records",
         },
-        () => {
+        (payload) => {
+          console.log(payload);
+          setPatient(payload);
           router.refresh();
         }
       )
@@ -52,7 +59,7 @@ export default function PatientClinicalExamCard({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase, router]);
+  }, [supabase, router, patient, setPatient]);
 
   return (
     <>
