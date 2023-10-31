@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from './ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+} from "./ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,10 +18,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreVertical } from 'lucide-react';
 
-import { capitalizeWord } from '@/utils/textFormatters';
-import { calculateAge } from '@/utils/calculators';
+import { capitalizeWord } from "@/utils/textFormatters";
+import { calculateAge } from "@/utils/calculators";
 import SoapAssessmentForm from './SoapAssessmentForm';
-import { updateSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
+import { updateSoapAssessment } from "@/app/dashboard/new/soap/[id]/actions";
+import { format, parseISO } from 'date-fns';
 
 type SoapDetailsProps = {
   soapAssesment: SOAP;
@@ -40,6 +41,7 @@ export default function SoapDetails({
 
   const {
     id,
+    exam_date,
     subjective_findings,
     objective_findings,
     assessment,
@@ -98,7 +100,7 @@ export default function SoapDetails({
             {date_of_birth && calculateAge(date_of_birth)} years
           </DialogDescription>
           <DialogDescription>
-            {/* Exam date: {exam_date && format(new Date(exam_date), 'PPP')} */}
+            Exam date: {exam_date && format(parseISO(exam_date), 'PPP')}
           </DialogDescription>
         </DialogHeader>
 
