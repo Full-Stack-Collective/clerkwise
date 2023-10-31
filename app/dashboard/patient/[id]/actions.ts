@@ -1,17 +1,17 @@
-"use server";
+'use server';
 
-import { examFormSchema } from "@/components/NewPatientExam";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import {examFormSchema} from '@/components/NewPatientExam';
+import {formSchema} from '@/components/RegisterPatient';
+import {createServerActionClient} from '@supabase/auth-helpers-nextjs';
+import {cookies} from 'next/headers';
+import {z} from 'zod';
 
 // Should this request be made as a client
-
+const supabase = createServerActionClient({cookies});
 export const editClinicalRecord = async (
+
   formData: z.infer<typeof examFormSchema>
 ) => {
-  const supabase = createServerActionClient({ cookies });
-
   const {
     presentingComplaint,
     historyPresentingComplaint,
@@ -39,8 +39,8 @@ export const editClinicalRecord = async (
   } = formData;
 
   try {
-    const { error } = await supabase
-      .from("clinical_records")
+    const {error} = await supabase
+      .from('clinical_records')
       .update({
         patient: patientId,
         provider: providerId,
@@ -66,12 +66,53 @@ export const editClinicalRecord = async (
         diagnosis,
         plan,
       })
-      .eq("patient", patientId);
+      .eq('patient', patientId);
 
     if (error) throw new Error(`There was a problem: ${error}`);
   } catch (error: unknown) {
     if (error) {
-      throw new Error("Something went wrong:", error);
+      throw new Error('Something went wrong:', error);
     }
   }
+};
+export const editPatientData = async (
+  patientId: string,
+  patientData: z.infer<typeof formSchema>
+) => {
+  const {
+    firstName,
+    surname,
+    sex,
+    dateOfBirth,
+    email,
+    phone,
+    city,
+    streetAddress,
+    emergencyContactName,
+    emergencyContact,
+    practiceId,
+    providerId,
+  } = patientData;
+  try {
+    const {error} = await supabase
+      .from('Patients')
+      .update({ first_name: firstName,
+        surname,
+        sex,
+        date_of_birth: dateOfBirth,
+        email,
+        phone,
+        street_address: streetAddress,
+        city,
+        emergency_contact_name: emergencyContactName,
+        emergency_contact: emergencyContact,
+        primary_provider: providerId,
+        practice: practiceId})
+        .eq('patient', patientId);
+        if (error) throw new Error(`There was a problem: ${error}`);
+      } catch (error: unknown) {
+        if (error) {
+          throw new Error('Something went wrong:', error);
+        }
+      }
 };

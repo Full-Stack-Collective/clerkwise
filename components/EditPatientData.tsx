@@ -1,14 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-
-// UI Elements
-import { Button, buttonVariants } from '@/components/ui/button';
+import { DialogFooter } from "./ui/dialog";
 import {
   Form,
   FormControl,
@@ -16,28 +8,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from './ui/input';
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { useToast } from '@/components/ui/use-toast';
-import { useProviderStore } from '@/stores/currentProviderStore';
-import { Textarea } from './ui/textarea';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from './ui/dialog';
 
- export const formSchema = z.object({
+
+import { editPatientData } from "@/app/dashboard/patient/[id]/actions";
+import { useRouter } from "next/navigation";
+import { useToast } from "./ui/use-toast";
+
+export const formSchema = z.object({
   firstName: z.string().min(2, {
     message: 'First name must be at least 2 characters.',
   }),
   surname: z.string().min(2, {
     message: 'Surname must be at least 2 characters.',
   }),
-  sex: z.string({ required_error: 'Sex is required' }),
+  sex: z.string().refine(value => ['male', 'female', ''].includes(value), {
+    message: 'Sex must be male, female, or not provided.',
+}),
   dateOfBirth: z.string().min(6, { message: 'DOB is required' }),
   email: z.string().email().optional().or(z.literal('')),
   phone: z.string(),
@@ -49,97 +44,75 @@ import {
   practiceId: z.string(),
 });
 
-const supabase = createClientComponentClient();
 
-export function RegisterPatient() {
-  const router = useRouter();
+function EditPatientData({
+  patientId,
+  patientData,
+  providerId,
+ 
+  onClose,
+  setIsEditing,
+}: CurrentPatient & {
+  patientData: Patient;
+  onClose?: () => void;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const {
+    first_name,
+    surname,
+    sex,
+    date_of_birth,
+    email,
+    phone,
+    city,
+    street_address,
+    emergency_contact_name,
+    emergency_contact,
+   
+  } = patientData;
 
-  const { providerId, practiceId } = useProviderStore.getState();
-  const [registeredPatient, setRegisteredPatient] = useState<{
-    patientId: string;
-  } | null>(null);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-
+  const defaultValues = {
+    firstName: first_name,
+    surname: surname,
+    dateOfBirth: date_of_birth || undefined,
+    sex: sex||undefined,
+    email: email || "",
+    phone: phone || "",
+    streetAddress: street_address || "",
+    city: city || "",
+    emergencyContactName: emergency_contact_name || "",
+    emergencyContact: emergency_contact || "",
+    providerId: providerId || "",
+    patientId: patientId || "",
+  }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: '',
-      surname: '',
-      dateOfBirth: '',
-      email: '',
-      phone: '',
-      streetAddress: '',
-      city: '',
-      emergencyContactName: '',
-      emergencyContact: '',
-      practiceId,
-      providerId,
-    },
-    mode: 'onChange',
+    defaultValues,
+    mode: "onChange",
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const {
-      firstName,
-      surname,
-      sex,
-      dateOfBirth,
-      email,
-      phone,
-      city,
-      streetAddress,
-      emergencyContactName,
-      emergencyContact,
-      practiceId,
-      providerId,
-    } = values;
-
-    try {
-      if (!practiceId || !providerId) throw Error('User is not logged in');
-
-      const { data, error } = await supabase
-        .from('Patients')
-        .insert({
-          first_name: firstName,
-          surname,
-          sex,
-          date_of_birth: dateOfBirth,
-          email,
-          phone,
-          street_address: streetAddress,
-          city,
-          emergency_contact_name: emergencyContactName,
-          emergency_contact: emergencyContact,
-          primary_provider: providerId,
-          practice: practiceId,
-        })
-        .select('id, first_name, surname');
-      if (error) throw error;
-      else {
-        const [{ id: patientId }] = data as Patient[];
-        if (patientId) {
-          setRegisteredPatient({
-            patientId,
-          });
-        }
-
-        setIsConfirmationOpen(true);
-        form.reset();
-      }
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
-      });
-    }
-  }
-
+  const router = useRouter();
   const { toast } = useToast();
 
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsEditing((p: boolean) => !p);
+    editPatientData(patientId,values)
+      .then(() => {
+        toast({ title: "Patient data has been updated" });
+        router.push(`/dashboard/patient/${patientId}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+      });
+  }
+
   return (
-    <>
-      <Form {...form}>
+    <div className="p-4 max-w-lg w-full m-auto">
+     <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-sm w-full mx-auto"
@@ -316,7 +289,7 @@ export function RegisterPatient() {
               </FormItem>
             )}
           />
-
+  <DialogFooter>
           <Button
             disabled={
               !form.formState.isDirty ||
@@ -326,43 +299,14 @@ export function RegisterPatient() {
           >
             Submit
           </Button>
+          <Button type="button" variant="outline" onClick={onClose}>
+              Close
+            </Button>
+          </DialogFooter>
         </form>
       </Form>
-      <Dialog
-        open={isConfirmationOpen}
-        onOpenChange={() => setIsConfirmationOpen(false)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Patient successfully registered</DialogTitle>
-            <DialogDescription>
-              What would you like to do next?
-            </DialogDescription>
-          </DialogHeader>
-          <div className="w-full flex justify-around">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setIsConfirmationOpen(false);
-                router.push('/dashboard');
-              }}
-            >
-              Back to Dashboard
-            </Button>
-            <Button
-              className={buttonVariants()}
-              onClick={() => {
-                setIsConfirmationOpen(false);
-                router.push(
-                  `/dashboard/new/exam/${registeredPatient?.patientId}`
-                );
-              }}
-            >
-              Clerk Patient
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+    </div>
   );
 }
+
+export default EditPatientData;

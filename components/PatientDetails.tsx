@@ -1,4 +1,6 @@
-import * as React from 'react';
+"use client"
+import React, { useState,useEffect } from "react";
+
 
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
@@ -9,12 +11,23 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogHeader,
+  DialogFooter,
+} from "./ui/dialog";
 import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
-
-export function PatientDetails({ patientData, clinicalAssessment }: any) {
+import EditPatientData from './EditPatientData';
+import { useProviderStore } from "@/stores/currentProviderStore";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+export function PatientDetails({ patientData }: any) {
   const [
     {
       id,
@@ -28,21 +41,37 @@ export function PatientDetails({ patientData, clinicalAssessment }: any) {
       city,
       emergency_contact_name,
       emergency_contact,
-    },
-  ] = patientData;
+    } ]= patientData;
+  const [isEditing, setIsEditing] = useState(false);
+  const supabase = createClientComponentClient();
+  const router = useRouter();
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
 
-  const chartFields = [
-    { title: 'Phone Number', value: phone },
-    { title: 'Email', value: email },
-    { title: 'Address', value: `${street_address}, ${city}` },
-    {
-      title: 'Emergency Contact',
-      value: `${emergency_contact_name}, ${emergency_contact}`,
-    },
-  ];
+  const handleDialogClose = () => {
+    setIsEditing(false);
+  };
+  useEffect(() => {
+    const channel = supabase
+      .channel("patient data")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "Patients",
+        },
+        (payload) => {
+          router.refresh();
+        }
+      )
+      .subscribe();
 
-  calculateAge(date_of_birth);
-
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, router]);
   return (
     <Card className="max-w-xs w-full">
       <CardHeader>
@@ -77,7 +106,32 @@ export function PatientDetails({ patientData, clinicalAssessment }: any) {
           </p>
         ) : null}
       </CardContent>
-      <CardFooter className="flex justify-between"></CardFooter>
+      <CardFooter className="flex justify-between">
+        <Button variant="default" onClick={handleEditClick}>
+          Edit
+        </Button>
+      </CardFooter>
+
+      {isEditing && (
+        <Dialog>
+          <DialogHeader>
+            <DialogTitle>Edit Patient Details</DialogTitle>
+          </DialogHeader>
+          <DialogContent>
+            <EditPatientData 
+              patientId={id || ""}
+              patientData={patientData}
+              onClose={handleDialogClose} patientFirstName={first_name} patientLastName={surname} providerId={useProviderStore.getState().providerId} setIsEditing={setIsEditing} />
+          </DialogContent>
+          <DialogFooter>
+            <Button variant="default" onClick={handleDialogClose}>
+              Cancel
+            </Button>
+          
+          </DialogFooter>
+        </Dialog>
+      )}
+
     </Card>
   );
 }
