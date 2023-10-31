@@ -114,8 +114,6 @@ export default function SoapAssessmentForm({
     temperature,
     random_blood_sugar,
     urine,
-    patient,
-    provider,
   } = soapData || {};
 
   const defaultValues = {

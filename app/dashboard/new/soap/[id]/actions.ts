@@ -43,9 +43,7 @@ export async function createSoapAssessment(
       plan,
     });
 
-    if (error) 
-    
-    throw new Error(`There was a problem: ${error.message}`);
+    if (error) throw new Error(`There was a problem: ${error.message}`);
   } catch (error: unknown) {
     if (error) {
       console.log(error);
@@ -74,7 +72,7 @@ export const updateSoapAssessment = async (
     patientId,
   } = formData;
 
-  console.log('>>>>',id)
+  console.log('>>>>', id);
 
   try {
     const { error } = await supabase
