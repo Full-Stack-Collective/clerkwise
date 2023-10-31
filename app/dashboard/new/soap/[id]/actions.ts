@@ -43,10 +43,12 @@ export async function createSoapAssessment(
       plan,
     });
 
-    if (error) throw new Error(`There was a problem: ${error}`);
+    if (error) 
+    
+    throw new Error(`There was a problem: ${error.message}`);
   } catch (error: unknown) {
     if (error) {
-      console.error(error);
+      console.log(error);
       throw new Error('Something went wrong:', error);
     }
   }
@@ -93,11 +95,10 @@ export const updateSoapAssessment = async (
       .eq('patient', patientId)
       .eq('id', id);
 
-    if (error) throw new Error(`There was a problem: ${error}`);
+    if (error) throw new Error(`There was a problem: ${error.message}`);
   } catch (error: unknown) {
     if (error) {
-      console.log(error);
-      // throw new Error('Something went wrong:',error);
+      throw new Error('Something went wrong');
     }
   }
 };

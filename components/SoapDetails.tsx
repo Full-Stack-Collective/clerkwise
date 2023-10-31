@@ -20,7 +20,6 @@ import { MoreVertical } from 'lucide-react';
 
 import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
-import { format } from 'date-fns';
 import SoapAssessmentForm from './SoapAssessmentForm';
 import { updateSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
 
