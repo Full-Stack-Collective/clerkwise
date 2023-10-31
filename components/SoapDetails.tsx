@@ -85,17 +85,11 @@ export default function SoapDetails({
                     Cancel
                   </DropdownMenuItem>
                 )}
-                {!isEditable ? (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onSelect={() => {}}
-                      className="text-red-600"
-                    >
-                      Delete
-                    </DropdownMenuItem>
-                  </>
-                ) : null}
+
+                {/* <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={() => {}} className="text-red-600">
+                  Delete
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
             {/* ========================== */}
@@ -130,7 +124,6 @@ export default function SoapDetails({
               <p className="text-sm my-4">{assessment}</p>
               <h3 className="font-semibold">Plan</h3>
               <p className="text-sm my-4">{plan}</p>
- 
             </TabsContent>
 
             <TabsContent value="vitals">
