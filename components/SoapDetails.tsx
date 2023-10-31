@@ -22,7 +22,7 @@ import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
 import { format } from 'date-fns';
 import SoapAssessmentForm from './SoapAssessmentForm';
-import { updateSoapAssessment } from '@/app/dashboard/patient/[id]/actions';
+import { updateSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
 
 type SoapDetailsProps = {
   soapAssesment: SOAP;

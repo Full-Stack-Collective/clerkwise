@@ -75,6 +75,7 @@ export default function SoapAssessmentForm({
   soapData,
   handleClose,
 }: SoapAssessmentProps) {
+
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
 
@@ -128,8 +129,8 @@ export default function SoapAssessmentForm({
     temperature: temperature?.toString() || '',
     randomBloodSugar: random_blood_sugar?.toString() || '',
     urine: urine?.toString() || '',
-    patientId: patient as string,
-    providerId: provider as string,
+    patientId: patientId as string,
+    providerId: providerId as string,
   };
 
   const form = useForm<z.infer<typeof soapFormSchema>>({
