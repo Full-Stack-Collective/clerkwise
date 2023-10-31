@@ -40,7 +40,7 @@ export default function SoapDetails({
   const { first_name, surname, date_of_birth, sex } = patientData;
   
   const {
-    exam_date,
+    id,
     subjective_findings,
     objective_findings,
     assessment,

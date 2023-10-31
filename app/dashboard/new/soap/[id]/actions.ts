@@ -6,10 +6,9 @@ import { cookies } from 'next/headers';
 import { z } from 'zod';
 
 export async function createSoapAssessment(
-  formData: z.infer<typeof soapFormSchema>
-){
-
-  'use server'
+  formData: z.infer<typeof soapFormSchema>,
+) {
+  'use server';
   const supabase = createServerActionClient({ cookies });
   const {
     subjectiveFindings,
@@ -48,18 +47,17 @@ export async function createSoapAssessment(
   } catch (error: unknown) {
     if (error) {
       console.error(error);
-      throw new Error('Something went wrong:',error);
-
+      throw new Error('Something went wrong:', error);
     }
   }
-};
-
+}
 
 export const updateSoapAssessment = async (
-  formData: z.infer<typeof soapFormSchema>
+  formData: z.infer<typeof soapFormSchema>,
 ) => {
   const supabase = createServerActionClient({ cookies });
   const {
+    id,
     subjectiveFindings,
     objectiveFindings,
     assessment,
@@ -71,23 +69,29 @@ export const updateSoapAssessment = async (
     temperature,
     randomBloodSugar,
     urine,
-    patientId
+    patientId,
   } = formData;
 
+  console.log('>>>>',id)
+
   try {
-    const { error } = await supabase.from('soap_assessments').update({
-      subjective_findings: subjectiveFindings,
-      objective_findings: objectiveFindings,
-      assessment,
-      blood_pressure: bloodPressure,
-      heart_rate: parseInt(heartRate as string),
-      respiratory_rate: parseInt(respiratoryRate as string),
-      oxygen_saturation: parseInt(oxygenSaturation as string),
-      temperature: parseInt(temperature as string),
-      random_blood_sugar: parseInt(randomBloodSugar as string),
-      urine,
-      plan,
-    }).eq("patient", patientId);
+    const { error } = await supabase
+      .from('soap_assessments')
+      .update({
+        subjective_findings: subjectiveFindings,
+        objective_findings: objectiveFindings,
+        assessment,
+        blood_pressure: bloodPressure,
+        heart_rate: parseInt(heartRate as string),
+        respiratory_rate: parseInt(respiratoryRate as string),
+        oxygen_saturation: parseInt(oxygenSaturation as string),
+        temperature: parseInt(temperature as string),
+        random_blood_sugar: parseInt(randomBloodSugar as string),
+        urine,
+        plan,
+      })
+      .eq('patient', patientId)
+      .eq('id', id);
 
     if (error) throw new Error(`There was a problem: ${error}`);
   } catch (error: unknown) {

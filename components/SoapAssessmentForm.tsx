@@ -59,7 +59,7 @@ export const soapFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   urine: z.string().optional(),
-
+  id: z.string(),
   patientId: z.string(),
   providerId: z.string(),
 });
@@ -102,6 +102,7 @@ export default function SoapAssessmentForm({
   }
 
   const {
+    id,
     subjective_findings,
     objective_findings,
     assessment,
@@ -118,6 +119,7 @@ export default function SoapAssessmentForm({
   } = soapData || {};
 
   const defaultValues = {
+    id: id || '',
     subjectiveFindings: subjective_findings || '',
     objectiveFindings: objective_findings || '',
     assessment: assessment || '',

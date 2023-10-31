@@ -53,9 +53,6 @@ export default function PatientSoapsCard({
     };
   }, [supabase, router]);
 
-  const handleSoapSelection = (event: Event) => {
-    setIsSoapDetailsOpen(true);
-  };
 
   const { id } = patientData;
   return (
