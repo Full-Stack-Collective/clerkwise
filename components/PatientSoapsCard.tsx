@@ -54,7 +54,6 @@ export default function PatientSoapsCard({
   }, [supabase, router]);
 
   const handleSoapSelection = (event: Event) => {
-    console.log(event.target);
     setIsSoapDetailsOpen(true);
   };
 
@@ -82,7 +81,7 @@ export default function PatientSoapsCard({
             {soapAssessmentsExist ? (
               <div className="w-full py-5 mx-auto flex flex-col">
                 <h2 className="text-lg font-semibold">Past SOAPs</h2>
-                <ScrollArea className="h-[96px]">
+                <ScrollArea className="h-[128px]">
                   <ul className="w-full flex flex-col gap-3 items-center">
                     {soapAssessmentsExist &&
                       soapAssessments.map((soapAssessment: SOAP) => {

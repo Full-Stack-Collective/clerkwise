@@ -10,7 +10,6 @@ export async function createSoapAssessment(
 ){
 
   'use server'
-  console.log(formData)
   const supabase = createServerActionClient({ cookies });
   const {
     subjectiveFindings,

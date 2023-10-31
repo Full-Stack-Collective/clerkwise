@@ -24,7 +24,7 @@ const getSoapAssessments = async (patientId: string) => {
   return await supabase
     .from('soap_assessments')
     .select('*')
-    .eq('patient', patientId);
+    .eq('patient', patientId).order('exam_date', {ascending: false});
 };
 
 
