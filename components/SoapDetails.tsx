@@ -38,7 +38,7 @@ export default function SoapDetails({
   onClose,
 }: SoapDetailsProps) {
   const { first_name, surname, date_of_birth, sex } = patientData;
-  
+
   const {
     id,
     subjective_findings,
@@ -61,8 +61,6 @@ export default function SoapDetails({
     setIsEditable(false);
   };
 
-  
-
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px] sm:h-[70vh] overflow-y-auto">
@@ -78,13 +76,26 @@ export default function SoapDetails({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => setIsEditable(true)}>
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => {}} className="text-red-600">
-                  Delete
-                </DropdownMenuItem>
+                {!isEditable ? (
+                  <DropdownMenuItem onSelect={() => setIsEditable(true)}>
+                    Edit
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem onSelect={() => setIsEditable(false)}>
+                    Cancel
+                  </DropdownMenuItem>
+                )}
+                {!isEditable ? (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onSelect={() => {}}
+                      className="text-red-600"
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  </>
+                ) : null}
               </DropdownMenuContent>
             </DropdownMenu>
             {/* ========================== */}
@@ -99,9 +110,10 @@ export default function SoapDetails({
         </DialogHeader>
 
         {isEditable ? (
-          <SoapAssessmentForm handleSoapSubmit={updateSoapAssessment} soapData={soapAssesment} handleClose={handleClose}
-          
-          
+          <SoapAssessmentForm
+            handleSoapSubmit={updateSoapAssessment}
+            soapData={soapAssesment}
+            handleClose={handleClose}
           />
         ) : (
           <Tabs defaultValue="soap" className="w-full">
@@ -118,6 +130,7 @@ export default function SoapDetails({
               <p className="text-sm my-4">{assessment}</p>
               <h3 className="font-semibold">Plan</h3>
               <p className="text-sm my-4">{plan}</p>
+ 
             </TabsContent>
 
             <TabsContent value="vitals">
