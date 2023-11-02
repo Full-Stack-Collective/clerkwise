@@ -44,6 +44,7 @@ export function PatientDetails({ patientData }: any) {
       emergency_contact_name,
       emergency_contact,
     } ]= patientData;
+    console.log("Inside patient details",patientData)
   const [isEditing, setIsEditing] = useState(false);
   const supabase = createClientComponentClient();
   const router = useRouter();
@@ -126,7 +127,7 @@ export function PatientDetails({ patientData }: any) {
             <EditPatientData 
               
               patientId={id}
-              patientData={patientData}
+              patientData={patientData![0]}
               onClose={handleDialogClose} setIsEditing={setIsEditing} patientFirstName={first_name} patientLastName={surname} providerId={useProviderStore.getState().providerId}  />
            
           </DialogContent>

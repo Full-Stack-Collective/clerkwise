@@ -303,6 +303,7 @@ function EditPatientData({
               (form.formState.isDirty && !form.formState.isValid)
             }
             type="submit"
+            onClick={()=>console.log("submit edit")}
           >
             Submit
           </Button>
