@@ -127,7 +127,7 @@ export function PatientDetails({patientData}: any) {
               patientFirstName={first_name}
               patientLastName={surname}
               providerId={useProviderStore.getState().providerId}
-              // practiceId={useProviderStore.getState().practiceId}
+              practiceId={useProviderStore.getState().practiceId}
             />
           </DialogContent>
           <DialogFooter>

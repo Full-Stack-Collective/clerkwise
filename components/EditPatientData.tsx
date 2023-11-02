@@ -45,12 +45,15 @@ export const formSchema = z.object({
 
 function EditPatientData({
   patientId,
-  patientData,
   providerId,
+  practiceId,
+  patientData,
   onClose,
   setIsEditing,
 }: CurrentPatient & {
   patientData: Patient;
+  practiceId: string;
+  providerId: string;
   onClose?: () => void;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -80,9 +83,8 @@ function EditPatientData({
     city: city || '',
     emergencyContactName: emergency_contact_name || '',
     emergencyContact: emergency_contact || '',
-
     patientId: patientId,
-    // practiceId:practiceId,
+    practiceId: practiceId,
     providerId: providerId,
   };
   console.log('Default:', defaultValues);
