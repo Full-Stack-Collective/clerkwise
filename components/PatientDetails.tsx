@@ -27,6 +27,8 @@ import EditPatientData from './EditPatientData';
 import { useProviderStore } from "@/stores/currentProviderStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
+import { usePatientStore } from "@/stores/currentPatientStore";
+
 export function PatientDetails({ patientData }: any) {
   const [
     {
@@ -46,11 +48,13 @@ export function PatientDetails({ patientData }: any) {
   const supabase = createClientComponentClient();
   const router = useRouter();
   const handleEditClick = () => {
+
     setIsEditing(true);
   };
 
   const handleDialogClose = () => {
     setIsEditing(false);
+   
   };
   useEffect(() => {
     const channel = supabase
@@ -72,6 +76,8 @@ export function PatientDetails({ patientData }: any) {
       supabase.removeChannel(channel);
     };
   }, [supabase, router]);
+ 
+
   return (
     <Card className="max-w-xs w-full">
       <CardHeader>
@@ -113,15 +119,16 @@ export function PatientDetails({ patientData }: any) {
       </CardFooter>
 
       {isEditing && (
-        <Dialog>
-          <DialogHeader>
-            <DialogTitle>Edit Patient Details</DialogTitle>
-          </DialogHeader>
-          <DialogContent>
+          <Dialog open={isEditing} onOpenChange={handleDialogClose}  >
+          
+          <DialogContent >
+         
             <EditPatientData 
-              patientId={id || ""}
+              
+              patientId={id}
               patientData={patientData}
-              onClose={handleDialogClose} patientFirstName={first_name} patientLastName={surname} providerId={useProviderStore.getState().providerId} setIsEditing={setIsEditing} />
+              onClose={handleDialogClose} setIsEditing={setIsEditing} patientFirstName={first_name} patientLastName={surname} providerId={useProviderStore.getState().providerId}  />
+           
           </DialogContent>
           <DialogFooter>
             <Button variant="default" onClick={handleDialogClose}>

@@ -2,6 +2,8 @@
 
 import {examFormSchema} from '@/components/NewPatientExam';
 import {formSchema} from '@/components/RegisterPatient';
+import { usePatientStore } from '@/stores/currentPatientStore';
+import { useProviderStore } from '@/stores/currentProviderStore';
 import {createServerActionClient} from '@supabase/auth-helpers-nextjs';
 import {cookies} from 'next/headers';
 import {z} from 'zod';
@@ -76,7 +78,7 @@ export const editClinicalRecord = async (
   }
 };
 export const editPatientData = async (
-  patientId: string,
+
   patientData: z.infer<typeof formSchema>
 ) => {
   const {
@@ -90,9 +92,8 @@ export const editPatientData = async (
     streetAddress,
     emergencyContactName,
     emergencyContact,
-    practiceId,
-    providerId,
   } = patientData;
+  const { providerId, patientId } = usePatientStore.getState();
   try {
     const {error} = await supabase
       .from('Patients')
@@ -107,7 +108,7 @@ export const editPatientData = async (
         emergency_contact_name: emergencyContactName,
         emergency_contact: emergencyContact,
         primary_provider: providerId,
-        practice: practiceId})
+        patientId: patientId, })
         .eq('patient', patientId);
         if (error) throw new Error(`There was a problem: ${error}`);
       } catch (error: unknown) {

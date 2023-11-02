@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -48,15 +48,13 @@ export const formSchema = z.object({
 function EditPatientData({
   patientId,
   patientData,
-  providerId,
- 
   onClose,
   setIsEditing,
 }: CurrentPatient & {
   patientData: Patient;
   onClose?: () => void;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+})  {
   const {
     first_name,
     surname,
@@ -70,6 +68,7 @@ function EditPatientData({
     emergency_contact,
    
   } = patientData;
+  console.log("Inside EditPatientData:", patientData);
 
   const defaultValues = {
     firstName: first_name,
@@ -82,9 +81,11 @@ function EditPatientData({
     city: city || "",
     emergencyContactName: emergency_contact_name || "",
     emergencyContact: emergency_contact || "",
-    providerId: providerId || "",
+    
     patientId: patientId || "",
   }
+  console.log("Default:", defaultValues);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -96,7 +97,7 @@ function EditPatientData({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsEditing((p: boolean) => !p);
-    editPatientData(patientId,values)
+    editPatientData(values)
       .then(() => {
         toast({ title: "Patient data has been updated" });
         router.push(`/dashboard/patient/${patientId}`);
@@ -109,6 +110,12 @@ function EditPatientData({
         });
       });
   }
+  useEffect(() => {
+    if (!setIsEditing) {
+      onClose && onClose();
+    }
+  }, [onClose, setIsEditing]);
+
 
   return (
     <div className="p-4 max-w-lg w-full m-auto">
@@ -119,7 +126,7 @@ function EditPatientData({
           autoSave="off"
           autoComplete="off"
         >
-          <h2 className="font-semibold text-lg">Register New Patient</h2>
+         
           <FormField
             control={form.control}
             name="firstName"
