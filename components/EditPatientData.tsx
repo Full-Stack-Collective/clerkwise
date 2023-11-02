@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -58,7 +58,7 @@ function EditPatientData({
   const {
     first_name,
     surname,
-    sex,
+    
     date_of_birth,
     email,
     phone,
@@ -68,6 +68,7 @@ function EditPatientData({
     emergency_contact,
    
   } = patientData;
+  const [sex, setSex] = useState(patientData.sex);
   console.log("Inside EditPatientData:", patientData);
 
   const defaultValues = {
@@ -161,37 +162,40 @@ function EditPatientData({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="sex"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                  Sex
-                </FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    className="flex space-x-2"
-                  >
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="male" />
-                      </FormControl>
-                      <FormLabel className="font-normal">Male</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="female" />
-                      </FormControl>
-                      <FormLabel className="font-normal">Female</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+<FormField
+  control={form.control}
+  name="sex"
+  render={({ field }) => (
+    <FormItem className="space-y-3">
+      <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
+        Sex
+      </FormLabel>
+      <FormControl>
+        <RadioGroup
+          onValueChange={(value) => {
+            field.onChange(value);
+          }}
+          className="flex space-x-2"
+        >
+          <FormItem className="flex items-center space-x-3 space-y-0">
+            <FormControl>
+              <RadioGroupItem value="male" checked={field.value === "male"} />
+            </FormControl>
+            <FormLabel className="font-normal">Male</FormLabel>
+          </FormItem>
+          <FormItem className="flex items-center space-x-3 space-y-0">
+            <FormControl>
+              <RadioGroupItem value="female" checked={field.value === "female"} />
+            </FormControl>
+            <FormLabel className="font-normal">Female</FormLabel>
+          </FormItem>
+        </RadioGroup>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
 
           <FormField
             control={form.control}
