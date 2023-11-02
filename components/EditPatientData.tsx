@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { DialogFooter } from "./ui/dialog";
+import {DialogFooter} from './ui/dialog';
 import {
   Form,
   FormControl,
@@ -8,20 +8,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+} from '@/components/ui/form';
+import {Textarea} from '@/components/ui/textarea';
+import {zodResolver} from '@hookform/resolvers/zod';
+import React, {useEffect, useState} from 'react';
+import {Button} from '@/components/ui/button';
+import {useForm} from 'react-hook-form';
+import {z} from 'zod';
+import {Input} from '@/components/ui/input';
+import {RadioGroup, RadioGroupItem} from './ui/radio-group';
 
-
-import { editPatientData } from "@/app/dashboard/patient/[id]/actions";
-import { useRouter } from "next/navigation";
-import { useToast } from "./ui/use-toast";
+import {editPatientData} from '@/app/dashboard/patient/[id]/actions';
+import {useRouter} from 'next/navigation';
+import {useToast} from './ui/use-toast';
 
 export const formSchema = z.object({
   firstName: z.string().min(2, {
@@ -30,10 +29,10 @@ export const formSchema = z.object({
   surname: z.string().min(2, {
     message: 'Surname must be at least 2 characters.',
   }),
-  sex: z.string().refine(value => ['male', 'female', ''].includes(value), {
+  sex: z.string().refine((value) => ['male', 'female', ''].includes(value), {
     message: 'Sex must be male, female, or not provided.',
-}),
-  dateOfBirth: z.string().min(6, { message: 'DOB is required' }),
+  }),
+  dateOfBirth: z.string().min(6, {message: 'DOB is required'}),
   email: z.string().email().optional().or(z.literal('')),
   phone: z.string(),
   streetAddress: z.string().optional(),
@@ -44,21 +43,21 @@ export const formSchema = z.object({
   practiceId: z.string(),
 });
 
-
 function EditPatientData({
   patientId,
   patientData,
+  providerId,
   onClose,
   setIsEditing,
 }: CurrentPatient & {
   patientData: Patient;
   onClose?: () => void;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-})  {
+}) {
   const {
     first_name,
     surname,
-    
+    sex,
     date_of_birth,
     email,
     phone,
@@ -66,72 +65,76 @@ function EditPatientData({
     street_address,
     emergency_contact_name,
     emergency_contact,
-   
   } = patientData;
-  const [sex, setSex] = useState(patientData.sex);
-  console.log("Inside EditPatientData:", patientData);
+
+  //console.log("Inside EditPatientData:", patientData);
 
   const defaultValues = {
     firstName: first_name,
     surname: surname,
     dateOfBirth: date_of_birth || undefined,
-    sex: sex||undefined,
-    email: email || "",
-    phone: phone || "",
-    streetAddress: street_address || "",
-    city: city || "",
-    emergencyContactName: emergency_contact_name || "",
-    emergencyContact: emergency_contact || "",
-    
-    patientId: patientId || "",
-  }
-  console.log("Default:", defaultValues);
+    sex: sex || undefined,
+    email: email || '',
+    phone: phone || '',
+    streetAddress: street_address || '',
+    city: city || '',
+    emergencyContactName: emergency_contact_name || '',
+    emergencyContact: emergency_contact || '',
+
+    patientId: patientId,
+    // practiceId:practiceId,
+    providerId: providerId,
+  };
+  console.log('Default:', defaultValues);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const router = useRouter();
-  const { toast } = useToast();
+  const {toast} = useToast();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('submit', values);
     setIsEditing((p: boolean) => !p);
     editPatientData(values)
       .then(() => {
-        toast({ title: "Patient data has been updated" });
+        toast({title: 'Patient data has been updated'});
         router.push(`/dashboard/patient/${patientId}`);
       })
       .catch((error) => {
         console.error(error);
         toast({
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
         });
       });
   }
-  useEffect(() => {
-    if (!setIsEditing) {
-      onClose && onClose();
-    }
-  }, [onClose, setIsEditing]);
-
+  // useEffect(() => {
+  //   if (!setIsEditing) {
+  //     onClose && onClose();
+  //   }
+  // }, [onClose, setIsEditing]);
+  console.log('form is dirty', form.formState.isDirty);
+  console.log('form is valid', form.formState.isValid);
 
   return (
     <div className="p-4 max-w-lg w-full m-auto">
-     <Form {...form}>
+      <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit, (errors) =>
+            console.log('Form validation errors:', errors)
+          )}
           className="space-y-8 max-w-sm w-full mx-auto"
           autoSave="off"
           autoComplete="off"
         >
-         
           <FormField
             control={form.control}
             name="firstName"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
                   First Name
@@ -148,7 +151,7 @@ function EditPatientData({
           <FormField
             control={form.control}
             name="surname"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
                   Surname
@@ -162,45 +165,50 @@ function EditPatientData({
             )}
           />
 
-<FormField
-  control={form.control}
-  name="sex"
-  render={({ field }) => (
-    <FormItem className="space-y-3">
-      <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
-        Sex
-      </FormLabel>
-      <FormControl>
-        <RadioGroup
-          onValueChange={(value) => {
-            field.onChange(value);
-          }}
-          className="flex space-x-2"
-        >
-          <FormItem className="flex items-center space-x-3 space-y-0">
-            <FormControl>
-              <RadioGroupItem value="male" checked={field.value === "male"} />
-            </FormControl>
-            <FormLabel className="font-normal">Male</FormLabel>
-          </FormItem>
-          <FormItem className="flex items-center space-x-3 space-y-0">
-            <FormControl>
-              <RadioGroupItem value="female" checked={field.value === "female"} />
-            </FormControl>
-            <FormLabel className="font-normal">Female</FormLabel>
-          </FormItem>
-        </RadioGroup>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
+          <FormField
+            control={form.control}
+            name="sex"
+            render={({field}) => (
+              <FormItem className="space-y-3">
+                <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  Sex
+                </FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    className="flex space-x-2"
+                  >
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem
+                          value="male"
+                          checked={field.value === 'male'}
+                        />
+                      </FormControl>
+                      <FormLabel className="font-normal">Male</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem
+                          value="female"
+                          checked={field.value === 'female'}
+                        />
+                      </FormControl>
+                      <FormLabel className="font-normal">Female</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
             name="dateOfBirth"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">
                   Date of Birth
@@ -217,7 +225,7 @@ function EditPatientData({
           <FormField
             control={form.control}
             name="email"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
@@ -232,7 +240,7 @@ function EditPatientData({
           <FormField
             control={form.control}
             name="phone"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
@@ -246,7 +254,7 @@ function EditPatientData({
           <FormField
             control={form.control}
             name="streetAddress"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Street Address</FormLabel>
                 <FormControl>
@@ -260,7 +268,7 @@ function EditPatientData({
           <FormField
             control={form.control}
             name="city"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>City</FormLabel>
                 <FormControl>
@@ -275,7 +283,7 @@ function EditPatientData({
           <FormField
             control={form.control}
             name="emergencyContactName"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Emergency Contact Name</FormLabel>
                 <FormControl>
@@ -289,7 +297,7 @@ function EditPatientData({
           <FormField
             control={form.control}
             name="emergencyContact"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Emergency Contact Number</FormLabel>
                 <FormControl>
@@ -300,18 +308,18 @@ function EditPatientData({
               </FormItem>
             )}
           />
-  <DialogFooter>
-          <Button
-            disabled={
-              !form.formState.isDirty ||
-              (form.formState.isDirty && !form.formState.isValid)
-            }
-            type="submit"
-            onClick={()=>console.log("submit edit")}
-          >
-            Submit
-          </Button>
-          <Button type="button" variant="outline" onClick={onClose}>
+          <DialogFooter>
+            <Button
+              // disabled={
+              //   !form.formState.isDirty ||
+              //   (form.formState.isDirty && !form.formState.isValid)
+              // }
+              type="submit"
+              onClick={() => console.log('submit edit')}
+            >
+              Submit
+            </Button>
+            <Button type="button" variant="outline" onClick={onClose}>
               Close
             </Button>
           </DialogFooter>

@@ -1,8 +1,7 @@
-"use client"
-import React, { useState,useEffect } from "react";
+'use client';
+import React, {useState, useEffect} from 'react';
 
-
-import { Button, buttonVariants } from '@/components/ui/button';
+import {Button, buttonVariants} from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -18,18 +17,18 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from "./ui/dialog";
-import { capitalizeWord } from '@/utils/textFormatters';
-import { calculateAge } from '@/utils/calculators';
+} from './ui/dialog';
+import {capitalizeWord} from '@/utils/textFormatters';
+import {calculateAge} from '@/utils/calculators';
 import Link from 'next/link';
-import { format, parseISO } from 'date-fns';
+import {format, parseISO} from 'date-fns';
 import EditPatientData from './EditPatientData';
-import { useProviderStore } from "@/stores/currentProviderStore";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
-import { usePatientStore } from "@/stores/currentPatientStore";
+import {useProviderStore} from '@/stores/currentProviderStore';
+import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
+import {useRouter} from 'next/navigation';
+import {usePatientStore} from '@/stores/currentPatientStore';
 
-export function PatientDetails({ patientData }: any) {
+export function PatientDetails({patientData}: any) {
   const [
     {
       id,
@@ -43,29 +42,28 @@ export function PatientDetails({ patientData }: any) {
       city,
       emergency_contact_name,
       emergency_contact,
-    } ]= patientData;
-    console.log("Inside patient details",patientData)
+    },
+  ] = patientData;
+  //  console.log("Inside patient details",patientData)
   const [isEditing, setIsEditing] = useState(false);
   const supabase = createClientComponentClient();
   const router = useRouter();
   const handleEditClick = () => {
-
     setIsEditing(true);
   };
 
   const handleDialogClose = () => {
     setIsEditing(false);
-   
   };
   useEffect(() => {
     const channel = supabase
-      .channel("patient data")
+      .channel('patient data')
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "*",
-          schema: "public",
-          table: "Patients",
+          event: '*',
+          schema: 'public',
+          table: 'Patients',
         },
         (payload) => {
           router.refresh();
@@ -77,7 +75,6 @@ export function PatientDetails({ patientData }: any) {
       supabase.removeChannel(channel);
     };
   }, [supabase, router]);
- 
 
   return (
     <Card className="max-w-xs w-full">
@@ -120,26 +117,26 @@ export function PatientDetails({ patientData }: any) {
       </CardFooter>
 
       {isEditing && (
-          <Dialog open={isEditing} onOpenChange={handleDialogClose}  >
-          
-          <DialogContent >
-         
-            <EditPatientData 
-              
-              patientId={id}
+        <Dialog open={isEditing} onOpenChange={handleDialogClose}>
+          <DialogContent>
+            <EditPatientData
+              patientId={usePatientStore.getState().patientId}
               patientData={patientData![0]}
-              onClose={handleDialogClose} setIsEditing={setIsEditing} patientFirstName={first_name} patientLastName={surname} providerId={useProviderStore.getState().providerId}  />
-           
+              onClose={handleDialogClose}
+              setIsEditing={setIsEditing}
+              patientFirstName={first_name}
+              patientLastName={surname}
+              providerId={useProviderStore.getState().providerId}
+              // practiceId={useProviderStore.getState().practiceId}
+            />
           </DialogContent>
           <DialogFooter>
             <Button variant="default" onClick={handleDialogClose}>
               Cancel
             </Button>
-          
           </DialogFooter>
         </Dialog>
       )}
-
     </Card>
   );
 }
