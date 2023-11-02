@@ -70,8 +70,6 @@ function EditPatientData({
     emergency_contact,
   } = patientData;
 
-  //console.log("Inside EditPatientData:", patientData);
-
   const defaultValues = {
     firstName: first_name,
     surname: surname,
@@ -99,9 +97,9 @@ function EditPatientData({
   const {toast} = useToast();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('submit', values);
+    console.log('submit values', values);
     setIsEditing((p: boolean) => !p);
-    editPatientData(values)
+    editPatientData(values, practiceId, providerId, patientId)
       .then(() => {
         toast({title: 'Patient data has been updated'});
         router.push(`/dashboard/patient/${patientId}`);
@@ -114,13 +112,6 @@ function EditPatientData({
         });
       });
   }
-  // useEffect(() => {
-  //   if (!setIsEditing) {
-  //     onClose && onClose();
-  //   }
-  // }, [onClose, setIsEditing]);
-  console.log('form is dirty', form.formState.isDirty);
-  console.log('form is valid', form.formState.isValid);
 
   return (
     <div className="p-4 max-w-lg w-full m-auto">
@@ -312,12 +303,11 @@ function EditPatientData({
           />
           <DialogFooter>
             <Button
-              // disabled={
-              //   !form.formState.isDirty ||
-              //   (form.formState.isDirty && !form.formState.isValid)
-              // }
+              disabled={
+                !form.formState.isDirty ||
+                (form.formState.isDirty && !form.formState.isValid)
+              }
               type="submit"
-              onClick={() => console.log('submit edit')}
             >
               Submit
             </Button>

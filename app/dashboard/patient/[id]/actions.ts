@@ -79,7 +79,10 @@ export const editClinicalRecord = async (
 };
 export const editPatientData = async (
 
-  patientData: z.infer<typeof formSchema>
+  patientData: z.infer<typeof formSchema>,
+  providerId: string,
+  practiceId: string,
+  patientId: string,
 ) => {
   const {
     firstName,
@@ -92,8 +95,11 @@ export const editPatientData = async (
     streetAddress,
     emergencyContactName,
     emergencyContact,
+  
   } = patientData;
-  const { providerId, patientId } = usePatientStore.getState();
+  
+  
+  
   try {
     const {error} = await supabase
       .from('Patients')
@@ -108,7 +114,8 @@ export const editPatientData = async (
         emergency_contact_name: emergencyContactName,
         emergency_contact: emergencyContact,
         primary_provider: providerId,
-        patientId: patientId, })
+        practice: practiceId,
+        })
         .eq('patient', patientId);
         if (error) throw new Error(`There was a problem: ${error}`);
       } catch (error: unknown) {

@@ -44,7 +44,7 @@ export function PatientDetails({patientData}: any) {
       emergency_contact,
     },
   ] = patientData;
-  //  console.log("Inside patient details",patientData)
+
   const [isEditing, setIsEditing] = useState(false);
   const supabase = createClientComponentClient();
   const router = useRouter();
