@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { capitalizeWord } from "@/utils/textFormatters";
 import { calculateAge } from "@/utils/calculators";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import EditPatientExam from "./EditPatientExam";
 import { useProviderStore } from "@/stores/currentProviderStore";
 
@@ -62,11 +62,11 @@ export default function ExamDetails({
             {first_name} {surname}
           </DialogTitle>
           <DialogDescription>
-            {capitalizeWord(sex as string)},
+            {capitalizeWord(sex as string)},{" "}
             {date_of_birth && calculateAge(date_of_birth)} years
           </DialogDescription>
           <DialogDescription>
-            Exam date: {exam_date && format(new Date(exam_date), "PPP")}
+            Exam date: {exam_date && format(parseISO(exam_date), "PPP")}
           </DialogDescription>
         </DialogHeader>
 
@@ -108,45 +108,41 @@ export default function ExamDetails({
                 <p className="text-sm my-4">{allergies}</p>
               </TabsContent>
 
-              <TabsContent value="vitals">
-                <h3 className="font-semibold">Blood Pressure</h3>
-                <p className="text-sm my-4">{blood_pressure} mmHg</p>
-                <h3 className="font-semibold">Heart Rate</h3>
-                <p className="text-sm my-4">{heart_rate} beats per minute</p>
-                <h3 className="font-semibold">Respiratory Rate</h3>
-                <p className="text-sm my-4">
-                  {respiratory_rate} breaths per minute
-                </p>
-                <h3 className="font-semibold">SpO2</h3>
-                <p className="text-sm my-4">{oxygen_saturation} %</p>
-                <h3 className="font-semibold">Temperature</h3>
-                <p className="text-sm my-4">{temperature} °C</p>
-                <h3 className="font-semibold">Random Blood Sugar</h3>
-                <p
-                  className={`text-sm my-4 ${
-                    { random_blood_sugar } && "italic"
-                  }`}
-                >
-                  {random_blood_sugar
-                    ? `${random_blood_sugar} mg/dL`
-                    : "not recorded"}
-                </p>
-                <h3 className="font-semibold">Urine</h3>
-                <p className={`text-sm my-4 ${{ urine } && "italic"}`}>
-                  {urine || "not recorded"}
-                </p>
-              </TabsContent>
+          <TabsContent value="vitals">
+            <h3 className="font-semibold">Blood Pressure</h3>
+            <p className="text-sm my-4">{blood_pressure} mmHg</p>
+            <h3 className="font-semibold">Heart Rate</h3>
+            <p className="text-sm my-4">{heart_rate} beats per minute</p>
+            <h3 className="font-semibold">Respiratory Rate</h3>
+            <p className="text-sm my-4">
+              {respiratory_rate} breaths per minute
+            </p>
+            <h3 className="font-semibold">SpO2</h3>
+            <p className="text-sm my-4">{oxygen_saturation} %</p>
+            <h3 className="font-semibold">Temperature</h3>
+            <p className="text-sm my-4">{temperature} °C</p>
+            <h3 className="font-semibold">Random Blood Sugar</h3>
+            <p className={`text-sm my-4 ${{ random_blood_sugar } && "italic"}`}>
+              {random_blood_sugar
+                ? `${random_blood_sugar} mg/dL`
+                : "not recorded"}
+            </p>
+            <h3 className="font-semibold">Urine</h3>
+            <p className={`text-sm my-4 ${{ urine } && "italic"}`}>
+              {urine || "not recorded"}
+            </p>
+          </TabsContent>
 
-              <TabsContent value="clinicalExam">
-                <h3 className="font-semibold">Observations</h3>
-                <p className="text-sm my-4">{observations}</p>
-                <h3 className="font-semibold">On Examination</h3>
-                <p className="text-sm my-4">{on_examination}</p>
-                <h3 className="font-semibold">Focused Findings</h3>
-                <p className="text-sm my-4">
-                  {focused_findings || "None recorded"}
-                </p>
-              </TabsContent>
+          <TabsContent value="clinicalExam">
+            <h3 className="font-semibold">Observations</h3>
+            <p className="text-sm my-4">{observations}</p>
+            <h3 className="font-semibold">On Examination</h3>
+            <p className="text-sm my-4">{on_examination}</p>
+            <h3 className="font-semibold">Focused Findings</h3>
+            <p className="text-sm my-4">
+              {focused_findings || "None recorded"}
+            </p>
+          </TabsContent>
 
               <TabsContent value="diagnosis">
                 {differential_diagnosis ?? (
