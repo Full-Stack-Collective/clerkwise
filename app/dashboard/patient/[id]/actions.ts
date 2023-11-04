@@ -78,7 +78,7 @@ export const editPatientData = async (
   patientData: z.infer<typeof formSchema>
 ) => {
   const {
-    id,
+    patientId,
     firstName,
     surname,
     sex,
@@ -110,7 +110,7 @@ export const editPatientData = async (
         practice: practiceId,
         primary_provider: providerId,
       })
-      .eq('id', id);
+      .eq('id', patientId);
 
     if (error) throw new Error(`There was a problem: ${error}`);
   } catch (error: any) {

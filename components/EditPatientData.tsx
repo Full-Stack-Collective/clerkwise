@@ -41,6 +41,7 @@ export const formSchema = z.object({
   emergencyContact: z.string(),
   providerId: z.string(),
   practiceId: z.string(),
+  patientId: z.string(), 
 });
 
 function EditPatientData({
@@ -83,7 +84,7 @@ function EditPatientData({
     city: city || '',
     emergencyContactName: emergency_contact_name || '',
     emergencyContact: emergency_contact || '',
-    id,
+    patientId:id,
     providerId:primary_provider||"",
     practiceId:practice||""
   };
@@ -105,7 +106,7 @@ function EditPatientData({
 
     setIsEditing((p: boolean) => !p);
 
-    editPatientData(values)
+    editPatientData({ ...values, patientId })
       .then(() => {
         toast({title: 'Patient data has been updated'});
         router.push(`/dashboard/patient/${patientId}`);
