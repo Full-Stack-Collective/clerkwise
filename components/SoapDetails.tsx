@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from "./ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+} from './ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,11 +18,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreVertical } from 'lucide-react';
 
-import { capitalizeWord } from "@/utils/textFormatters";
-import { calculateAge } from "@/utils/calculators";
+import { capitalizeWord } from '@/utils/textFormatters';
+import { calculateAge } from '@/utils/calculators';
 import SoapAssessmentForm from './SoapAssessmentForm';
-import { updateSoapAssessment } from "@/app/dashboard/new/soap/[id]/actions";
+import { updateSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
 import { format, parseISO } from 'date-fns';
+import { ScrollArea } from './ui/scroll-area';
 
 type SoapDetailsProps = {
   soapAssesment: SOAP;
@@ -64,7 +65,7 @@ export default function SoapDetails({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[425px] sm:h-[70vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[425px] sm:h-[80vh]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-4 py-2">
             {first_name} {surname}
@@ -116,43 +117,47 @@ export default function SoapDetails({
               <TabsTrigger value="soap">SOAP</TabsTrigger>
               <TabsTrigger value="vitals">Vitals</TabsTrigger>
             </TabsList>
-            <TabsContent value="soap">
-              <h3 className="font-semibold">Subjective Findings</h3>
-              <p className="text-sm my-4">{subjective_findings}</p>
-              <h3 className="font-semibold">Objective Findings</h3>
-              <p className="text-sm my-4">{objective_findings}</p>
-              <h3 className="font-semibold">Assessment</h3>
-              <p className="text-sm my-4">{assessment}</p>
-              <h3 className="font-semibold">Plan</h3>
-              <p className="text-sm my-4">{plan}</p>
-            </TabsContent>
+            <ScrollArea className='h-96'>
+              <TabsContent value="soap">
+                <h3 className="font-semibold">Subjective Findings</h3>
+                <p className="text-sm my-4">{subjective_findings}</p>
+                <h3 className="font-semibold">Objective Findings</h3>
+                <p className="text-sm my-4">{objective_findings}</p>
+                <h3 className="font-semibold">Assessment</h3>
+                <p className="text-sm my-4">{assessment}</p>
+                <h3 className="font-semibold">Plan</h3>
+                <p className="text-sm my-4">{plan}</p>
+              </TabsContent>
 
-            <TabsContent value="vitals">
-              <h3 className="font-semibold">Blood Pressure</h3>
-              <p className="text-sm my-4">{blood_pressure} mmHg</p>
-              <h3 className="font-semibold">Heart Rate</h3>
-              <p className="text-sm my-4">{heart_rate} beats per minute</p>
-              <h3 className="font-semibold">Respiratory Rate</h3>
-              <p className="text-sm my-4">
-                {respiratory_rate} breaths per minute
-              </p>
-              <h3 className="font-semibold">SpO2</h3>
-              <p className="text-sm my-4">{oxygen_saturation} %</p>
-              <h3 className="font-semibold">Temperature</h3>
-              <p className="text-sm my-4">{temperature} °C</p>
-              <h3 className="font-semibold">Random Blood Sugar</h3>
-              <p
-                className={`text-sm my-4 ${{ random_blood_sugar } && 'italic'}`}
-              >
-                {random_blood_sugar
-                  ? `${random_blood_sugar} mg/dL`
-                  : 'not recorded'}
-              </p>
-              <h3 className="font-semibold">Urine</h3>
-              <p className={`text-sm my-4 ${{ urine } && 'italic'}`}>
-                {urine || 'not recorded'}
-              </p>
-            </TabsContent>
+              <TabsContent value="vitals">
+                <h3 className="font-semibold">Blood Pressure</h3>
+                <p className="text-sm my-4">{blood_pressure} mmHg</p>
+                <h3 className="font-semibold">Heart Rate</h3>
+                <p className="text-sm my-4">{heart_rate} beats per minute</p>
+                <h3 className="font-semibold">Respiratory Rate</h3>
+                <p className="text-sm my-4">
+                  {respiratory_rate} breaths per minute
+                </p>
+                <h3 className="font-semibold">SpO2</h3>
+                <p className="text-sm my-4">{oxygen_saturation} %</p>
+                <h3 className="font-semibold">Temperature</h3>
+                <p className="text-sm my-4">{temperature} °C</p>
+                <h3 className="font-semibold">Random Blood Sugar</h3>
+                <p
+                  className={`text-sm my-4 ${
+                    { random_blood_sugar } && 'italic'
+                  }`}
+                >
+                  {random_blood_sugar
+                    ? `${random_blood_sugar} mg/dL`
+                    : 'not recorded'}
+                </p>
+                <h3 className="font-semibold">Urine</h3>
+                <p className={`text-sm my-4 ${{ urine } && 'italic'}`}>
+                  {urine || 'not recorded'}
+                </p>
+              </TabsContent>
+              </ScrollArea>
           </Tabs>
         )}
 
