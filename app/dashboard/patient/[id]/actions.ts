@@ -1,9 +1,7 @@
 'use server';
 
 import {examFormSchema} from '@/components/NewPatientExam';
-import {formSchema} from '@/components/RegisterPatient';
-import { usePatientStore } from '@/stores/currentPatientStore';
-import { useProviderStore } from '@/stores/currentProviderStore';
+import {formSchema} from '@/components/EditPatientData';
 import {createServerActionClient} from '@supabase/auth-helpers-nextjs';
 import {cookies} from 'next/headers';
 import {z} from 'zod';
@@ -11,7 +9,6 @@ import {z} from 'zod';
 // Should this request be made as a client
 const supabase = createServerActionClient({cookies});
 export const editClinicalRecord = async (
-
   formData: z.infer<typeof examFormSchema>
 ) => {
   const {
@@ -78,13 +75,10 @@ export const editClinicalRecord = async (
   }
 };
 export const editPatientData = async (
-
-  patientData: z.infer<typeof formSchema>,
-  providerId: string,
-  practiceId: string,
-  patientId: string,
+  patientData: z.infer<typeof formSchema>
 ) => {
   const {
+    id,
     firstName,
     surname,
     sex,
@@ -95,15 +89,15 @@ export const editPatientData = async (
     streetAddress,
     emergencyContactName,
     emergencyContact,
-  
+    practiceId,
+    providerId,
   } = patientData;
-  
-  
-  
+
   try {
-    const {error} = await supabase
+    const {data, error} = await supabase
       .from('Patients')
-      .update({ first_name: firstName,
+      .update({
+        first_name: firstName,
         surname,
         sex,
         date_of_birth: dateOfBirth,
@@ -113,14 +107,15 @@ export const editPatientData = async (
         city,
         emergency_contact_name: emergencyContactName,
         emergency_contact: emergencyContact,
-        primary_provider: providerId,
         practice: practiceId,
-        })
-        .eq('patient', patientId);
-        if (error) throw new Error(`There was a problem: ${error}`);
-      } catch (error: unknown) {
-        if (error) {
-          throw new Error('Something went wrong:', error);
-        }
-      }
+        primary_provider: providerId,
+      })
+      .eq('id', id);
+
+    if (error) throw new Error(`There was a problem: ${error}`);
+  } catch (error: any) {
+    if (error) {
+      throw new Error('Something went wrong: in actions file', error.message);
+    }
+  }
 };

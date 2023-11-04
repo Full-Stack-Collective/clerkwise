@@ -13,9 +13,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogHeader,
   DialogFooter,
 } from './ui/dialog';
 import {capitalizeWord} from '@/utils/textFormatters';
@@ -26,7 +23,7 @@ import EditPatientData from './EditPatientData';
 import {useProviderStore} from '@/stores/currentProviderStore';
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
 import {useRouter} from 'next/navigation';
-import {usePatientStore} from '@/stores/currentPatientStore';
+
 
 export function PatientDetails({patientData}: any) {
   const [
@@ -75,7 +72,7 @@ export function PatientDetails({patientData}: any) {
       supabase.removeChannel(channel);
     };
   }, [supabase, router]);
-
+console.log("Patient data passed to edit form in patient details:", patientData[0])
   return (
     <Card className="max-w-xs w-full">
       <CardHeader>
@@ -120,7 +117,7 @@ export function PatientDetails({patientData}: any) {
         <Dialog open={isEditing} onOpenChange={handleDialogClose}>
           <DialogContent>
             <EditPatientData
-              patientId={usePatientStore.getState().patientId}
+              patientId={id}
               patientData={patientData![0]}
               onClose={handleDialogClose}
               setIsEditing={setIsEditing}
