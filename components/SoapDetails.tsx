@@ -9,14 +9,6 @@ import {
   DialogFooter,
 } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { MoreVertical } from 'lucide-react';
 
 import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
@@ -24,6 +16,7 @@ import SoapAssessmentForm from './SoapAssessmentForm';
 import { updateSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
 import { format, parseISO } from 'date-fns';
 import { ScrollArea } from './ui/scroll-area';
+import FormsOptionsMenu from './FormsOptionsMenu';
 
 type SoapDetailsProps = {
   soapAssesment: SOAP;
@@ -69,32 +62,10 @@ export default function SoapDetails({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-4 py-2">
             {first_name} {surname}
-            {/* ========================== */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" className="h-6 px-2">
-                  <span className="sr-only">Actions</span>
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {!isEditable ? (
-                  <DropdownMenuItem onSelect={() => setIsEditable(true)}>
-                    Edit
-                  </DropdownMenuItem>
-                ) : (
-                  <DropdownMenuItem onSelect={() => setIsEditable(false)}>
-                    Cancel
-                  </DropdownMenuItem>
-                )}
-
-                {/* <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => {}} className="text-red-600">
-                  Delete
-                </DropdownMenuItem> */}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            {/* ========================== */}
+            <FormsOptionsMenu
+              isEditable={isEditable}
+              setIsEditable={setIsEditable}
+            />
           </DialogTitle>
           <DialogDescription>
             {capitalizeWord(sex as string)},{' '}
@@ -117,7 +88,7 @@ export default function SoapDetails({
               <TabsTrigger value="soap">SOAP</TabsTrigger>
               <TabsTrigger value="vitals">Vitals</TabsTrigger>
             </TabsList>
-            <ScrollArea className='h-96'>
+            <ScrollArea className="h-96">
               <TabsContent value="soap">
                 <h3 className="font-semibold">Subjective Findings</h3>
                 <p className="text-sm my-4">{subjective_findings}</p>
@@ -157,7 +128,7 @@ export default function SoapDetails({
                   {urine || 'not recorded'}
                 </p>
               </TabsContent>
-              </ScrollArea>
+            </ScrollArea>
           </Tabs>
         )}
 
