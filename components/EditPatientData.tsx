@@ -41,13 +41,13 @@ export const formSchema = z.object({
   emergencyContact: z.string(),
   providerId: z.string(),
   practiceId: z.string(),
-  patientId: z.string(), 
+  patientId: z.string(),
 });
 
 function EditPatientData({
   patientData,
   patientId,
- 
+
   onClose,
   setIsEditing,
 }: CurrentPatient & {
@@ -77,21 +77,17 @@ function EditPatientData({
     firstName: first_name,
     surname: surname,
     dateOfBirth: date_of_birth || undefined,
-    sex: sex || undefined,
+    sex: sex || '',
     email: email || '',
     phone: phone || '',
     streetAddress: street_address || '',
     city: city || '',
     emergencyContactName: emergency_contact_name || '',
     emergencyContact: emergency_contact || '',
-    patientId:id,
-    providerId:primary_provider||"",
-    practiceId:practice||""
+    patientId: id,
+    providerId: primary_provider || '',
+    practiceId: practice || '',
   };
-  console.log('Default:', defaultValues);
-
-  console.log('PatientData in EditPatientData:', patientData);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -102,11 +98,9 @@ function EditPatientData({
   const {toast} = useToast();
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('submit values', values);
-
     setIsEditing((p: boolean) => !p);
 
-    editPatientData({ ...values, patientId })
+    editPatientData({...values, patientId})
       .then(() => {
         toast({title: 'Patient data has been updated'});
         router.push(`/dashboard/patient/${patientId}`);
@@ -315,10 +309,6 @@ function EditPatientData({
                 (form.formState.isDirty && !form.formState.isValid)
               }
               type="submit"
-              onClick={() => {
-                   
-              console.log(form.getValues())
-              }}
             >
               Submit
             </Button>

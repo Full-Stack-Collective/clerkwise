@@ -10,11 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-} from './ui/dialog';
+import {Dialog, DialogContent, DialogFooter} from './ui/dialog';
 import {capitalizeWord} from '@/utils/textFormatters';
 import {calculateAge} from '@/utils/calculators';
 import Link from 'next/link';
@@ -23,7 +19,6 @@ import EditPatientData from './EditPatientData';
 import {useProviderStore} from '@/stores/currentProviderStore';
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
 import {useRouter} from 'next/navigation';
-
 
 export function PatientDetails({patientData}: any) {
   const [
@@ -72,7 +67,7 @@ export function PatientDetails({patientData}: any) {
       supabase.removeChannel(channel);
     };
   }, [supabase, router]);
-console.log("Patient data passed to edit form in patient details:", patientData[0])
+
   return (
     <Card className="max-w-xs w-full">
       <CardHeader>
