@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { capitalizeWord } from '@/utils/textFormatters';
 import { calculateAge } from '@/utils/calculators';
 import SoapAssessmentForm from './SoapAssessmentForm';
-import { updateSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
+import { updateSoapAssessment } from '@/app/dashboard/patient/[id]/actions';
 import { format, parseISO } from 'date-fns';
 import { ScrollArea } from './ui/scroll-area';
 import FormsOptionsMenu from './FormsOptionsMenu';
