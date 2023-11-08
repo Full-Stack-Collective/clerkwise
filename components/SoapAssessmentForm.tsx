@@ -12,7 +12,6 @@ import { Vitals } from './Vitals';
 import { usePatientStore } from '@/stores/currentPatientStore';
 import { useRouter } from 'next/navigation';
 import { useToast } from './ui/use-toast';
-import { createSoapAssessment } from '@/app/dashboard/new/soap/[id]/actions';
 
 export const soapFormSchema = z.object({
   subjectiveFindings: z.string().min(2, {
@@ -60,50 +59,78 @@ export const soapFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   urine: z.string().optional(),
-
+  id: z.string(),
   patientId: z.string(),
   providerId: z.string(),
 });
 
+type SoapAssessmentProps = {
+  handleSoapSubmit: (formData: z.infer<typeof soapFormSchema>) => Promise<void>;
+  soapData?: SOAP;
+  handleClose?: () => void;
+};
 
+export default function SoapAssessmentForm({
+  handleSoapSubmit,
+  soapData,
+  handleClose,
+}: SoapAssessmentProps) {
 
-export default function NewSoapAssessment() {
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
 
-    const router = useRouter();
-    const { toast } = useToast();
-    
-    function onSubmit(values: z.infer<typeof soapFormSchema>) {
-      createSoapAssessment(values)
-        .then(() => {
-          toast({ title: 'Your exam has been created' });
-          router.push(`/dashboard/patient/${patientId}`);
-        })
-        .catch((error) => {
-          console.error(error);
-          toast({
-            title: 'Uh oh! Something went wrong.',
-            description: 'There was a problem with your request.',
-          });
-        });
-    }
+  const router = useRouter();
+  const { toast } = useToast();
 
+  function onSubmit(values: z.infer<typeof soapFormSchema>) {
+    handleSoapSubmit(values)
+      .then(() => {
+        toast({ title: 'Your exam has been saved' });
+        if (handleClose) {
+          handleClose();
+        } else {
+          router.push(`/dashboard/patient/${patientId}`);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
+        });
+      });
+  }
+
+  const {
+    id,
+    subjective_findings,
+    objective_findings,
+    assessment,
+    plan,
+    blood_pressure,
+    heart_rate,
+    respiratory_rate,
+    oxygen_saturation,
+    temperature,
+    random_blood_sugar,
+    urine,
+  } = soapData || {};
 
   const defaultValues = {
-    subjectiveFindings: '',
-    objectiveFindings: '',
-    assessment: '',
-    plan: '',
-    bloodPressure: '',
-    heartRate: '',
-    respiratoryRate: '',
-    oxygenSaturation: '',
-    temperature: '',
-    randomBloodSugar: '',
-    urine: '',
-    patientId: patientId,
-    providerId: providerId,
+    id: id || '',
+    subjectiveFindings: subjective_findings || '',
+    objectiveFindings: objective_findings || '',
+    assessment: assessment || '',
+    plan: plan || '',
+    bloodPressure: blood_pressure || '',
+    heartRate: heart_rate?.toString() || '',
+    respiratoryRate: respiratory_rate?.toString() || '',
+    oxygenSaturation: oxygen_saturation?.toString() || '',
+    temperature: temperature?.toString() || '',
+    randomBloodSugar: random_blood_sugar?.toString() || '',
+    urine: urine?.toString() || '',
+    patientId: patientId as string,
+    providerId: providerId as string,
   };
 
   const form = useForm<z.infer<typeof soapFormSchema>>({
@@ -149,8 +176,10 @@ export default function NewSoapAssessment() {
               <Button
                 className="w-24"
                 disabled={
-                  !form.formState.isDirty ||
-                  (form.formState.isDirty && !form.formState.isValid)
+                  !soapData
+                    ? !form.formState.isDirty ||
+                      (form.formState.isDirty && isStepOneValid)
+                    : form.formState.isDirty && isStepOneValid
                 }
                 type="submit"
               >
@@ -161,8 +190,10 @@ export default function NewSoapAssessment() {
                 className="w-24"
                 type="button"
                 disabled={
-                  !form.formState.isDirty ||
-                  (form.formState.isDirty && isStepOneValid)
+                  !soapData
+                    ? !form.formState.isDirty ||
+                      (form.formState.isDirty && isStepOneValid)
+                    : form.formState.isDirty && isStepOneValid
                 }
                 onClick={next}
               >

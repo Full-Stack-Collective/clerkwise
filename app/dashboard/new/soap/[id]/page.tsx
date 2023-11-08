@@ -1,16 +1,17 @@
 import BackButton from '@/components/BackButton';
-import NewSoapAssessment from '@/components/NewSoapAssessment';
+import SoapAssessmentForm from '@/components/SoapAssessmentForm';
 import PatientStoreInitialiser from '@/components/PatientStoreInitializer';
 import { usePatientStore } from '@/stores/currentPatientStore';
+import { createSoapAssessment } from './actions';
 
-export default async function SoapAssessment({ params }: { params: { id: string } }) {
 
+export default async function SoapAssessment({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { patientId, patientFirstName, patientLastName, providerId } =
     usePatientStore.getState();
-
-    console.log('>>Last Name', patientLastName)
-    console.log('>>>>', patientId)
-    console.log('>>>>', providerId)
 
   return (
     <div>
@@ -21,7 +22,7 @@ export default async function SoapAssessment({ params }: { params: { id: string 
         providerId={providerId}
       />
       <BackButton />
-      <NewSoapAssessment />
+      <SoapAssessmentForm handleSoapSubmit={createSoapAssessment} />
     </div>
   );
 }
