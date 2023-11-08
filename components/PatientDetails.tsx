@@ -1,24 +1,21 @@
 'use client';
 import React, {useState, useEffect} from 'react';
-
-import {Button, buttonVariants} from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {Dialog, DialogContent, DialogFooter} from './ui/dialog';
+import {Dialog, DialogContent} from './ui/dialog';
 import {capitalizeWord} from '@/utils/textFormatters';
 import {calculateAge} from '@/utils/calculators';
-import Link from 'next/link';
 import {format, parseISO} from 'date-fns';
 import EditPatientData from './EditPatientData';
 import {useProviderStore} from '@/stores/currentProviderStore';
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
 import {useRouter} from 'next/navigation';
+import FormsOptionsMenu from './FormsOptionsMenu';
 
 export function PatientDetails({patientData}: any) {
   const [
@@ -40,9 +37,6 @@ export function PatientDetails({patientData}: any) {
   const [isEditing, setIsEditing] = useState(false);
   const supabase = createClientComponentClient();
   const router = useRouter();
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
 
   const handleDialogClose = () => {
     setIsEditing(false);
@@ -71,8 +65,12 @@ export function PatientDetails({patientData}: any) {
   return (
     <Card className="max-w-xs w-full">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="flex items-center gap-4 py-2">
           {first_name} {surname}
+          <FormsOptionsMenu
+            isEditable={isEditing}
+            setIsEditable={setIsEditing}
+          />
         </CardTitle>
         <CardDescription>{capitalizeWord(sex)}</CardDescription>
         <CardDescription>
@@ -102,11 +100,6 @@ export function PatientDetails({patientData}: any) {
           </p>
         ) : null}
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="default" onClick={handleEditClick}>
-          Edit
-        </Button>
-      </CardFooter>
 
       {isEditing && (
         <Dialog open={isEditing} onOpenChange={handleDialogClose}>
@@ -122,11 +115,6 @@ export function PatientDetails({patientData}: any) {
               practiceId={useProviderStore.getState().practiceId}
             />
           </DialogContent>
-          <DialogFooter>
-            <Button variant="default" onClick={handleDialogClose}>
-              Cancel
-            </Button>
-          </DialogFooter>
         </Dialog>
       )}
     </Card>
