@@ -171,6 +171,7 @@ function EditPatientData({
                   <RadioGroup
                     onValueChange={(value) => {
                       field.onChange(value);
+                      form.trigger();
                     }}
                     className="flex space-x-2"
                   >
