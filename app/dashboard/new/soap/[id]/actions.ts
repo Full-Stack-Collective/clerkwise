@@ -1,13 +1,14 @@
 'use server';
 
-import { soapFormSchema } from '@/components/NewSoapAssessment';
+import { soapFormSchema } from '@/components/SoapAssessmentForm';
 import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
-export const createSoapAssessment = async (
-  formData: z.infer<typeof soapFormSchema>
-) => {
+export async function createSoapAssessment(
+  formData: z.infer<typeof soapFormSchema>,
+) {
+  'use server';
   const supabase = createServerActionClient({ cookies });
   const {
     subjectiveFindings,
@@ -24,7 +25,6 @@ export const createSoapAssessment = async (
     patientId,
     providerId,
   } = formData;
-
 
   try {
     const { error } = await supabase.from('soap_assessments').insert({
@@ -43,11 +43,12 @@ export const createSoapAssessment = async (
       plan,
     });
 
-    if (error) throw new Error(`There was a problem: ${error}`);
+    if (error) throw new Error(`There was a problem: ${error.message}`);
   } catch (error: unknown) {
     if (error) {
-      throw new Error('Something went wrong:',error);
+      console.log(error);
+      throw new Error('Something went wrong:', error);
     }
   }
+}
 
-};

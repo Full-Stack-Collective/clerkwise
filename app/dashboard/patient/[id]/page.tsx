@@ -1,10 +1,11 @@
-import { PatientDetails } from "@/components/PatientDetails";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import PatientClinicalExamCard from "@/components/PatientClinicalExamCard";
-import BackButton from "@/components/BackButton";
-import PatientSoapsCard from "@/components/PatientSoapsCard";
-import { usePatientStore } from "@/stores/currentPatientStore";
+import { PatientDetails } from '@/components/PatientDetails';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import PatientClinicalExamCard from '@/components/PatientClinicalExamCard';
+import BackButton from '@/components/BackButton';
+import PatientSoapsCard from '@/components/PatientSoapsCard';
+import { usePatientStore } from '@/stores/currentPatientStore';
+import PatientStoreInitialiser from '@/components/PatientStoreInitializer';
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -21,9 +22,9 @@ const getClinicalAssesment = async (patientId: string) => {
 
 const getSoapAssessments = async (patientId: string) => {
   return await supabase
-    .from("soap_assessments")
-    .select("*")
-    .eq("patient", patientId);
+    .from('soap_assessments')
+    .select('*')
+    .eq('patient', patientId).order('exam_date', {ascending: false});
 };
 
 async function PatientChart({ params }: { params: { id: string } }) {
@@ -46,6 +47,12 @@ async function PatientChart({ params }: { params: { id: string } }) {
 
   return (
     <div className="max-w-2xl w-full mx-auto">
+      <PatientStoreInitialiser
+        patientFirstName={first_name}
+        patientId={id}
+        patientLastName={surname}
+        providerId={primary_provider as string}
+      />
       <BackButton />
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
