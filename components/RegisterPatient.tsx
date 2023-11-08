@@ -30,7 +30,7 @@ import {
   DialogTitle,
 } from './ui/dialog';
 
- export const formSchema = z.object({
+const formSchema = z.object({
   firstName: z.string().min(2, {
     message: 'First name must be at least 2 characters.',
   }),
@@ -78,7 +78,7 @@ export function RegisterPatient() {
     },
     mode: 'onChange',
   });
-  function removeSpecialCharacters(str:string) {
+  function removeSpecialCharacters(str: string) {
     return str.replace(/[^a-zA-Z0-9\s]/g, '').toLowerCase();
   }
 

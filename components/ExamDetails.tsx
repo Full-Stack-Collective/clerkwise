@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -12,8 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { capitalizeWord } from "@/utils/textFormatters";
 import { calculateAge } from "@/utils/calculators";
 import { format, parseISO } from "date-fns";
-import EditPatientExam from "./EditPatientExam";
-import { useProviderStore } from "@/stores/currentProviderStore";
 
 type ExamDetailsProps = {
   clinicalAssessment: ClinicalRecord;
@@ -28,8 +26,7 @@ export default function ExamDetails({
   isOpen,
   onClose,
 }: ExamDetailsProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const { first_name, surname, date_of_birth, sex, id } = patientData;
+  const { first_name, surname, date_of_birth, sex } = patientData;
   const {
     exam_date,
     presenting_complaint,
@@ -56,7 +53,7 @@ export default function ExamDetails({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[460px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
             {first_name} {surname}
@@ -70,43 +67,29 @@ export default function ExamDetails({
           </DialogDescription>
         </DialogHeader>
 
-        {isEditing ? (
-          <EditPatientExam
-            patientId={id || ""}
-            patientFirstName={first_name}
-            patientLastName={surname}
-            providerId={useProviderStore.getState().providerId}
-            clinicalAssessment={clinicalAssessment}
-            onClose={onClose}
-            setIsEditing={setIsEditing}
-          />
-        ) : (
-          <>
-            <Tabs defaultValue="history" className="w-full">
-              <TabsList className="mb-6">
-                <TabsTrigger value="history">History</TabsTrigger>
-                <TabsTrigger value="vitals">Vitals</TabsTrigger>
-                <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
-                <TabsTrigger value="diagnosis">Diagnosis</TabsTrigger>
-              </TabsList>
-              <TabsContent value="history">
-                <h3 className="font-semibold">Presenting Complaint</h3>
-                <p className="text-sm my-4">{presenting_complaint}</p>
-                <h3 className="font-semibold">
-                  History of Presenting Complaint
-                </h3>
-                <p className="text-sm my-4">{history_presenting_complaint}</p>
-                <h3 className="font-semibold">Past Medical History</h3>
-                <p className="text-sm my-4">{past_medical_history}</p>
-                <h3 className="font-semibold">Drug History</h3>
-                <p className="text-sm my-4">{drug_history}</p>
-                <h3 className="font-semibold">Family History</h3>
-                <p className="text-sm my-4">{family_history}</p>
-                <h3 className="font-semibold">Social History</h3>
-                <p className="text-sm my-4">{social_history}</p>
-                <h3 className="font-semibold">Allergies</h3>
-                <p className="text-sm my-4">{allergies}</p>
-              </TabsContent>
+        <Tabs defaultValue="history" className="w-full">
+          <TabsList className="mb-6">
+            <TabsTrigger value="history">History</TabsTrigger>
+            <TabsTrigger value="vitals">Vitals</TabsTrigger>
+            <TabsTrigger value="clinicalExam">Clinical Exam</TabsTrigger>
+            <TabsTrigger value="diagnosis">Diagnosis</TabsTrigger>
+          </TabsList>
+          <TabsContent value="history">
+            <h3 className="font-semibold">Presenting Complaint</h3>
+            <p className="text-sm my-4">{presenting_complaint}</p>
+            <h3 className="font-semibold">History of Presenting Complaint</h3>
+            <p className="text-sm my-4">{history_presenting_complaint}</p>
+            <h3 className="font-semibold">Past Medical History</h3>
+            <p className="text-sm my-4">{past_medical_history}</p>
+            <h3 className="font-semibold">Drug History</h3>
+            <p className="text-sm my-4">{drug_history}</p>
+            <h3 className="font-semibold">Family History</h3>
+            <p className="text-sm my-4">{family_history}</p>
+            <h3 className="font-semibold">Social History</h3>
+            <p className="text-sm my-4">{social_history}</p>
+            <h3 className="font-semibold">Allergies</h3>
+            <p className="text-sm my-4">{allergies}</p>
+          </TabsContent>
 
           <TabsContent value="vitals">
             <h3 className="font-semibold">Blood Pressure</h3>
@@ -144,33 +127,25 @@ export default function ExamDetails({
             </p>
           </TabsContent>
 
-              <TabsContent value="diagnosis">
-                {differential_diagnosis ?? (
-                  <>
-                    <h3 className="font-semibold">Differential Diagnosis</h3>
-                    <p className="text-sm my-4">{differential_diagnosis}</p>
-                  </>
-                )}
-                <h3 className="font-semibold">Diagnosis</h3>
-                <p className="text-sm my-4">{diagnosis}</p>
-                <h3 className="font-semibold">Plan</h3>
-                <p className="text-sm my-4">{plan}</p>
-              </TabsContent>
-            </Tabs>
+          <TabsContent value="diagnosis">
+            {differential_diagnosis ?? (
+              <>
+                <h3 className="font-semibold">Differential Diagnosis</h3>
+                <p className="text-sm my-4">{differential_diagnosis}</p>
+              </>
+            )}
+            <h3 className="font-semibold">Diagnosis</h3>
+            <p className="text-sm my-4">{diagnosis}</p>
+            <h3 className="font-semibold">Plan</h3>
+            <p className="text-sm my-4">{plan}</p>
+          </TabsContent>
+        </Tabs>
 
-            <DialogFooter>
-              <Button
-                variant="default"
-                onClick={() => setIsEditing((prev) => !prev)}
-              >
-                Edit
-              </Button>
-              <Button variant="outline" onClick={onClose}>
-                Close
-              </Button>
-            </DialogFooter>
-          </>
-        )}
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>
+            Close
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
