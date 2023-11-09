@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
-import { Button, buttonVariants } from './ui/button';
+import {Button, buttonVariants} from './ui/button';
 import {
   Card,
   CardHeader,
@@ -11,11 +11,11 @@ import {
   CardContent,
   CardDescription,
 } from './ui/card';
-import { ChevronRight } from 'lucide-react';
+import {ChevronRight} from 'lucide-react';
 import ExamDetails from './ExamDetails';
-import { format, parseISO } from 'date-fns';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
+import {format, parseISO} from 'date-fns';
+import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
+import {useRouter} from 'next/navigation';
 
 export default function PatientClinicalExamCard({
   clinicalAssessment,
@@ -31,7 +31,7 @@ export default function PatientClinicalExamCard({
   const clinicalAssessmentExists =
     clinicalAssessment !== undefined && clinicalAssessment.length > 0;
 
-  const { id } = patientData;
+  const {id} = patientData;
 
   // useEffect(() => {
   //   const channel = supabase
@@ -67,7 +67,7 @@ export default function PatientClinicalExamCard({
             </CardDescription>
             <Link
               href={`/dashboard/new/exam/${id}`}
-              className={buttonVariants({ variant: 'default' })}
+              className={buttonVariants({variant: 'default'})}
             >
               Clerk Now <ChevronRight className="h-4 w-4" />
             </Link>

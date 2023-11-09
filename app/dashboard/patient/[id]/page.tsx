@@ -1,13 +1,13 @@
-import { PatientDetails } from '@/components/PatientDetails';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import {PatientDetails} from '@/components/PatientDetails';
+import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
+import {cookies} from 'next/headers';
 import PatientClinicalExamCard from '@/components/PatientClinicalExamCard';
 import BackButton from '@/components/BackButton';
 import PatientSoapsCard from '@/components/PatientSoapsCard';
-import { usePatientStore } from '@/stores/currentPatientStore';
+import {usePatientStore} from '@/stores/currentPatientStore';
 import PatientStoreInitialiser from '@/components/PatientStoreInitializer';
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = createServerComponentClient<Database>({cookies});
 
 const getPatientChart = async (patientId: string) => {
   return await supabase.from('Patients').select('*').eq('id', patientId);
@@ -24,17 +24,17 @@ const getSoapAssessments = async (patientId: string) => {
   return await supabase
     .from('soap_assessments')
     .select('*')
-    .eq('patient', patientId).order('exam_date', {ascending: false});
+    .eq('patient', patientId)
+    .order('exam_date', {ascending: false});
 };
 
+async function PatientChart({params}: {params: {id: string}}) {
+  const {id} = params;
 
-async function PatientChart({ params }: { params: { id: string } }) {
-  const { id } = params;
-
-  const { data: patientData } = await getPatientChart(id);
-  const { first_name, surname, primary_provider } = patientData![0];
-  const { data: clinicalAssessment } = await getClinicalAssesment(id);
-  const { data: soapAssessments } = await getSoapAssessments(id);
+  const {data: patientData} = await getPatientChart(id);
+  const {first_name, surname, primary_provider} = patientData![0];
+  const {data: clinicalAssessment} = await getClinicalAssesment(id);
+  const {data: soapAssessments} = await getSoapAssessments(id);
 
   const clinicalAssessmentExists =
     clinicalAssessment && clinicalAssessment.length > 0;
@@ -58,7 +58,7 @@ async function PatientChart({ params }: { params: { id: string } }) {
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <PatientDetails patientData={patientData} />
-        <div className='flex flex-col gap-3'>
+        <div className="flex flex-col gap-3">
           {clinicalAssessment && patientData ? (
             <PatientClinicalExamCard
               clinicalAssessment={clinicalAssessment}
