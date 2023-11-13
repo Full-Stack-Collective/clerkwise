@@ -65,10 +65,8 @@ export const createClinicalRecord = async (
       plan,
     });
 
-    if (error) throw new Error(`There was a problem: ${error}`);
-  } catch (error: unknown) {
-    if (error) {
-      throw new Error('Something went wrong:',error);
-    }
+    if (error) throw new Error(`There was a problem: ${error.message}`);
+  } catch (error: any) {
+    throw Error('Something went wrong:', error.message);
   }
 };
