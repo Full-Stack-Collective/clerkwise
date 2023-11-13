@@ -38,6 +38,8 @@ export const createClinicalRecord = async (
     providerId,
   } = formData;
 
+  console.table({patientId, providerId})
+
   try {
     const { error } = await supabase.from('clinical_records').insert({
       patient: patientId,
@@ -65,7 +67,10 @@ export const createClinicalRecord = async (
       plan,
     });
 
-    if (error) throw new Error(`There was a problem: ${error.message}`);
+    if (error){
+      console.error(error.message) 
+      throw new Error(`There was a problem: ${error.message}`)
+    };
   } catch (error: any) {
     throw Error('Something went wrong:', error.message);
   }

@@ -15,15 +15,15 @@ const ExamHome = async ({ params }: { params: { id: string } }) => {
   const { id: patientId } = params;
 
   const { data } = await getPatientChart(patientId);
-  const [{ first_name, surname }] = data as Patient[];
+  const [{ id , first_name, surname, primary_provider }] = data as Patient[];
 
   return (
     <div>
       <NewPatientExam
-        patientId={patientId}
+        patientId={id as string}
         patientFirstName={first_name}
         patientLastName={surname}
-        providerId={useProviderStore.getState().providerId}
+        providerId={primary_provider as string}
       />
     </div>
   );
