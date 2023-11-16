@@ -82,6 +82,7 @@ export default function PatientSoapsCard({
                   <ul className="w-full flex flex-col gap-3 items-center">
                     {soapAssessmentsExist &&
                       soapAssessments.map((soapAssessment: SOAP) => {
+                        console.log(soapAssessment.exam_date)
                         return (
                           <li key={soapAssessment.id}>
                             <Button

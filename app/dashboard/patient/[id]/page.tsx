@@ -56,7 +56,7 @@ async function PatientChart({ params }: { params: { id: string } }) {
         patientLastName={surname}
         providerId={primary_provider as string}
       />
-      <BackButton />
+      <BackButton buttonType='patientChart'/>
       <h1 className="text-xl font-semibold text-center mb-7">Patient Chart</h1>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <PatientDetails patientData={patientData} />
