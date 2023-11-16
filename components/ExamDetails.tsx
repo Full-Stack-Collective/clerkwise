@@ -62,7 +62,7 @@ export default function ExamDetails({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[460px]">
+      <DialogContent className="sm:max-w-[460px] h-[80vh]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-4">
             {first_name} {surname}
