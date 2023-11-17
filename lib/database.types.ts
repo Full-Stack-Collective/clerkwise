@@ -144,6 +144,8 @@ export interface Database {
           sex?: Database["public"]["Enums"]["sex_type"] | null
           street_address?: string | null
           surname: string
+          
+
         }
         Update: {
           city?: string | null
@@ -160,6 +162,7 @@ export interface Database {
           sex?: Database["public"]["Enums"]["sex_type"] | null
           street_address?: string | null
           surname?: string
+          accessed_at?: string
         }
         Relationships: [
           {

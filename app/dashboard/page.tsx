@@ -1,12 +1,22 @@
+export const revalidate = 0;
+
 import Link from 'next/link';
 import RecentPatients from '@/components/RecentPatients';
-
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 // <--- UI --->
 
 import { buttonVariants } from '@/components/ui/button';
 
 async function Dashboard() {
 
+  const supabase = createServerComponentClient({ cookies });
+
+  const { data: recentPatients, error } = await supabase
+    .from('Patients')
+    .select('accessed_at, id, first_name, surname, date_of_birth')
+    .order('accessed_at', { ascending: false })
+    .limit(8);
 
   return (
     <div className="max-w-xl w-full p-4 mx-auto">
@@ -19,7 +29,7 @@ async function Dashboard() {
           Create New Patient
         </Link>
       </div>
-      <RecentPatients/>
+      <RecentPatients recentPatients={recentPatients}/>
     </div>
   );
 }

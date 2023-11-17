@@ -1,5 +1,5 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+'use client';
+
 import {
   Card,
   CardContent,
@@ -8,15 +8,39 @@ import {
   CardTitle,
 } from './ui/card';
 import PatientTableRow from './PatientTableRow';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default async function RecentPatients() {
-  const supabase = createServerComponentClient({ cookies });
+type RecentPatient = {
+  accessed_at: string;
+  id: string;
+  first_name: string;
+  surname: string;
+};
 
-  const { data: recentPatients, error } = await supabase
-    .from('Patients')
-    .select('created_at, id, first_name, surname, date_of_birth')
-    .order('created_at', { ascending: false })
-    .limit(8);
+export default function RecentPatients({
+  recentPatients,
+}: {
+  recentPatients: RecentPatient[] | null;
+}) {
+
+  const supabase = createClientComponentClient()
+  const router = useRouter();
+
+  useEffect(()=>{
+    const channel = supabase.channel('realtime patients').on('postgres_changes', {
+      event: '*',
+      schema: 'public', 
+      table: 'Patients'
+    }, ()=>{
+      router.refresh()
+    }).subscribe();
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  },[supabase, router])
 
   return (
     <Card className="col-span-3">
