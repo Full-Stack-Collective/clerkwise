@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -19,6 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from './ui/input';
 import { useToast } from '@/components/ui/use-toast';
+import { registerNewProvider } from '@/app/register/complete/actions';
 
 const formSchema = z.object({
   id: z.string(),
@@ -55,32 +55,18 @@ export function AdminCompleteSignup({ userId }: { userId: string }) {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { firstName, surname, speciality, email, phone, id } = values;
-
-    try {
-      const { data, error } = await supabase
-        .from('Providers')
-        .insert({
-          id: userId,
-          first_name: firstName,
-          last_name: surname,
-          speciality,
-          email,
-          phone,
-        })
-        .select('id, first_name, last_name');
-      if (error) throw error;
-      else {
-        form.reset();
+    registerNewProvider(values)
+      .then((data) => {
+        if (data) toast({ title: 'Your details have been updated' });
         router.push('/dashboard');
-      }
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
+        });
       });
-    }
   }
 
   const { toast } = useToast();
