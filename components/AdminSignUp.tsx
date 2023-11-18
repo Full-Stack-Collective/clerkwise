@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 
-import { signupSupabaseAuthUser } from '../app/signup/actions';
+import { signupSupabaseAuthUser } from '../app/register/actions';
 // Import UI components
 import { Button } from '@/components/ui/button';
 import {
@@ -19,6 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from './ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z
   .object({
@@ -43,6 +44,7 @@ export function AdminSignUpForm() {
     password: '',
     confirmPassword: '',
   };
+  const router = useRouter();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,11 +64,12 @@ export function AdminSignUpForm() {
           if (data.user) {
             toast({
               title:
-                "Congrats! You're one step closer to be part of Connectient",
+                "Looks like you're on your way to simplifying your patient management",
               description:
                 "We've received your registration. Check your email for confirmation",
             });
             form.reset();
+            router.push('/login');
           }
         })
         .catch(() => {
