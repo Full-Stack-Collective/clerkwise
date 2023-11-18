@@ -15,6 +15,11 @@ const getPatientChart = async (patientId: string) => {
   return await supabase.from('Patients').select('*').eq('id', patientId);
 };
 
+const updatePatientChartLastAccess =async (patientId: string) => {
+  return await supabase.from('Patients').update({accessed_at: new Date().toISOString()}).eq('id', patientId);
+  
+}
+
 const getClinicalAssesment = async (patientId: string) => {
   return await supabase
     .from('clinical_records')
@@ -37,6 +42,7 @@ async function PatientChart({ params }: { params: { id: string } }) {
   const { first_name, surname, primary_provider } = patientData![0];
   const { data: clinicalAssessment } = await getClinicalAssesment(id);
   const { data: soapAssessments } = await getSoapAssessments(id);
+  await updatePatientChartLastAccess(id);
 
   const clinicalAssessmentExists =
     clinicalAssessment && clinicalAssessment.length > 0;
