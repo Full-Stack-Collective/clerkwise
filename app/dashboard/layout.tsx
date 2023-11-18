@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { DashboardNavigation } from '@/components/DashboardNavigation';
-import { Toaster } from '@/components/ui/toaster';
 import { useProviderStore } from '@/stores/currentProviderStore';
 import ProviderStoreInitialiser from '@/components/ProviderStoreInitialiser';
 
@@ -17,15 +16,21 @@ export default async function DashboardLayout({
     data: { session },
   } = await supabase.auth.getSession();
 
+
   if (!session) {
     redirect('/login');
   }
 
-  const { data } = await supabase
+  const { data: currentUser, error } = await supabase
     .from('Providers')
     .select('id, practice, first_name, last_name');
 
-  const [{ id, practice, first_name, last_name }] = data as Provider[];
+  if (currentUser?.length === 0) {
+    redirect('/register/complete');
+  }
+  
+
+  const [{ id, practice, first_name, last_name }] = currentUser as Provider[];
 
   if (id && practice && first_name && last_name)
     useProviderStore.setState({
@@ -46,10 +51,7 @@ export default async function DashboardLayout({
       <div className="flex justify-between">
         <DashboardNavigation className="mb-12" />
       </div>
-      <section>
-        {children}
-        <Toaster />
-      </section>
+      <section>{children}</section>
     </>
   );
 }
