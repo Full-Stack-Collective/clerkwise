@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from './ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { registerNewProvider } from '@/app/register/complete/actions';
+import { registerNewProvider } from '@/app/complete/actions';
 
 const formSchema = z.object({
   id: z.string(),

@@ -26,7 +26,7 @@ export default async function DashboardLayout({
     .select('id, practice, first_name, last_name');
 
   if (currentUser?.length === 0) {
-    redirect('/register/complete');
+    redirect('/complete');
   }
   
 
