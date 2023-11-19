@@ -58,6 +58,7 @@ export function AdminCompleteSignup({ userId }: { userId: string }) {
     registerNewProvider(values)
       .then((data) => {
         if (data) toast({ title: 'Your details have been updated' });
+        router.refresh();
         router.push('/dashboard');
       })
       .catch((error) => {
