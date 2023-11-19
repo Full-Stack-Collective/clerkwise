@@ -57,9 +57,11 @@ export function AdminCompleteSignup({ userId }: { userId: string }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     registerNewProvider(values)
       .then((data) => {
-        if (data) toast({ title: 'Your details have been updated' });
-        router.refresh();
-        router.push('/dashboard');
+        if (data) {
+          // toast({ title: 'Your details have been updated' });
+          router.refresh();
+          router.push('/dashboard');
+        }
       })
       .catch((error) => {
         console.error(error);
