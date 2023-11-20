@@ -10,7 +10,7 @@ function BackButton({ buttonType = 'default' }) {
 
   const handleClick = () => {
     if(buttonType === 'patientChart') router.push('/dashboard');
-    router.back();
+    else router.back();
   };
 
   return (

@@ -2,7 +2,7 @@
 
 import * as z from 'zod';
 import { UseFormReturn } from 'react-hook-form';
-import { soapFormSchema } from './NewSoapAssessment';
+import { soapFormSchema } from './SoapAssessmentForm';
 
 import {
   FormControl,

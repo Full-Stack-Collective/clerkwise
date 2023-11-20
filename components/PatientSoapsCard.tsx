@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
 
 import { Button, buttonVariants } from './ui/button';
 import {
@@ -25,15 +27,32 @@ export default function PatientSoapsCard({
 }) {
   const [isSoapDetailsOpen, setIsSoapDetailsOpen] = useState(false);
   const [currentSoap, setCurrentSoap] = useState<SOAP | null>(null);
+  const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const soapAssessmentsExist = soapAssessments && soapAssessments.length > 0;
 
-  const handleSoapSelection = (event: Event) => {
-    console.log(event.target);
-    setIsSoapDetailsOpen(true);
-  };
+  useEffect(() => {
+    const channel = supabase
+      .channel('soap_assessments')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'soap_assessments',
+        },
+        () => {
+          router.refresh();
+        }
+      )
+      .subscribe();
 
-  // console.log(soapAssessments)
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, router]);
+
 
   const { id } = patientData;
   return (
@@ -59,32 +78,36 @@ export default function PatientSoapsCard({
             {soapAssessmentsExist ? (
               <div className="w-full py-5 mx-auto flex flex-col">
                 <h2 className="text-lg font-semibold">Past SOAPs</h2>
-                <ScrollArea className='h-[96px]'>
-                <ul className="w-full flex flex-col gap-3 items-center">
-                  {soapAssessmentsExist &&
-                    soapAssessments.map((soapAssessment: SOAP) => {
-                      return (
-                        <li key={soapAssessment.id}>
-                          <Button
-                            variant={'secondary'}
-                            onClick={() => {
-                              setCurrentSoap(
-                                soapAssessments.filter(
-                                  (assessment) =>
-                                    assessment.id === soapAssessment.id
-                                )[0]
-                              );
-                              setIsSoapDetailsOpen(true);
-                            }}
-                          >
-                            {soapAssessment.exam_date &&
-                              format(parseISO(soapAssessment.exam_date), 'PP')}
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
-                        </li>
-                      );
-                    })}
-                </ul>
+                <ScrollArea className="h-[128px]">
+                  <ul className="w-full flex flex-col gap-3 items-center">
+                    {soapAssessmentsExist &&
+                      soapAssessments.map((soapAssessment: SOAP) => {
+                        console.log(soapAssessment.exam_date)
+                        return (
+                          <li key={soapAssessment.id}>
+                            <Button
+                              variant={'secondary'}
+                              onClick={() => {
+                                setCurrentSoap(
+                                  soapAssessments.filter(
+                                    (assessment) =>
+                                      assessment.id === soapAssessment.id
+                                  )[0]
+                                );
+                                setIsSoapDetailsOpen(true);
+                              }}
+                            >
+                              {soapAssessment.exam_date &&
+                                format(
+                                  parseISO(soapAssessment.exam_date),
+                                  'PP'
+                                )}
+                              <ChevronRight className="h-4 w-4" />
+                            </Button>
+                          </li>
+                        );
+                      })}
+                  </ul>
                 </ScrollArea>
               </div>
             ) : null}
