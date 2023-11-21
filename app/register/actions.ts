@@ -14,6 +14,9 @@ export const signupSupabaseAuthUser = async ({
   const { data } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: 'https://clerkwise.vercel.app/register/complete'
+    }
   });
   return data;
 };

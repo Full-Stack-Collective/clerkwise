@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from './ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { registerNewProvider } from '@/app/complete/actions';
+import { registerNewProvider } from '@/app/register/complete/actions';
 
 const formSchema = z.object({
   id: z.string(),
@@ -58,9 +58,10 @@ export function AdminCompleteSignup({ userId }: { userId: string }) {
     registerNewProvider(values)
       .then((data) => {
         if (data) {
-          // toast({ title: 'Your details have been updated' });
+          console.log(data);
+          toast({ title: 'Your details have been updated' });
           router.refresh();
-          router.push('/dashboard');
+          // router.push('/dashboard');
         }
       })
       .catch((error) => {
