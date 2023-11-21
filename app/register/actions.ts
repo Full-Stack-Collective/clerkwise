@@ -1,7 +1,7 @@
-'use server'
+'use server';
 
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 export const signupSupabaseAuthUser = async ({
   email,
@@ -15,8 +15,8 @@ export const signupSupabaseAuthUser = async ({
     email,
     password,
     options: {
-      emailRedirectTo: 'https://clerkwise.vercel.app/register/complete'
-    }
+      emailRedirectTo: 'https://clerkwise.vercel.app/register/complete',
+    },
   });
   return data;
 };
