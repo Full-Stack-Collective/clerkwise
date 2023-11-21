@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format:check": "prettier --check ./app ./components ./hooks ./lib ./stores ./utils",
+    "format:fix": "prettier --write ./app ./components ./hooks ./lib ./stores ./utils",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
@@ -46,9 +49,17 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
     "autoprefixer": "^10.4.14",
     "encoding": "^0.1.13",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
     "postcss": "^8.4.26",
+    "prettier": "^3.1.0",
     "tailwindcss": "^3.3.3"
   }
 }
