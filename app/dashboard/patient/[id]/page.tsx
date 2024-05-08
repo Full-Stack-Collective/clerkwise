@@ -16,7 +16,6 @@ const getPatientChart = async (patientId: string) => {
 };
 
 const updatePatientChartLastAccess =async (patientId: string) => {
-  console.log('Loading patient...')
 
   return await supabase.from('Patients').update({accessed_at: new Date().toISOString()}).eq('id', patientId);
   
